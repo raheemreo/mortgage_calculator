@@ -1,0 +1,122 @@
+{
+ "lenders":[
+  {
+   "name":"Rocket Mortgage",
+   "logo":"https://logo.clearbit.com/rocketmortgage.com",
+   "website":"https://www.rocketmortgage.com",
+   "loan_types":["30-Year Fixed","15-Year Fixed","Refinance"],
+   "rate_adjustment":0.00,
+   "apr_adjustment":0.05,
+   "estimated_fees":2100,
+   "closing_costs": 5800
+  },
+  {
+   "name":"Wells Fargo",
+   "logo":"https://logo.clearbit.com/wellsfargo.com",
+   "website":"https://www.wellsfargo.com/mortgage",
+   "loan_types":["30-Year Fixed","15-Year Fixed","FHA"],
+   "rate_adjustment":0.12,
+   "apr_adjustment":0.18,
+   "estimated_fees":1950,
+   "closing_costs": 6100
+  },
+  {
+   "name":"Chase",
+   "logo":"https://logo.clearbit.com/chase.com",
+   "website":"https://www.chase.com/personal/mortgage",
+   "loan_types":["30-Year Fixed","15-Year Fixed","Refinance"],
+   "rate_adjustment":0.08,
+   "apr_adjustment":0.12,
+   "estimated_fees":2000,
+   "closing_costs": 5900
+  },
+  {
+   "name":"Bank of America",
+   "logo":"https://logo.clearbit.com/bankofamerica.com",
+   "website":"https://www.bankofamerica.com/mortgage",
+   "loan_types":["30-Year Fixed","FHA","VA"],
+   "rate_adjustment":0.10,
+   "apr_adjustment":0.16,
+   "estimated_fees":2050,
+   "closing_costs": 6000
+  },
+  {
+   "name":"loanDepot",
+   "logo":"https://logo.clearbit.com/loandepot.com",
+   "website":"https://www.loandepot.com",
+   "loan_types":["30-Year Fixed","Refinance"],
+   "rate_adjustment":0.18,
+   "apr_adjustment":0.24,
+   "estimated_fees":2200,
+   "closing_costs": 6400
+  },
+  {
+   "name":"U.S. Bank",
+   "logo":"https://logo.clearbit.com/usbank.com",
+   "website":"https://www.usbank.com/home-loans",
+   "loan_types":["30-Year Fixed","15-Year Fixed"],
+   "rate_adjustment":0.09,
+   "apr_adjustment":0.15,
+   "estimated_fees":2100,
+   "closing_costs": 6200
+  },
+  {
+   "name":"CrossCountry Mortgage",
+   "logo":"https://logo.clearbit.com/ccm.com",
+   "website":"https://crosscountrymortgage.com",
+   "loan_types":["30-Year Fixed","FHA","VA"],
+   "rate_adjustment":0.15,
+   "apr_adjustment":0.22,
+   "estimated_fees":2150
+  },
+  {
+   "name": "PNC Bank",
+   "logo": "https://logo.clearbit.com/pnc.com",
+   "website": "https://www.pnc.com/mortgage",
+   "loan_types":["None"],
+   "rate_adjustment": 0.15,
+   "apr_adjustment": 0.22,
+   "estimated_fees": 2000,
+   "closing_costs": 6000
+  },
+  {
+   "name": "Better Mortgage",
+   "logo": "https://logo.clearbit.com/better.com",
+   "website": "https://better.com",
+   "loan_types":["None"],
+   "rate_adjustment": 0.08,
+   "apr_adjustment": 0.12,
+   "estimated_fees": 1800,
+   "closing_costs": 5500
+  },
+  {
+   "name": "Freedom Mortgage",
+   "logo": "https://logo.clearbit.com/freedommortgage.com",
+   "website": "https://www.freedommortgage.com",
+   "loan_types":["None"],
+   "rate_adjustment": 0.11,
+   "apr_adjustment": 0.16,
+   "estimated_fees": 2050,
+   "closing_costs": 6100
+  },
+  {
+   "name": "Guild Mortgage",
+   "logo": "https://logo.clearbit.com/guildmortgage.com",
+   "website": "https://www.guildmortgage.com",
+   "loan_types":["None"],
+   "rate_adjustment": 0.18,
+   "apr_adjustment": 0.25,
+   "estimated_fees": 2200,
+   "closing_costs": 6500
+  },
+  {
+   "name":"Fairway Independent Mortgage",
+   "logo":"https://logo.clearbit.com/fairwaymc.com",
+   "website":"https://www.fairwaymc.com",
+   "loan_types":["30-Year Fixed","FHA","VA"],
+   "rate_adjustment":0.17,
+   "apr_adjustment":0.23,
+   "estimated_fees":2300
+  }
+ ]
+}

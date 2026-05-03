@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PITI &amp; Extra Payments Calculator</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0B3D91", "secondary": "#1E8449", "background": "#F8F9FA", "text-main": "#212121",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-text-main font-display antialiased min-h-screen flex flex-col">
+    <div
+        class="sticky top-0 z-10 bg-background border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
+        <button aria-label="Go back"
+            class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition-colors">
+            <span class="material-symbols-outlined text-primary">arrow_back_ios_new</span>
+        </button>
+        <h1 class="text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-10 text-primary">PITI Calculator
+        </h1>
+    </div>
+    <main class="flex-1 overflow-y-auto pb-8">
+        <div class="max-w-md mx-auto w-full px-4 pt-6 space-y-6">
+            <section class="bg-white rounded-2xl p-5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.08)]">
+                <h2 class="text-xl font-bold mb-5 flex items-center gap-2 text-primary">
+                    <span class="material-symbols-outlined">real_estate_agent</span>
+                    Loan Details
+                </h2>
+                <div class="space-y-4">
+                    <label class="block">
+                        <span class="block text-sm font-medium text-gray-600 mb-1.5">Home Price</span>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                <span class="text-gray-500 font-medium">$</span>
+                            </div>
+                            <input
+                                class="block w-full rounded-xl border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-14 pl-8 pr-4 text-base transition-colors"
+                                placeholder="0" type="number" value="450000" />
+                        </div>
+                    </label>
+                    <div class="flex gap-4">
+                        <label class="block flex-1">
+                            <span class="block text-sm font-medium text-gray-600 mb-1.5">Down Payment</span>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 font-medium">$</span>
+                                </div>
+                                <input
+                                    class="block w-full rounded-xl border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-14 pl-8 pr-4 text-base transition-colors"
+                                    placeholder="0" type="number" value="90000" />
+                            </div>
+                        </label>
+                        <label class="block w-24">
+                            <span class="block text-sm font-medium text-gray-600 mb-1.5">%</span>
+                            <div class="relative">
+                                <input
+                                    class="block w-full rounded-xl border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-14 px-3 pr-8 text-base text-right transition-colors"
+                                    placeholder="0" type="number" value="20" />
+                                <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 font-medium">%</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="flex gap-4">
+                        <label class="block flex-1">
+                            <span class="block text-sm font-medium text-gray-600 mb-1.5">Interest Rate</span>
+                            <div class="relative">
+                                <input
+                                    class="block w-full rounded-xl border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-14 px-4 pr-8 text-base transition-colors"
+                                    placeholder="0.0" step="0.1" type="number" value="6.5" />
+                                <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
+                                    <span class="text-gray-500 font-medium">%</span>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="block flex-1">
+                            <span class="block text-sm font-medium text-gray-600 mb-1.5">Loan Term</span>
+                            <div class="relative">
+                                <select
+                                    class="block w-full rounded-xl border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-14 px-4 text-base transition-colors appearance-none">
+                                    <option value="30">30 Years</option>
+                                    <option value="20">20 Years</option>
+                                    <option value="15">15 Years</option>
+                                    <option value="10">10 Years</option>
+                                    <option value="5">5 Years</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
+                                    <span class="material-symbols-outlined text-gray-500">expand_more</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </section>
+            <section class="bg-white rounded-2xl p-5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.08)]">
+                <div class="flex items-center justify-between mb-5">
+                    <h2 class="text-xl font-bold flex items-center gap-2 text-primary">
+                        <span class="material-symbols-outlined">account_balance_wallet</span>
+                        Homeowner Expenses
+                    </h2>
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-gray-600 bg-gray-100 px-2 py-1 rounded">Yearly</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <label class="block">
+                        <span class="block text-sm font-medium text-gray-600 mb-1.5">Property Tax</span>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 font-medium">$</span>
+                            </div>
+                            <input
+                                class="block w-full rounded-xl border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-12 pl-7 pr-3 text-sm transition-colors"
+                                placeholder="0" type="number" value="5400" />
+                        </div>
+                    </label>
+                    <label class="block">
+                        <span class="block text-sm font-medium text-gray-600 mb-1.5">Home Insurance</span>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 font-medium">$</span>
+                            </div>
+                            <input
+                                class="block w-full rounded-xl border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-12 pl-7 pr-3 text-sm transition-colors"
+                                placeholder="0" type="number" value="1200" />
+                        </div>
+                    </label>
+                    <label class="block">
+                        <span class="block text-sm font-medium text-gray-600 mb-1.5">HOA Fees</span>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 font-medium">$</span>
+                            </div>
+                            <input
+                                class="block w-full rounded-xl border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-12 pl-7 pr-3 text-sm transition-colors"
+                                placeholder="0" type="number" value="0" />
+                        </div>
+                    </label>
+                    <label class="block">
+                        <span class="block text-sm font-medium text-gray-600 mb-1.5">PMI</span>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 font-medium">$</span>
+                            </div>
+                            <input
+                                class="block w-full rounded-xl border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-12 pl-7 pr-3 text-sm transition-colors"
+                                placeholder="0" type="number" value="0" />
+                        </div>
+                    </label>
+                </div>
+            </section>
+            <section class="bg-white rounded-2xl p-5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.08)] border border-gray-100">
+                <div class="flex items-center justify-between mb-5">
+                    <h2 class="text-lg font-bold flex items-center gap-2 text-primary">
+                        <span class="material-symbols-outlined">speed</span>
+                        Extra Payments
+                    </h2>
+                    <div class="w-12 h-7 bg-secondary rounded-full relative cursor-pointer shadow-inner">
+                        <div
+                            class="w-6 h-6 bg-white rounded-full absolute right-0.5 top-0.5 shadow-sm border border-gray-100">
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <label class="flex items-center justify-between gap-4">
+                        <span class="text-sm font-medium text-gray-700">Monthly Extra</span>
+                        <div class="relative w-32">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 font-medium">$</span>
+                            </div>
+                            <input
+                                class="block w-full rounded-lg border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-10 pl-7 pr-3 text-sm text-right transition-colors"
+                                placeholder="0" type="number" value="200" />
+                        </div>
+                    </label>
+                    <label class="flex items-center justify-between gap-4">
+                        <span class="text-sm font-medium text-gray-700">Bi-weekly Extra</span>
+                        <div class="relative w-32">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 font-medium">$</span>
+                            </div>
+                            <input
+                                class="block w-full rounded-lg border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-10 pl-7 pr-3 text-sm text-right transition-colors"
+                                placeholder="0" type="number" value="" />
+                        </div>
+                    </label>
+                    <label class="flex items-center justify-between gap-4">
+                        <span class="text-sm font-medium text-gray-700">One-time Lump Sum</span>
+                        <div class="relative w-32">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 font-medium">$</span>
+                            </div>
+                            <input
+                                class="block w-full rounded-lg border-gray-300 bg-gray-50 text-text-main focus:border-primary focus:ring-1 focus:ring-primary h-10 pl-7 pr-3 text-sm text-right transition-colors"
+                                placeholder="0" type="number" value="" />
+                        </div>
+                    </label>
+                </div>
+            </section>
+        </div>
+    </main>
+    <div class="mt-auto flex flex-col bg-white border-t border-gray-200 shadow-[0_-4px_10px_-2px_rgba(0,0,0,0.05)]">
+        <div class="px-4 pb-6 pt-4">
+            <div class="max-w-md mx-auto w-full">
+                <button
+                    class="w-full h-14 bg-primary hover:bg-[#093070] active:bg-[#072454] text-white font-bold rounded-xl text-lg flex items-center justify-center gap-2 transition-colors mb-6 shadow-md shadow-primary/20">
+                    <span class="material-symbols-outlined">calculate</span>
+                    Calculate Payment
+                </button>
+                <div
+                    class="w-full h-[50px] bg-gray-100 border border-gray-300 rounded-lg flex items-center justify-center">
+                    <span class="text-xs font-semibold tracking-[0.2em] text-gray-400">AD SPACE</span>
+                </div>
+            </div>
+        </div>
+        <nav class="bg-background border-t border-gray-200 pb-8 pt-3 px-6 flex justify-around items-center w-full">
+            <button class="flex flex-col items-center gap-1 text-primary transition-colors w-16">
+                <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">home</span>
+                <span class="text-[10px] font-medium">Home</span>
+            </button>
+            <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors w-16">
+                <span class="material-symbols-outlined text-2xl">shield</span>
+                <span class="text-[10px] font-medium">Insurance</span>
+            </button>
+            <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors w-16">
+                <span class="material-symbols-outlined text-2xl">settings</span>
+                <span class="text-[10px] font-medium">Settings</span>
+            </button>
+        </nav>
+    </div>
+</body>
+
+</html>

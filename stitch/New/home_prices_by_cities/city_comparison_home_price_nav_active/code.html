@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>City Side-by-Side Comparison</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Custom Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0B3D91',
+            emerald: '#1E8449',
+            softwhite: '#F8F9FA',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom Styles -->
+<style data-purpose="layout-and-typography">
+    body {
+      background-color: #F8F9FA;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding-bottom: 80px; /* Space for bottom nav */
+    }
+    .comparison-row-win {
+      background-color: rgba(30, 132, 73, 0.1);
+    }
+    .winner-highlight {
+      color: #1E8449;
+      font-weight: 700;
+    }
+    /* Hide scrollbar but keep functionality */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/></head>
+<body class="text-slate-800">
+<!-- BEGIN: MainHeader -->
+<header class="bg-navy text-white p-4 sticky top-0 z-50 shadow-md">
+<div class="flex items-center justify-between">
+<button aria-label="Go Back" class="p-2">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<h1 class="text-xl font-bold tracking-tight">Market Comparison</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: AdBanner -->
+<section class="bg-gray-200 py-2 flex justify-center items-center border-b border-gray-300" data-purpose="ad-space">
+<div class="w-[320px] h-[50px] bg-gray-400 flex items-center justify-center text-xs text-white uppercase tracking-widest font-bold">
+      Google AdMob Banner Ad
+    </div>
+</section>
+<!-- END: AdBanner -->
+<main class="p-4 max-w-lg mx-auto">
+<!-- BEGIN: CitySelection -->
+<section class="mb-6 grid grid-cols-2 gap-4" data-purpose="city-selection">
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-navy uppercase" for="cityA">City A</label>
+<select class="form-select w-full rounded-lg border-gray-300 text-sm focus:ring-navy focus:border-navy" id="cityA">
+<option selected="" value="New York">New York, NY</option>
+<option value="Los Angeles">Los Angeles, CA</option>
+<option value="Chicago">Chicago, IL</option>
+<option value="Houston">Houston, TX</option>
+<option value="Phoenix">Phoenix, AZ</option>
+<!-- ... more options as needed ... -->
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-navy uppercase" for="cityB">City B</label>
+<select class="form-select w-full rounded-lg border-gray-300 text-sm focus:ring-navy focus:border-navy" id="cityB">
+<option value="New York">New York, NY</option>
+<option selected="" value="Los Angeles">Los Angeles, CA</option>
+<option value="Chicago">Chicago, IL</option>
+<option value="Houston">Houston, TX</option>
+<option value="Phoenix">Phoenix, AZ</option>
+<!-- ... more options as needed ... -->
+</select>
+</div>
+</section>
+<!-- END: CitySelection -->
+<!-- BEGIN: ComparisonTable -->
+<section class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6" data-purpose="comparison-table">
+<table class="w-full text-left border-collapse" id="comparison-table">
+<thead>
+<tr class="bg-slate-50 border-b border-gray-200">
+<th class="p-3 text-xs font-bold text-slate-500 uppercase">Metric</th>
+<th class="p-3 text-sm font-bold text-navy text-center" id="header-city-a">New York</th>
+<th class="p-3 text-sm font-bold text-navy text-center" id="header-city-b">Los Angeles</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<!-- Median Price -->
+<tr class="border-b border-gray-100">
+<td class="p-3 font-medium text-slate-600">Median Price</td>
+<td class="p-3 text-center comparison-row-win">$650,000</td> <!-- Winner: NY (lower price) -->
+<td class="p-3 text-center">$850,000</td>
+</tr>
+<!-- Price/Sqft -->
+<tr class="border-b border-gray-100">
+<td class="p-3 font-medium text-slate-600">Price / Sqft</td>
+<td class="p-3 text-center comparison-row-win">$720</td> <!-- Winner: NY (lower price/sqft) -->
+<td class="p-3 text-center">$810</td>
+</tr>
+<!-- Growth Index -->
+<tr class="border-b border-gray-100">
+<td class="p-3 font-medium text-slate-600">Growth Index</td>
+<td class="p-3 text-center">8.5</td>
+<td class="p-3 text-center comparison-row-win">9.1</td> <!-- Winner: LA (higher growth) -->
+</tr>
+<!-- Livability -->
+<tr class="border-b border-gray-100">
+<td class="p-3 font-medium text-slate-600">Livability</td>
+<td class="p-3 text-center comparison-row-win">8.4</td> <!-- Winner: NY -->
+<td class="p-3 text-center">8.1</td>
+</tr>
+<!-- School Rating -->
+<tr>
+<td class="p-3 font-medium text-slate-600">School Rating</td>
+<td class="p-3 text-center comparison-row-win">8.5</td> <!-- Winner: NY -->
+<td class="p-3 text-center">8.1</td>
+</tr>
+</tbody>
+</table>
+</section>
+<!-- END: ComparisonTable -->
+<!-- BEGIN: AnalystPerspective -->
+<section class="bg-navy text-white p-5 rounded-2xl shadow-lg" data-purpose="analyst-perspective">
+<div class="flex items-center gap-2 mb-3">
+<svg class="h-5 w-5 text-emerald" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" fill-rule="evenodd"></path>
+</svg>
+<h2 class="font-bold text-lg uppercase tracking-wide">Analyst Perspective</h2>
+</div>
+<p class="text-sm leading-relaxed text-slate-200" id="perspective-text">
+        While <span class="text-white font-semibold">New York</span> offers a more accessible entry point in terms of median price and cost per square foot, <span class="text-white font-semibold">Los Angeles</span> demonstrates superior growth potential. Investors seeking stability and educational infrastructure should look toward NY, whereas those chasing appreciation may find LA's market momentum more compelling.
+      </p>
+</section>
+<!-- END: AnalystPerspective -->
+</main>
+<!-- BEGIN: BottomNavigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-20 px-4 z-50" data-purpose="main-navigation">
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-navy transition-colors" href="#">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-bold uppercase tracking-widest">Home</span>
+</a><a class="flex flex-col items-center gap-1 text-navy" href="#">
+<span class="material-symbols-outlined h-6 w-6 text-center">home_work</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Home Price</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-navy transition-colors" href="#">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-bold uppercase tracking-widest">Insurance</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-navy transition-colors" href="#">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-bold uppercase tracking-widest">Settings</span>
+</a>
+</nav>
+<!-- END: BottomNavigation -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="logic-handlers">
+    // This is a placeholder script to represent where logic for updating the 
+    // table dynamically based on dropdown selection would reside.
+    // For this static block, the visual state matches the NY vs LA request.
+    
+    document.getElementById('cityA').addEventListener('change', function(e) {
+      console.log('Update UI for City A: ' + e.target.value);
+    });
+    
+    document.getElementById('cityB').addEventListener('change', function(e) {
+      console.log('Update UI for City B: ' + e.target.value);
+    });
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>

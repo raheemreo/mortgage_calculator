@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>USA Mortgage &amp; Loan Calculator Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+:root {
+  --primary-color: #0B3D91;
+  --emerald-color: #1E8449;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F8F9FA;
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col text-slate-900">
+<header class="bg-[var(--primary-color)] px-5 py-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+<div>
+<p class="text-xs text-white font-medium uppercase tracking-wider mb-0.5">Welcome back</p>
+<h1 class="text-xl font-bold text-white">USA Mortgage Pro</h1>
+</div>
+<button class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</button>
+</header>
+<main class="flex-1 px-4 py-6 flex flex-col gap-6 overflow-y-auto">
+<div class="grid grid-cols-2 gap-4">
+<button class="bg-white rounded-2xl shadow-sm p-5 flex flex-col items-center justify-center gap-3 border border-slate-100 hover:shadow-md transition-shadow active:scale-95">
+<div class="w-12 h-12 rounded-full bg-[var(--primary-color)]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-[var(--primary-color)]">payments</span>
+</div>
+<span class="font-bold text-center text-sm text-slate-800 leading-tight">PITI &amp; Extra Payments</span>
+</button>
+<button class="bg-white rounded-2xl shadow-sm p-5 flex flex-col items-center justify-center gap-3 border border-slate-100 hover:shadow-md transition-shadow active:scale-95">
+<div class="w-12 h-12 rounded-full bg-[var(--primary-color)]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-[var(--primary-color)]">real_estate_agent</span>
+</div>
+<span class="font-bold text-center text-sm text-slate-800 leading-tight">Mortgage Calc</span>
+</button>
+<button class="bg-white rounded-2xl shadow-sm p-5 flex flex-col items-center justify-center gap-3 border border-slate-100 hover:shadow-md transition-shadow active:scale-95">
+<div class="w-12 h-12 rounded-full bg-[var(--primary-color)]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-[var(--primary-color)]">directions_car</span>
+</div>
+<span class="font-bold text-center text-sm text-slate-800 leading-tight">Auto Loan</span>
+</button>
+<button class="bg-white rounded-2xl shadow-sm p-5 flex flex-col items-center justify-center gap-3 border border-slate-100 hover:shadow-md transition-shadow active:scale-95">
+<div class="w-12 h-12 rounded-full bg-[var(--primary-color)]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-[var(--primary-color)]">credit_card</span>
+</div>
+<span class="font-bold text-center text-sm text-slate-800 leading-tight">Credit Card Payoff</span>
+</button>
+<button class="bg-white rounded-2xl shadow-sm p-5 flex flex-col items-center justify-center gap-3 border border-slate-100 hover:shadow-md transition-shadow active:scale-95">
+<div class="w-12 h-12 rounded-full bg-[var(--primary-color)]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-[var(--primary-color)]">pie_chart</span>
+</div>
+<span class="font-bold text-center text-sm text-slate-800 leading-tight">DTI Ratio</span>
+</button>
+<button class="bg-white rounded-2xl shadow-sm p-5 flex flex-col items-center justify-center gap-3 border border-slate-100 hover:shadow-md transition-shadow active:scale-95">
+<div class="w-12 h-12 rounded-full bg-[var(--primary-color)]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-[var(--primary-color)]">calculate</span>
+</div>
+<span class="font-bold text-center text-sm text-slate-800 leading-tight">DTI Calculator</span>
+</button>
+</div>
+<button class="bg-white rounded-2xl shadow-md p-5 flex items-center gap-4 border border-slate-100 hover:shadow-lg transition-shadow active:scale-[0.98] mt-2 w-full text-left relative overflow-hidden">
+<div class="w-14 h-14 rounded-full bg-[var(--primary-color)]/10 flex items-center justify-center shrink-0 z-10 relative">
+<span class="material-symbols-outlined text-3xl text-[var(--primary-color)]">smart_toy</span>
+</div>
+<div class="flex-1 z-10 relative">
+<h2 class="text-xl font-bold text-[var(--primary-color)] mb-1">AI Assistant</h2>
+<p class="text-sm text-slate-500 font-medium">Get instant help and insights</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 z-10 relative">arrow_forward_ios</span>
+<span class="material-symbols-outlined absolute right-[-20px] bottom-[-30px] text-9xl text-[var(--primary-color)] opacity-[0.03] pointer-events-none">smart_toy</span>
+</button>
+<div class="w-full h-[70px] bg-slate-200 rounded-xl flex flex-col items-center justify-center border border-slate-300 relative overflow-hidden mt-2">
+<span class="absolute top-1 left-2 text-[8px] text-slate-400 uppercase tracking-widest">Advertisement</span>
+<span class="text-sm font-bold text-slate-500 tracking-wide mt-2">BANNER AD SPACE</span>
+</div>
+</main>
+<nav class="bg-white border-t border-slate-200 flex justify-around items-center pt-2 pb-safe sticky bottom-0 z-20 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+<button class="flex flex-col items-center justify-center p-2 w-16 text-[var(--primary-color)]">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-semibold mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center p-2 w-16 text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined text-2xl">shield</span>
+<span class="text-[10px] font-medium mt-1">Insurance</span>
+</button>
+<button class="flex flex-col items-center justify-center p-2 w-16 text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined text-2xl">settings</span>
+<span class="text-[10px] font-medium mt-1">Settings</span>
+</button>
+</nav>
+
+</body></html>

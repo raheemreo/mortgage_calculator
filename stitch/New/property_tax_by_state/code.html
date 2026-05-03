@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0b3d93",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Property Tax by State</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+<!-- Header Section -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between border-b border-primary/10">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10" data-icon="arrow_back">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Real Estate Insights</h2>
+<div class="flex w-10 items-center justify-end">
+<button class="flex cursor-pointer items-center justify-center rounded-full size-10 bg-primary/10 text-primary">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<div class="px-4 pt-6 pb-2">
+<h1 class="text-slate-900 dark:text-slate-100 text-[28px] font-bold leading-tight tracking-[-0.015em]">Property Tax Rates</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Average effective tax rates by state for 2024.</p>
+</div>
+<!-- Search Bar Component -->
+<div class="px-4 py-4">
+<label class="flex flex-col min-w-40 h-12 w-full">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full shadow-sm">
+<div class="text-primary/60 flex border-none bg-white dark:bg-slate-800 items-center justify-center pl-4 rounded-l-xl border-r-0">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-slate-900 dark:text-slate-100 focus:outline-0 focus:ring-2 focus:ring-primary border-none bg-white dark:bg-slate-800 focus:border-none h-full placeholder:text-slate-400 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search for a state..." value=""/>
+</div>
+</label>
+</div>
+<!-- Tax Rates List -->
+<div class="flex flex-col gap-1 px-4 pb-24">
+<!-- Illinois -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 px-4 min-h-[72px] py-3 justify-between rounded-xl shadow-sm border border-primary/5 mb-2">
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold leading-normal line-clamp-1">Illinois</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2">2.27% Effective Tax Rate</p>
+</div>
+<div class="shrink-0">
+<span class="px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-bold uppercase tracking-wider">High</span>
+</div>
+</div>
+<!-- Texas -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 px-4 min-h-[72px] py-3 justify-between rounded-xl shadow-sm border border-primary/5 mb-2">
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold leading-normal line-clamp-1">Texas</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2">1.80% Effective Tax Rate</p>
+</div>
+<div class="shrink-0">
+<span class="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 text-xs font-bold uppercase tracking-wider">High</span>
+</div>
+</div>
+<!-- New York -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 px-4 min-h-[72px] py-3 justify-between rounded-xl shadow-sm border border-primary/5 mb-2">
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold leading-normal line-clamp-1">New York</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2">1.69% Effective Tax Rate</p>
+</div>
+<div class="shrink-0">
+<span class="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 text-xs font-bold uppercase tracking-wider">Above Avg</span>
+</div>
+</div>
+<!-- Florida -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 px-4 min-h-[72px] py-3 justify-between rounded-xl shadow-sm border border-primary/5 mb-2">
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold leading-normal line-clamp-1">Florida</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2">0.98% Effective Tax Rate</p>
+</div>
+<div class="shrink-0">
+<span class="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wider">Moderate</span>
+</div>
+</div>
+<!-- Washington -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 px-4 min-h-[72px] py-3 justify-between rounded-xl shadow-sm border border-primary/5 mb-2">
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold leading-normal line-clamp-1">Washington</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2">0.93% Effective Tax Rate</p>
+</div>
+<div class="shrink-0">
+<span class="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wider">Moderate</span>
+</div>
+</div>
+<!-- California -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 px-4 min-h-[72px] py-3 justify-between rounded-xl shadow-sm border border-primary/5 mb-2">
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold leading-normal line-clamp-1">California</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2">0.73% Effective Tax Rate</p>
+</div>
+<div class="shrink-0">
+<span class="px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold uppercase tracking-wider">Low</span>
+</div>
+</div>
+<!-- Arizona -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 px-4 min-h-[72px] py-3 justify-between rounded-xl shadow-sm border border-primary/5 mb-2">
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold leading-normal line-clamp-1">Arizona</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2">0.66% Effective Tax Rate</p>
+</div>
+<div class="shrink-0">
+<span class="px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold uppercase tracking-wider">Low</span>
+</div>
+</div>
+<!-- Nevada -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-800 px-4 min-h-[72px] py-3 justify-between rounded-xl shadow-sm border border-primary/5 mb-2">
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-base font-semibold leading-normal line-clamp-1">Nevada</p>
+<p class="text-primary text-sm font-medium leading-normal line-clamp-2">0.60% Effective Tax Rate</p>
+</div>
+<div class="shrink-0">
+<span class="px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold uppercase tracking-wider">Low</span>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar Component -->
+<div class="fixed bottom-0 left-0 right-0 flex gap-2 border-t border-primary/10 bg-white dark:bg-slate-900 px-4 pb-6 pt-3 shadow-lg">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center"><span class="material-symbols-outlined">home</span></div>
+<p class="text-xs font-medium leading-normal tracking-[0.015em]">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">map</span>
+</div>
+<p class="text-xs font-bold leading-normal tracking-[0.015em]">States</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center"><span class="material-symbols-outlined">shield</span></div>
+<p class="text-xs font-medium leading-normal tracking-[0.015em]">Insurance</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">settings</span>
+</div>
+<p class="text-xs font-medium leading-normal tracking-[0.015em]">Settings</p>
+</a>
+</div>
+</div>
+</body></html>

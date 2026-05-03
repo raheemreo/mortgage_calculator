@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Currency &amp; Region Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#1E8449",
+          "background-light": "#F8F9FA",
+          "navy-blue": "#1E3A8A",
+          "dark-charcoal": "#333333",
+        },
+        fontFamily: {
+          "display": ["Inter", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+  }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light font-display text-dark-charcoal min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto bg-background-light shadow-sm">
+<div class="flex items-center p-4 pb-2 justify-between border-b border-slate-200">
+<button class="flex size-12 shrink-0 items-center justify-center text-dark-charcoal hover:bg-slate-200 rounded-full transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Currency &amp; Region</h2>
+<div class="size-12 shrink-0"></div>
+</div>
+<h3 class="text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-6">Regional Format Preview</h3>
+<div class="p-4">
+<div class="bg-[#0B3D91] flex flex-col items-stretch justify-end rounded-xl shadow-md overflow-hidden relative">
+<div class="absolute inset-0 bg-black/10 mix-blend-overlay"></div>
+<div class="relative flex w-full items-center justify-between gap-4 p-4 z-10">
+<div class="flex flex-1 flex-col gap-0.5">
+<p class="text-white/80 text-xs font-medium leading-normal uppercase tracking-wider">Selected Format</p>
+<p class="text-white tracking-tight text-2xl font-bold leading-tight">$1,234.56</p>
+<p class="text-white/90 text-xs font-medium leading-normal">US Dollar Format</p>
+</div>
+<span class="material-symbols-outlined text-white/50 text-4xl">public</span>
+</div>
+</div>
+</div>
+<h3 class="text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Preferred Currency</h3>
+<div class="flex flex-col gap-3 p-4 pb-8">
+<label class="flex items-center gap-4 rounded-xl border border-slate-200 p-4 bg-white hover:bg-slate-50 transition-colors cursor-pointer group shadow-sm">
+<div class="flex grow flex-col">
+<p class="text-dark-charcoal text-base font-semibold leading-normal">USD - US Dollar</p>
+<p class="text-slate-500 text-sm font-normal leading-normal">$1,234.56</p>
+</div>
+<input checked="" class="h-6 w-6 border-2 border-slate-300 bg-transparent text-primary focus:ring-primary focus:ring-offset-background-light rounded-full cursor-pointer" name="currency-selection" type="radio"/>
+</label>
+<label class="flex items-center gap-4 rounded-xl border border-slate-200 p-4 bg-white hover:bg-slate-50 transition-colors cursor-pointer group shadow-sm">
+<div class="flex grow flex-col">
+<p class="text-dark-charcoal text-base font-semibold leading-normal">CAD - Canadian Dollar</p>
+<p class="text-slate-500 text-sm font-normal leading-normal">$1,234.56</p>
+</div>
+<input class="h-6 w-6 border-2 border-slate-300 bg-transparent text-primary focus:ring-primary focus:ring-offset-background-light rounded-full cursor-pointer" name="currency-selection" type="radio"/>
+</label>
+<label class="flex items-center gap-4 rounded-xl border border-slate-200 p-4 bg-white hover:bg-slate-50 transition-colors cursor-pointer group shadow-sm">
+<div class="flex grow flex-col">
+<p class="text-dark-charcoal text-base font-semibold leading-normal">GBP - British Pound</p>
+<p class="text-slate-500 text-sm font-normal leading-normal">£1,234.56</p>
+</div>
+<input class="h-6 w-6 border-2 border-slate-300 bg-transparent text-primary focus:ring-primary focus:ring-offset-background-light rounded-full cursor-pointer" name="currency-selection" type="radio"/>
+</label>
+<label class="flex items-center gap-4 rounded-xl border border-slate-200 p-4 bg-white hover:bg-slate-50 transition-colors cursor-pointer group shadow-sm">
+<div class="flex grow flex-col">
+<p class="text-dark-charcoal text-base font-semibold leading-normal">AUD - Australian Dollar</p>
+<p class="text-slate-500 text-sm font-normal leading-normal">$1,234.56</p>
+</div>
+<input class="h-6 w-6 border-2 border-slate-300 bg-transparent text-primary focus:ring-primary focus:ring-offset-background-light rounded-full cursor-pointer" name="currency-selection" type="radio"/>
+</label>
+<label class="flex items-center gap-4 rounded-xl border border-slate-200 p-4 bg-white hover:bg-slate-50 transition-colors cursor-pointer group shadow-sm">
+<div class="flex grow flex-col">
+<p class="text-dark-charcoal text-base font-semibold leading-normal">EUR - Euro</p>
+<p class="text-slate-500 text-sm font-normal leading-normal">1.234,56 €</p>
+</div>
+<input class="h-6 w-6 border-2 border-slate-300 bg-transparent text-primary focus:ring-primary focus:ring-offset-background-light rounded-full cursor-pointer" name="currency-selection" type="radio"/>
+</label>
+</div>
+<div class="mt-auto flex w-full justify-center pb-8 pt-6">
+<div class="flex h-[50px] w-[320px] items-center justify-center rounded border border-slate-300 bg-slate-200 text-sm font-bold tracking-wider text-slate-500 shadow-inner">
+      AD PLACEMENT
+    </div>
+</div>
+</div>
+</body></html>

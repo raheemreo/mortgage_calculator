@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Home Prices by City - Top Rated</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-styles">
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F3F4F6;
+    }
+    .active-tab {
+      border-bottom: 4px solid #0B3D91;
+      color: #0B3D91;
+    }
+    .inactive-tab {
+      color: #6B7280;
+    }
+    .price-tag {
+      color: #1E8449; /* Emerald Green */
+    }
+    .rating-badge {
+      background-color: #27AE60; /* Slightly lighter emerald */
+      color: white;
+    }
+    .nav-active {
+      color: #0B3D91;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- BEGIN: MainHeader -->
+<header class="bg-[#0B3D91] text-white p-4 sticky top-0 z-50">
+<div class="flex justify-between items-center mb-3">
+<h1 class="text-xl font-bold">Home Prices by City</h1>
+<button aria-label="Home">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<!-- Search Bar -->
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3">
+<svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+<input class="w-full py-2 pl-10 pr-4 text-gray-900 bg-white border-none rounded-md focus:ring-0 focus:outline-none" placeholder="Search cities..." type="text"/>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: TabNavigation -->
+<nav class="bg-white border-b border-gray-200">
+<div class="flex">
+<button class="flex-1 py-3 text-center font-semibold inactive-tab">All Cities</button>
+<button class="flex-1 py-3 text-center font-semibold active-tab">Top Rated</button>
+</div>
+</nav>
+<!-- END: TabNavigation -->
+<!-- BEGIN: Filters -->
+<section class="bg-gray-50 py-3 px-4 overflow-x-auto whitespace-nowrap scrollbar-hide">
+<div class="flex space-x-2">
+<button class="bg-[#0B3D91] text-white px-4 py-1.5 rounded-full text-sm font-medium">All Prices</button>
+<button class="bg-white border border-gray-300 text-gray-600 px-4 py-1.5 rounded-full text-sm font-medium">Under $400k</button>
+<button class="bg-white border border-gray-300 text-gray-600 px-4 py-1.5 rounded-full text-sm font-medium">$400k - $700k</button>
+<button class="bg-white border border-gray-300 text-gray-600 px-4 py-1.5 rounded-full text-sm font-medium">$700k+</button>
+</div>
+</section>
+<!-- END: Filters -->
+<!-- BEGIN: ContentList -->
+<main class="flex-grow p-4 space-y-6 bg-gray-100">
+<!-- Card: San Francisco -->
+<article class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+<img alt="San Francisco Skyline" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcrn_nUJhVbmknkLJ0fUSytuEv4oBB5e4K95sU-Jd1xcr-JkMbqszVCit5kCEL_3eQZK0y_gi-_JnWAjsQHiKxarFCSmTfen4KpIG6MMisa0_V94dNwBQVfnV-eLN-n9MV_ePGlooJkrpCl78SXh5QXwoOGrPcxuR0719ZhemxDsm3Mj2uoj1_PtGICleJINqa7BFvmB4FWONQSJPUJ6VGGcs2qVuQ7YIcRDyNVj6qOrvJhdfb7VWoWIK1y-V4FTbUly6aDrgizouh"/>
+<div class="p-4">
+<div class="flex justify-between items-start mb-1">
+<h2 class="text-xl font-bold text-[#0B3D91]">San Francisco, CA</h2>
+<span class="rating-badge text-xs font-bold px-2 py-1 rounded">Rating: A+</span>
+</div>
+<p class="text-xs text-gray-500 mb-3">Pop: 873K</p>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Median Price</p>
+<p class="text-xl font-bold price-tag">$1,350,000</p>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Price / SQFT</p>
+<p class="text-xl font-bold text-[#0B3D91]">$1,100</p>
+</div>
+</div>
+<p class="text-sm text-gray-600 leading-relaxed mb-4">
+          One of the most expensive housing markets driven by the tech industry and limited supply.
+        </p>
+<button class="w-full bg-[#0B3D91] text-white font-bold py-3 rounded-md">View Details</button>
+</div>
+</article>
+<!-- Card: San Jose -->
+<article class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+<img alt="San Jose Landscape" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNDWD_Tn-cGUWNVxOghaXp8oN36xJG1rJbW1rpStihJCE-gio5qqsOkmY-ajEaypxi5SIrAHNDkluC_iFNrONG1lieMflTPwjj8ZWKQfQ6gpAFA0jprp23hCYxWFdegpViD1ugBTMLgyd08WGQr6gEcsNrE7BubqvXlTibf5T-96OdCfnkw2uD-J6z_aI1JOZlC304WY2HSyME3TeLGGSjVYkapGi73dj8IBQ0_zVrcYeOpNSpbkS29D3lyeXvOqF_402fLcghULRF"/>
+<div class="p-4">
+<div class="flex justify-between items-start mb-1">
+<h2 class="text-xl font-bold text-[#0B3D91]">San Jose, CA</h2>
+<span class="rating-badge text-xs font-bold px-2 py-1 rounded">Rating: A+</span>
+</div>
+<p class="text-xs text-gray-500 mb-3">Pop: 1.0M</p>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Median Price</p>
+<p class="text-xl font-bold price-tag">$1,200,000</p>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Price / SQFT</p>
+<p class="text-xl font-bold text-[#0B3D91]">$990</p>
+</div>
+</div>
+<p class="text-sm text-gray-600 leading-relaxed mb-4">
+          Silicon Valley tech hub with one of the most expensive housing markets in the United States.
+        </p>
+<button class="w-full bg-[#0B3D91] text-white font-bold py-3 rounded-md">View Details</button>
+</div>
+</article>
+<!-- Card: San Diego -->
+<article class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+<img alt="San Diego Waterfront" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkxYyYAT9EdPDgsQ1ah4MQulsUBF7Rf3-ZUAML_vbZjlepCKO6gZ_SjgmwO7HvTgDu4pnL9N2pOcFwWLt4xTn8y_STui3T3EIOM9VYb2sV6OagWI2Qtui1F5p99lJoDL3aUOkpESvN_pF-LMYfEUmRm_TvoURPnAYcfheP0uSIGjHbQrenL0ZZm4gXxk__wLF1PzW8X6bgwxy7ufPMwoC2AOi7oGeLfvRFw9jYb3UbZE1u2WF6Nvbi0MA6suHYgMt5eViNT7GGvOnl"/>
+<div class="p-4">
+<div class="flex justify-between items-start mb-1">
+<h2 class="text-xl font-bold text-[#0B3D91]">San Diego, CA</h2>
+<span class="rating-badge text-xs font-bold px-2 py-1 rounded">Rating: A+</span>
+</div>
+<p class="text-xs text-gray-500 mb-3">Pop: 1.4M</p>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Median Price</p>
+<p class="text-xl font-bold price-tag">$920,000</p>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Price / SQFT</p>
+<p class="text-xl font-bold text-[#0B3D91]">$880</p>
+</div>
+</div>
+<p class="text-sm text-gray-600 leading-relaxed mb-4">
+          Coastal city known for premium real estate, high housing demand, and exceptional weather.
+        </p>
+<button class="w-full bg-[#0B3D91] text-white font-bold py-3 rounded-md">View Details</button>
+</div>
+</article>
+<!-- Card: Seattle -->
+<article class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+<img alt="Seattle Skyline" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDccMX913OxRKn6PNrFXVxnswNkqbpIxBNL9RWl1JslCFOjqO1pzyKiJ3IaDMmjmQzJxQJJLLNQxJb-IxfAwdOLz2uWD8-mwQFFHmPi6U6ZrstfkXtqafmu3vch8SeSh2MkMssoQacVn7Q6cTKdP-LsgSi4JJ9RwmF710IG6iy8sCh_XhsyeLnvxLV1t03y7Cn7-NMMbYwMUCu3v6MnT-xq6nv1IqqJHFO8toZGVuHmg8B8n9lmHxWEzpvQifaR5ekay5yH17nOXa9M"/>
+<div class="p-4">
+<div class="flex justify-between items-start mb-1">
+<h2 class="text-xl font-bold text-[#0B3D91]">Seattle, WA</h2>
+<span class="rating-badge text-xs font-bold px-2 py-1 rounded">Rating: A</span>
+</div>
+<p class="text-xs text-gray-500 mb-3">Pop: 737K</p>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Median Price</p>
+<p class="text-xl font-bold price-tag">$780,000</p>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Price / SQFT</p>
+<p class="text-xl font-bold text-[#0B3D91]">$640</p>
+</div>
+</div>
+<p class="text-sm text-gray-600 leading-relaxed mb-4">
+          Technology-driven city with strong housing demand and consistent property appreciation.
+        </p>
+<button class="w-full bg-[#0B3D91] text-white font-bold py-3 rounded-md">View Details</button>
+</div>
+</article>
+</main>
+<!-- END: ContentList -->
+<!-- BEGIN: AdBanner -->
+<div class="px-4 py-4 bg-gray-100">
+<div class="border-2 border-dashed border-gray-400 bg-gray-200 text-gray-500 flex items-center justify-center h-16 rounded text-xs font-bold uppercase tracking-widest text-center px-4">
+      Google AdMob Banner Space
+    </div>
+</div>
+<!-- END: AdBanner -->
+<!-- BEGIN: BottomNavigation -->
+<footer class="bg-white border-t border-gray-200 pb-2 pt-1">
+<div class="flex justify-around items-center">
+<!-- Home -->
+<a class="flex flex-col items-center py-1 text-gray-400" href="#">
+<svg class="h-6 w-6" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+</svg>
+<span class="text-[10px] font-medium mt-1">Home</span>
+</a>
+<!-- Home Price (Active) -->
+<a class="flex flex-col items-center py-1 nav-active" href="#">
+<svg class="h-6 w-6" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"></path>
+</svg>
+<span class="text-[10px] font-bold mt-1">Home Price</span>
+</a>
+<!-- Insurance -->
+<a class="flex flex-col items-center py-1 text-gray-400" href="#">
+<svg class="h-6 w-6" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
+</svg>
+<span class="text-[10px] font-medium mt-1">Insurance</span>
+</a>
+<!-- Settings -->
+<a class="flex flex-col items-center py-1 text-gray-400" href="#">
+<svg class="h-6 w-6" fill="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"></path>
+</svg>
+<span class="text-[10px] font-medium mt-1">Settings</span>
+</a>
+</div>
+</footer>
+<!-- END: BottomNavigation -->
+</body></html>

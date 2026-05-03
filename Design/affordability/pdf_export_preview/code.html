@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error": "#ba1a1a",
+              "on-tertiary-fixed-variant": "#005049",
+              "secondary-container": "#d5e3fc",
+              "error-container": "#ffdad6",
+              "outline": "#747686",
+              "on-surface": "#191c1e",
+              "surface": "#f7f9fb",
+              "tertiary": "#004e47",
+              "on-surface-variant": "#434655",
+              "on-secondary-fixed": "#0d1c2e",
+              "on-error-container": "#93000a",
+              "secondary-fixed": "#d5e3fc",
+              "tertiary-container": "#00685f",
+              "background": "#f7f9fb",
+              "on-secondary-fixed-variant": "#3a485b",
+              "on-error": "#ffffff",
+              "surface-container-low": "#f2f4f6",
+              "on-primary-container": "#cad3ff",
+              "surface-tint": "#2251da",
+              "on-tertiary-fixed": "#00201d",
+              "surface-container-highest": "#e0e3e5",
+              "surface-container": "#eceef0",
+              "outline-variant": "#c4c5d7",
+              "on-primary-fixed-variant": "#0038b6",
+              "inverse-on-surface": "#eff1f3",
+              "surface-container-high": "#e6e8ea",
+              "tertiary-fixed": "#89f5e7",
+              "surface-container-lowest": "#ffffff",
+              "inverse-primary": "#b7c4ff",
+              "on-primary": "#ffffff",
+              "primary": "#0037b1",
+              "primary-fixed": "#dce1ff",
+              "surface-dim": "#d8dadc",
+              "on-tertiary-container": "#7be7d9",
+              "secondary-fixed-dim": "#b9c7df",
+              "tertiary-fixed-dim": "#6bd8cb",
+              "secondary": "#515f74",
+              "primary-container": "#1e4ed8",
+              "inverse-surface": "#2d3133",
+              "primary-fixed-dim": "#b7c4ff",
+              "on-tertiary": "#ffffff",
+              "on-background": "#191c1e",
+              "on-secondary-container": "#57657a",
+              "on-secondary": "#ffffff",
+              "surface-variant": "#e0e3e5",
+              "surface-bright": "#f7f9fb",
+              "on-primary-fixed": "#001552"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pdf-preview-canvas {
+            aspect-ratio: 1 / 1.414; /* A4 Ratio */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c4c5d7;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Bar -->
+<nav class="sticky top-0 z-50 flex items-center h-16 px-4 bg-surface/80 backdrop-blur-xl">
+<button class="p-2 mr-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined align-middle" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline text-lg font-bold text-on-surface">Amortization Schedule</h1>
+</nav>
+<main class="max-w-4xl mx-auto px-4 pb-32">
+<!-- File Info Card -->
+<section class="mt-4 mb-8 p-6 bg-surface-container-lowest rounded-xl flex items-center gap-4">
+<div class="w-14 h-14 bg-error-container rounded-lg flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-4xl" data-icon="picture_as_pdf" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
+</div>
+<div class="flex-1">
+<p class="font-headline font-bold text-on-surface leading-tight">Amortization_Schedule_Suburban_Home.pdf</p>
+<p class="text-on-surface-variant text-sm mt-1 uppercase font-semibold tracking-wider font-label">PDF Document • 245 KB</p>
+</div>
+<div class="hidden md:flex gap-2">
+<span class="px-3 py-1 bg-surface-container-high rounded-full text-xs font-bold text-on-surface-variant">READY TO EXPORT</span>
+</div>
+</section>
+<!-- Document Preview Area -->
+<div class="relative group">
+<div class="pdf-preview-canvas bg-white mx-auto overflow-y-auto rounded-md border border-outline-variant/20 p-8 md:p-12 text-[#000000]">
+<!-- Internal PDF Branding -->
+<div class="flex justify-between items-start border-b-2 border-on-surface pb-6 mb-8">
+<div>
+<h2 class="font-headline text-2xl font-bold tracking-tight">Mortgage Ledger</h2>
+<p class="text-sm font-medium opacity-60">Generated via USA Mortgage Calculator Pro</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold">DATE</p>
+<p class="text-sm">October 24, 2023</p>
+</div>
+</div>
+<!-- Loan Details Header -->
+<div class="mb-10">
+<h3 class="font-headline text-lg font-bold uppercase tracking-widest mb-4 border-l-4 border-primary pl-4">Loan Summary</h3>
+<div class="grid grid-cols-2 gap-y-4 gap-x-8">
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase">Property Value</p>
+<p class="font-headline font-bold text-xl">$450,000.00</p>
+</div>
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase">Interest Rate</p>
+<p class="font-headline font-bold text-xl">6.25% Fixed</p>
+</div>
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase">Loan Term</p>
+<p class="font-headline font-bold text-xl">30 Years</p>
+</div>
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase">Monthly Principal &amp; Int.</p>
+<p class="font-headline font-bold text-xl text-primary">$2,216.52</p>
+</div>
+</div>
+</div>
+<!-- Schedule Table -->
+<div>
+<h3 class="font-headline text-lg font-bold uppercase tracking-widest mb-4 border-l-4 border-primary pl-4">Payment Schedule</h3>
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b-2 border-on-surface">
+<th class="py-3 text-[10px] font-bold uppercase">Pmt No.</th>
+<th class="py-3 text-[10px] font-bold uppercase">Principal</th>
+<th class="py-3 text-[10px] font-bold uppercase">Interest</th>
+<th class="py-3 text-[10px] font-bold uppercase text-right">Balance</th>
+</tr>
+</thead>
+<tbody class="text-xs">
+<tr class="border-b border-outline-variant/30">
+<td class="py-3 font-medium">01</td>
+<td class="py-3">$370.27</td>
+<td class="py-3">$1,846.25</td>
+<td class="py-3 text-right font-bold">$354,129.73</td>
+</tr>
+<tr class="border-b border-outline-variant/30">
+<td class="py-3 font-medium">02</td>
+<td class="py-3">$372.19</td>
+<td class="py-3">$1,844.33</td>
+<td class="py-3 text-right font-bold">$353,757.54</td>
+</tr>
+<tr class="border-b border-outline-variant/30">
+<td class="py-3 font-medium">03</td>
+<td class="py-3">$374.13</td>
+<td class="py-3">$1,842.39</td>
+<td class="py-3 text-right font-bold">$353,383.41</td>
+</tr>
+<tr class="border-b border-outline-variant/30">
+<td class="py-3 font-medium">04</td>
+<td class="py-3">$376.08</td>
+<td class="py-3">$1,840.44</td>
+<td class="py-3 text-right font-bold">$353,007.33</td>
+</tr>
+<tr class="border-b border-outline-variant/30">
+<td class="py-3 font-medium">05</td>
+<td class="py-3">$378.04</td>
+<td class="py-3">$1,838.48</td>
+<td class="py-3 text-right font-bold">$352,629.29</td>
+</tr>
+<tr class="border-b border-outline-variant/30">
+<td class="py-3 font-medium">06</td>
+<td class="py-3">$380.01</td>
+<td class="py-3">$1,836.51</td>
+<td class="py-3 text-right font-bold">$352,249.28</td>
+</tr>
+<!-- Table fade out indicator -->
+<tr class="opacity-30">
+<td class="py-3 font-medium">07</td>
+<td class="py-3">$382.02</td>
+<td class="py-3">$1,834.50</td>
+<td class="py-3 text-right font-bold">$351,867.26</td>
+</tr>
+</tbody>
+</table>
+<div class="mt-6 flex justify-center italic text-xs text-on-surface-variant">
+                        ... Continued for 360 monthly payments ...
+                    </div>
+</div>
+<!-- PDF Footer -->
+<div class="mt-16 pt-8 border-t border-outline-variant/30 flex justify-between items-center text-[10px] font-medium text-on-surface-variant">
+<p>© 2023 USA Mortgage Calculator Pro</p>
+<p>Page 1 of 12</p>
+</div>
+</div>
+<!-- Preview Controls (Overlay) -->
+<div class="absolute top-4 right-4 flex flex-col gap-2">
+<button class="w-10 h-10 bg-on-surface text-surface rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-10 h-10 bg-on-surface text-surface rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="zoom_out">zoom_out</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Fixed Action Bar -->
+<footer class="fixed bottom-0 inset-x-0 bg-surface-container-lowest border-t border-outline-variant/20 p-6 md:px-12 z-50">
+<div class="max-w-4xl mx-auto flex flex-col sm:flex-row gap-4">
+<button class="flex-1 h-14 bg-surface-container-high text-on-surface-variant rounded-full flex items-center justify-center gap-2 font-headline font-bold hover:bg-surface-container-highest transition-all group">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+                Share
+            </button>
+<button class="flex-[2] h-14 bg-gradient-to-br from-primary-container to-primary text-on-primary rounded-full flex items-center justify-center gap-2 font-headline font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                Download PDF
+            </button>
+</div>
+</footer>
+<!-- Persistent Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl border-t border-outline-variant/10 hidden md:flex items-center justify-around px-8 z-[60]">
+<div class="flex flex-col items-center gap-1 opacity-60">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-[10px] font-label font-semibold">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-icon="calculate" style="font-variation-settings: 'FILL' 1;">calculate</span>
+<span class="text-[10px] font-label font-semibold">Calculator</span>
+</div>
+<div class="flex flex-col items-center gap-1 opacity-60">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+<span class="text-[10px] font-label font-semibold">Saved</span>
+</div>
+<div class="flex flex-col items-center gap-1 opacity-60">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-label font-semibold">Settings</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Credit Score Guide</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0b3d93",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto bg-white dark:bg-slate-900 shadow-xl">
+<header class="flex items-center p-4 border-b border-slate-200 dark:border-slate-800">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h1 class="text-lg font-bold leading-tight flex-1 text-center pr-10">Mortgage Eligibility Guide</h1>
+</header>
+<main class="flex-1 overflow-y-auto">
+<div class="p-4">
+<div class="relative overflow-hidden rounded-xl bg-primary p-6 text-white mb-6">
+<div class="relative z-10">
+<p class="text-primary-100 text-sm font-medium opacity-80">Current Standard</p>
+<h2 class="text-3xl font-bold mt-1">Excellent Range</h2>
+<p class="text-4xl font-extrabold mt-2">760+</p>
+<div class="mt-4 inline-flex items-center rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">
+<span class="material-symbols-outlined text-sm mr-1">verified_user</span>
+                            Best Interest Rates
+                        </div>
+</div>
+<div class="absolute -right-8 -bottom-8 size-40 rounded-full bg-white/10"></div>
+</div>
+<h3 class="text-lg font-bold mb-4 px-1">Credit Score Breakdown</h3>
+<div class="space-y-3">
+<!-- Excellent -->
+<div class="flex flex-col gap-2 rounded-xl border border-primary/20 bg-primary/5 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-primary">760 - 850</span>
+<span class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-bold text-green-700">EXCELLENT</span>
+</div>
+<p class="text-sm font-medium text-slate-700 dark:text-slate-300">
+                            Qualify for the lowest possible interest rates. Lenders view you as a low-risk borrower, making approval processes fast and competitive.
+                        </p>
+</div>
+<!-- Good -->
+<div class="flex flex-col gap-2 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-slate-900 dark:text-slate-100">700 - 759</span>
+<span class="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-bold text-blue-700">GOOD</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400">
+                            Highly likely to be approved for most mortgage products. Rates are very competitive, though slightly higher than the top tier.
+                        </p>
+</div>
+<!-- Average -->
+<div class="flex flex-col gap-2 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-slate-900 dark:text-slate-100">620 - 699</span>
+<span class="rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-bold text-yellow-700">AVERAGE</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400">
+                            The minimum range for many conventional loans. Expect higher interest rates and potentially higher private mortgage insurance (PMI) costs.
+                        </p>
+</div>
+<!-- Low -->
+<div class="flex flex-col gap-2 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-slate-900 dark:text-slate-100">580 - 619</span>
+<span class="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-bold text-orange-700">LOW</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400">
+                            Eligibility is limited. Most conventional lenders will require a larger down payment. FHA loans become the primary option here.
+                        </p>
+</div>
+<!-- Poor -->
+<div class="flex flex-col gap-2 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-slate-900 dark:text-slate-100">Below 580</span>
+<span class="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-bold text-red-700">POOR</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400">
+                            Significant challenge for mortgage approval. Work on credit repair or seek specialized government-backed programs with high down payments.
+                        </p>
+</div>
+</div>
+<div class="mt-8 rounded-xl bg-slate-100 dark:bg-slate-800 p-5">
+<h4 class="font-bold mb-2 flex items-center">
+<span class="material-symbols-outlined text-primary mr-2">info</span>
+                        Pro Tip
+                    </h4>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Moving your score just 20 points from 740 to 760 could save you tens of thousands of dollars over the life of a 30-year mortgage.
+                    </p>
+</div>
+</div>
+<div class="h-20"></div>
+</main>
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md border-t border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 pb-4 pt-2 z-50">
+<div class="flex gap-2">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium uppercase tracking-wider">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">speed</span>
+<p class="text-[10px] font-bold uppercase tracking-wider">Score</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">shield</span>
+<p class="text-[10px] font-medium uppercase tracking-wider">Insurance</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium uppercase tracking-wider">Settings</p>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

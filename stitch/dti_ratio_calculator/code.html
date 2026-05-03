@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>DTI Ratio Calculator</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0b3893",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+              // Custom derived neutrals based on primary hue (~220)
+              "slate": {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+              }
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "2xl": "1rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 flex flex-col min-h-screen antialiased overflow-hidden">
+<header class="bg-white dark:bg-slate-900 flex items-center justify-between p-4 pt-12 shadow-[0_1px_2px_rgba(0,0,0,0.02)] z-20 relative shrink-0">
+<a class="w-10 h-10 flex items-center justify-start text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back_ios_new</span>
+</a>
+<h1 class="text-[17px] font-bold text-center flex-1 tracking-tight">DTI Ratio Calculator</h1>
+<div class="w-10 flex justify-end">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">more_horiz</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto pb-28 px-4 pt-6 flex flex-col gap-6 relative z-10">
+<div class="px-1">
+<h2 class="text-[28px] font-extrabold leading-tight tracking-tight mb-1.5 text-slate-900 dark:text-white">Your DTI Ratio</h2>
+<p class="text-[15px] font-medium text-slate-500 dark:text-slate-400 leading-snug">Review your Debt-to-Income ratio to determine your loan eligibility.</p>
+</div>
+<div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-[0_2px_8px_rgba(11,56,147,0.04)] border border-slate-100 dark:border-slate-700/50 relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex justify-between items-end mb-6 relative z-10">
+<div class="flex flex-col">
+<span class="text-[13px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Current Ratio</span>
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#22c55e]/10 text-[#22c55e] dark:bg-[#22c55e]/20">GOOD</span>
+</div>
+</div>
+<div class="text-[40px] font-extrabold text-slate-900 dark:text-white leading-none tracking-tighter">
+                    33<span class="text-2xl text-slate-400">%</span>
+</div>
+</div>
+<div class="relative z-10 mt-2">
+<div class="flex h-3 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-700 relative w-full mb-3">
+<div class="w-[36%] border-r-2 border-white dark:border-slate-800/50 h-full"></div>
+<div class="w-[14%] border-r-2 border-white dark:border-slate-800/50 h-full"></div>
+<div class="w-[50%] h-full"></div>
+<div class="absolute top-0 left-0 h-full bg-[#22c55e] rounded-full transition-all duration-500 ease-out" style="width: 33%;"></div>
+<div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-[3px] border-[#22c55e] rounded-full shadow-sm transition-all duration-500 ease-out z-20" style="left: calc(33% - 8px);"></div>
+</div>
+<div class="flex justify-between w-full px-0.5 relative">
+<div class="flex flex-col items-center absolute left-[18%] -translate-x-1/2">
+<span class="text-[10px] font-bold text-slate-400">Good</span>
+<span class="text-[10px] font-medium text-slate-300">&lt;36%</span>
+</div>
+<div class="flex flex-col items-center absolute left-[43%] -translate-x-1/2">
+<span class="text-[10px] font-bold text-slate-400">Fair</span>
+<span class="text-[10px] font-medium text-slate-300">36-43%</span>
+</div>
+<div class="flex flex-col items-center absolute left-[75%] -translate-x-1/2">
+<span class="text-[10px] font-bold text-slate-400">High</span>
+<span class="text-[10px] font-medium text-slate-300">&gt;43%</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-start gap-3">
+<span class="material-symbols-outlined text-[#22c55e] text-[20px] mt-0.5" style="font-variation-settings: 'FILL' 1">check_circle</span>
+<p class="text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed font-medium">Your DTI is in a healthy range. You are likely to qualify for most standard loan options.</p>
+</div>
+</div>
+<form class="space-y-5 px-1 mt-2">
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="block text-[14px] font-bold text-slate-900 dark:text-slate-100">Gross Monthly Income</label>
+<button class="text-primary hover:text-primary/80 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</button>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="text-slate-400 font-semibold text-[16px]">$</span>
+</div>
+<input class="block w-full pl-8 pr-4 py-3.5 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-[16px] font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-[0_1px_2px_rgba(0,0,0,0.02)]" inputmode="numeric" placeholder="0" type="text" value="6,500"/>
+</div>
+<p class="text-[12px] text-slate-500 font-medium">Total income before taxes and deductions.</p>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="block text-[14px] font-bold text-slate-900 dark:text-slate-100">Total Monthly Debts</label>
+<button class="text-primary hover:text-primary/80 transition-colors flex items-center gap-1" type="button">
+<span class="text-[12px] font-bold">Details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="text-slate-400 font-semibold text-[16px]">$</span>
+</div>
+<input class="block w-full pl-8 pr-4 py-3.5 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl text-[16px] font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-[0_1px_2px_rgba(0,0,0,0.02)]" inputmode="numeric" placeholder="0" type="text" value="2,145"/>
+</div>
+<p class="text-[12px] text-slate-500 font-medium">Rent/Mortgage, student loans, auto loans, credit cards.</p>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold text-[16px] py-4 rounded-xl shadow-lg shadow-primary/25 transition-all active:scale-[0.98] mt-4 flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+                Recalculate Ratio
+            </button>
+</form>
+</main>
+<nav class="bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 fixed bottom-0 w-full z-30 pb-safe shadow-[0_-4px_24px_rgba(0,0,0,0.02)]">
+<div class="flex justify-between items-end px-2 pt-2 pb-6 sm:pb-4 max-w-md mx-auto">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors" href="#">
+<div class="h-8 flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">home</span>
+</div>
+<span class="text-[11px] font-bold tracking-wide">Home</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors" href="#">
+<div class="h-8 flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">shield</span>
+</div>
+<span class="text-[11px] font-bold tracking-wide">Insurance</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors" href="#">
+<div class="h-8 flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]">settings</span>
+</div>
+<span class="text-[11px] font-bold tracking-wide">Settings</span>
+</a>
+</div>
+</nav>
+<style>@supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .pb-safe {
+                padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</body></html>

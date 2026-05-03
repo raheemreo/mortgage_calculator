@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Loan Types Comparison</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0b3d93",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="max-w-md mx-auto bg-white dark:bg-slate-900 min-h-screen flex flex-col shadow-xl">
+<!-- Header -->
+<div class="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 p-4 flex items-center gap-4">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight">Loan Types</h1>
+</div>
+<!-- Hero Section -->
+<div class="p-6">
+<div class="relative overflow-hidden rounded-xl bg-primary p-6 text-white mb-8">
+<div class="relative z-10">
+<h2 class="text-2xl font-bold mb-2">Mortgage Options</h2>
+<p class="text-white/80 text-sm leading-relaxed">Find the perfect loan for your financial situation. Compare requirements and down payments side-by-side.</p>
+</div>
+<!-- Abstract Pattern Background -->
+<div class="absolute top-0 right-0 -mr-12 -mt-12 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+<div class="absolute bottom-0 left-0 -ml-12 -mb-12 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
+</div>
+<!-- Comparison Section Title -->
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold">Requirement Comparison</h3>
+<span class="text-xs font-medium px-2.5 py-1 bg-primary/10 text-primary rounded-full">Updated Today</span>
+</div>
+<!-- Table Header -->
+<div class="grid grid-cols-2 bg-slate-100 dark:bg-slate-800 rounded-t-lg border-x border-t border-slate-200 dark:border-slate-700">
+<div class="p-4 border-r border-slate-200 dark:border-slate-700">
+<p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Loan Program</p>
+</div>
+<div class="p-4">
+<p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Min. Requirements</p>
+</div>
+</div>
+<!-- Comparison Rows -->
+<div class="border-x border-b border-slate-200 dark:border-slate-700 rounded-b-lg divide-y divide-slate-200 dark:divide-slate-700 overflow-hidden">
+<!-- Conventional -->
+<div class="grid grid-cols-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<div class="p-4 border-r border-slate-200 dark:border-slate-700">
+<p class="font-bold text-primary mb-1">Conventional</p>
+<p class="text-xs text-slate-600 dark:text-slate-400">Standard financing for most buyers</p>
+</div>
+<div class="p-4 flex flex-col justify-center">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-xs text-primary">payments</span>
+<p class="text-sm font-medium">3% Down</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-primary">credit_score</span>
+<p class="text-sm font-medium">620 Score</p>
+</div>
+</div>
+</div>
+<!-- FHA -->
+<div class="grid grid-cols-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<div class="p-4 border-r border-slate-200 dark:border-slate-700">
+<p class="font-bold text-primary mb-1">FHA</p>
+<p class="text-xs text-slate-600 dark:text-slate-400">Government-backed for lower credit</p>
+</div>
+<div class="p-4 flex flex-col justify-center">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-xs text-primary">payments</span>
+<p class="text-sm font-medium">3.5% Down</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-primary">credit_score</span>
+<p class="text-sm font-medium">580 Score</p>
+</div>
+</div>
+</div>
+<!-- VA -->
+<div class="grid grid-cols-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<div class="p-4 border-r border-slate-200 dark:border-slate-700">
+<div class="flex items-center gap-1.5 mb-1">
+<p class="font-bold text-primary">VA</p>
+<span class="text-[10px] bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded uppercase font-bold">Military</span>
+</div>
+<p class="text-xs text-slate-600 dark:text-slate-400">Zero down for Veterans &amp; families</p>
+</div>
+<div class="p-4 flex flex-col justify-center">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-xs text-primary">payments</span>
+<p class="text-sm font-medium">0% Down</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-primary">credit_score</span>
+<p class="text-sm font-medium">620 Score</p>
+</div>
+</div>
+</div>
+<!-- USDA -->
+<div class="grid grid-cols-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<div class="p-4 border-r border-slate-200 dark:border-slate-700">
+<p class="font-bold text-primary mb-1">USDA</p>
+<p class="text-xs text-slate-600 dark:text-slate-400">Rural housing assistance program</p>
+</div>
+<div class="p-4 flex flex-col justify-center">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-xs text-primary">payments</span>
+<p class="text-sm font-medium">0% Down</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-primary">credit_score</span>
+<p class="text-sm font-medium">640 Score</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Additional Details -->
+<div class="mt-8 space-y-4">
+<h4 class="font-bold text-lg">Quick Tips</h4>
+<div class="bg-primary/5 border border-primary/10 rounded-xl p-4 flex gap-4">
+<span class="material-symbols-outlined text-primary">info</span>
+<div>
+<p class="text-sm font-semibold text-primary mb-1">Did you know?</p>
+<p class="text-sm text-slate-700 dark:text-slate-300">Credit score requirements are guidelines. Many lenders may have their own "overlays" which might require a higher score.</p>
+</div>
+</div>
+<button class="w-full py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-shadow shadow-lg shadow-primary/20">
+                    Get Pre-Approved Now
+                </button>
+</div>
+</div>
+<!-- Spacer for Bottom Nav -->
+<div class="flex-grow"></div>
+<!-- Bottom Navigation Bar -->
+<nav class="sticky bottom-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-6 pb-6 pt-3 grid grid-cols-4 gap-2">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-[10px] font-medium">Loans</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#"><span class="material-symbols-outlined">shield</span><span class="text-[10px] font-medium">Insurance</span></a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#"><span class="material-symbols-outlined">settings</span><span class="text-[10px] font-medium">Settings</span></a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,9 @@
+Analyzing mortgage_calculator...                                
+
+  error - The method 'calculatePayoffMonths' isn't defined for the type 'CalculatorLogic' - lib\screens\credit_card_calculator.dart:55:36 - undefined_method
+  error - The method 'calculateTotalInterest' isn't defined for the type 'CalculatorLogic' - lib\screens\credit_card_calculator.dart:61:46 - undefined_method
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\screens\mortgage_calculator.dart:279:37 - deprecated_member_use
+   info - Statements in an if should be enclosed in a block - lib\screens\mortgage_calculator.dart:305:41 - curly_braces_in_flow_control_structures
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\screens\mortgage_calculator.dart:451:11 - deprecated_member_use
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\screens\settings_screen.dart:230:9 - deprecated_member_use
+

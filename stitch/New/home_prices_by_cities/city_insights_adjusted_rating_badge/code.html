@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>City Market Insights - Los Angeles</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy-blue': '#0B3D91',
+            'emerald-green': '#1E8449',
+            'soft-white': '#F8F9FA',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-layout">
+    /* Custom height for the hero section to ensure image prominence */
+    .hero-section {
+      height: 35vh;
+    }
+    /* Smooth transition for buttons */
+    .btn-transition {
+      transition: all 0.3s ease;
+    }
+    /* Bottom navigation safe area for mobile */
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  </style>
+</head>
+<body class="bg-soft-white font-sans text-gray-900 flex flex-col min-h-screen">
+<!-- BEGIN: HeroHeader -->
+<header class="relative hero-section w-full overflow-hidden" data-purpose="city-hero">
+<!-- City Image Backdrop -->
+<img alt="Los Angeles Skyline" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFgEBECXRGt1QI1WaGfnk_8JvhCeqVFjoQ6ROlEdbpTB5Sj6MaQHXKDRHpwN0AJAqsiQ6va9MS78aVINzxnXr5o63uRn5sioBFecRasVljPqx6LNgK9kDkkV3gEOuqQFLwt5JHllPRF9uxJbj98NT_UMu8KsLCz1-A0NxCGucAQYJy5gY9WP4FGTjQ1b9UZlMTqPu3rX-PjgH0gEyUfele_zZhFFGWDAPUAM5f3f82z33uB1-IEPJyLNyIz0_tQcZwL8fVWJ3yB0CK" style=""/>
+<!-- Dark Overlay for Readability -->
+<div class="absolute inset-0 bg-black/40"></div>
+<!-- Top Navigation Bar (Transparent) -->
+<div class="absolute top-0 left-0 right-0 p-4 flex items-center justify-between">
+<button aria-label="Go back" class="text-white p-2 bg-black/20 backdrop-blur-sm rounded-lg" style=""><div class="flex items-center space-x-2 px-1"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span class="text-xs font-semibold pr-1" style="">Back to List</span></div></button>
+<h1 class="text-white text-xl font-bold tracking-tight" style="">Los Angeles, CA</h1>
+<button aria-label="Share" class="text-white p-2 rounded-full bg-black/20 backdrop-blur-sm" style="">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<!-- Rating Badge Positioned Overlap -->
+<div class="absolute bottom-4 right-6">
+<div class="bg-emerald-green text-white w-16 h-16 rounded-2xl flex flex-col items-center justify-center shadow-lg border-4 border-soft-white" data-purpose="market-rating">
+<span class="text-xs uppercase font-bold" style="">Rating</span>
+<span class="text-2xl font-black" style="">A+</span>
+</div>
+</div>
+</header>
+<!-- END: HeroHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-grow px-6 pt-10 space-y-6 pb-40">
+<!-- Summary Statistics Grid -->
+<section class="grid grid-cols-3 gap-3" data-purpose="summary-stats">
+<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+<span class="text-[10px] uppercase text-gray-500 font-semibold mb-1" style="">Median Price</span>
+<span class="text-navy-blue font-bold text-lg" style="">$850k</span>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+<span class="text-[10px] uppercase text-gray-500 font-semibold mb-1" style="">Price / Sqft</span>
+<span class="text-navy-blue font-bold text-lg" style="">$810</span>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+<span class="text-[10px] uppercase text-gray-500 font-semibold mb-1" style="">Growth</span>
+<div class="flex flex-col">
+<span class="text-emerald-green font-bold text-lg" style="">9.1</span>
+<span class="text-[8px] text-emerald-green font-bold uppercase" style="">High</span>
+</div>
+</div>
+</section>
+<!-- Insight Description Card -->
+<div class="mb-6">
+<button class="w-full bg-navy-blue text-white font-bold py-4 rounded-xl shadow-lg btn-transition active:scale-95 flex items-center justify-center space-x-3 group hover:bg-opacity-90 transition-all" style="">
+<svg class="h-6 w-6 text-white/80 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-lg uppercase tracking-wide" style="">Market Compare</span>
+</button>
+</div><section class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-navy-blue" data-purpose="insight-card">
+<h3 class="text-navy-blue font-bold text-sm uppercase mb-2 tracking-wider" style="">Market Analysis</h3>
+<p class="text-gray-700 leading-relaxed italic" style="">
+        "Entertainment capital with a competitive housing market and strong property appreciation."
+      </p>
+</section>
+<!-- Detailed Market Metrics -->
+<section class="space-y-4" data-purpose="metrics-list">
+<div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+<span class="text-gray-600 font-medium" style="">Population</span>
+<span class="font-bold" style="">3,898,747</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+<span class="text-gray-600 font-medium" style="">Median Rent</span>
+<span class="font-bold text-navy-blue" style="">$2,900</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+<span class="text-gray-600 font-medium" style="">Demand Score</span>
+<span class="font-bold text-emerald-green" style="">9.5/10</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+<span class="text-gray-600 font-medium" style="">Livability Score</span>
+<span class="font-bold" style="">8.1</span>
+</div>
+</section>
+<!-- Compare Button Action -->
+<div class="pt-4">
+<button class="w-full bg-navy-blue text-white font-bold py-4 rounded-xl shadow-lg btn-transition active:scale-95 flex items-center justify-center space-x-3 group hover:bg-opacity-90 transition-all" style="">
+<svg class="h-6 w-6 text-white/80 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-lg" style="">Compare with Other Cities</span>
+</button>
+</div>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: AdAndNavigation -->
+<footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+<!-- AdMob Banner Placeholder -->
+<div class="bg-gray-100 py-1 flex justify-center items-center" data-purpose="ad-space">
+<span class="text-[9px] text-gray-400 uppercase tracking-widest font-semibold mr-2" style=""><br/></span>
+<div class="w-full h-12 flex items-center justify-center border-y border-gray-200">
+<span class="text-gray-400 text-xs italic" style="">Google AdMob Banner Space</span>
+</div>
+</div>
+<!-- Navigation Bar -->
+<nav class="flex justify-around items-center py-3 pb-safe" data-purpose="main-navigation">
+<a class="flex flex-col items-center text-gray-400 hover:text-navy-blue transition-colors" href="#" style="">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-medium mt-1" style="">Home</span>
+</a><a class="flex flex-col items-center text-navy-blue" href="#" style="">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-medium mt-1" style="">Home Price</span>
+</a>
+<a class="flex flex-col items-center text-gray-400 hover:text-navy-blue transition-colors" href="#" style="">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-medium mt-1" style="">Insurance</span>
+</a>
+<a class="flex flex-col items-center text-gray-400 hover:text-navy-blue transition-colors" href="#" style="">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-[10px] font-medium mt-1" style="">Settings</span>
+</a>
+</nav>
+</footer>
+<!-- END: AdAndNavigation -->
+</body></html>

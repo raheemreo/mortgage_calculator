@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Financial Assistant Chat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0b3893",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-screen w-full flex-col max-w-md mx-auto bg-white dark:bg-slate-900 overflow-hidden shadow-xl">
+<!-- Header -->
+<header class="flex items-center bg-white dark:bg-slate-900 p-4 border-b border-slate-200 dark:border-slate-800 z-10">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<h1 class="text-lg font-bold leading-tight flex-1 text-center text-slate-900 dark:text-slate-100">AI Financial Assistant</h1>
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">info</span>
+</button>
+</header>
+<!-- Chat Area -->
+<main class="flex-1 overflow-y-auto flex flex-col p-4 gap-6 pb-24">
+<!-- Disclaimer Banner -->
+<div class="flex flex-col items-center gap-3 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-6 bg-slate-50 dark:bg-slate-800/50">
+<div class="flex flex-col items-center gap-1 text-center">
+<span class="material-symbols-outlined text-amber-500 mb-1">warning</span>
+<p class="text-base font-bold text-slate-900 dark:text-slate-100">Disclaimer</p>
+<p class="text-sm text-slate-600 dark:text-slate-400">This AI provides estimates and general guidance. This is not professional financial advice.</p>
+</div>
+<button class="mt-2 text-xs font-bold text-primary dark:text-blue-400 hover:underline">
+                    Read Full Terms
+                </button>
+</div>
+<!-- User Message -->
+<div class="flex items-end gap-3 justify-end mt-4">
+<div class="flex flex-col gap-1 items-end max-w-[80%]">
+<p class="text-xs text-slate-500 dark:text-slate-400 mr-1">You</p>
+<div class="rounded-2xl rounded-tr-sm px-4 py-3 bg-primary text-white shadow-sm">
+<p class="text-sm leading-relaxed">Can I afford a $400,000 house in Texas?</p>
+</div>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 shrink-0 bg-slate-200 dark:bg-slate-700" data-alt="User avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDYDC7bVv7Ds9_hXwPDF1bShAgJpWHUVK9KYqWIzfMqiFgd9iclHB2NIK0tpCJJLIQhKuwk36Rf_gZkqydR2tvyGg2zQWTsfCeIBbVACR_CSea_mHehs1dMDPqOoF9NkXomkLyeXGN99wf1twD_4-aol6tq762bXL7NkS67yiJpcAWYOECDpu8PafPm1lJTwUwsTDFCYulw0RvkezqqM4cozeSMNnG7_h-eCccLHz2CqhkJd6Ro7QHTwkutGW6m48bvuzldnmWrR72U');"></div>
+</div>
+<!-- AI Message -->
+<div class="flex items-end gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 shrink-0 bg-primary/10 text-primary flex items-center justify-center" data-alt="AI avatar">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+</div>
+<div class="flex flex-col gap-1 items-start max-w-[85%]">
+<p class="text-xs text-slate-500 dark:text-slate-400 ml-1">AI Assistant</p>
+<div class="rounded-2xl rounded-tl-sm px-4 py-3 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 shadow-sm border border-slate-200 dark:border-slate-700">
+<p class="text-sm leading-relaxed mb-3">Based on average rates and property taxes in Texas, here's a general breakdown for a $400k home:</p>
+<ul class="text-sm space-y-2 mb-3">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-green-500 mt-0.5">check_circle</span>
+<span><strong>Estimated Income Needed:</strong> ~$8,000 - $9,500/month before taxes.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary mt-0.5">percent</span>
+<span><strong>Debt-to-Income (DTI):</strong> Keep your total monthly debt payments below 36% of your gross income for the best mortgage rates.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-amber-500 mt-0.5">payments</span>
+<span><strong>Down Payment:</strong> A 20% down payment ($80k) avoids PMI, but options exist for 3-5% down.</span>
+</li>
+</ul>
+<p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400 italic">Would you like to calculate a specific monthly payment based on your down payment?</p>
+</div>
+<!-- Suggested Actions -->
+<div class="flex gap-2 mt-1 overflow-x-auto pb-2 w-full snap-x">
+<button class="snap-start shrink-0 rounded-full border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                            Calculate with 20% down
+                        </button>
+<button class="snap-start shrink-0 rounded-full border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                            What are current TX rates?
+                        </button>
+</div>
+</div>
+</div>
+<!-- Typing Indicator (Hidden by default, shown for realism) -->
+<!-- <div class="flex items-center gap-2 text-slate-400 text-sm ml-11">
+                <span class="material-symbols-outlined animate-pulse text-[16px]">more_horiz</span>
+                <span>AI is typing...</span>
+            </div> -->
+</main>
+<!-- Input Area -->
+<div class="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 p-3 pt-4">
+<div class="flex items-center gap-2 @container">
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full text-slate-500 hover:text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<div class="flex-1 relative flex items-center bg-slate-100 dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<input class="w-full bg-transparent border-none focus:ring-0 text-sm py-3 pl-4 pr-12 text-slate-900 dark:text-slate-100 placeholder:text-slate-500" placeholder="Ask about mortgages, loans, or DTI..." type="text"/>
+<button class="absolute right-2 flex size-8 items-center justify-center rounded-full text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+</button>
+</div>
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-white shadow-md hover:bg-primary/90 transition-colors hidden @[300px]:flex">
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+<!-- iOS Home Indicator Space -->
+<div class="h-5 w-full mt-2 flex justify-center items-end pb-1">
+<div class="w-1/3 h-1 bg-slate-300 dark:bg-slate-600 rounded-full"></div>
+</div>
+</div>
+</div>
+</body></html>

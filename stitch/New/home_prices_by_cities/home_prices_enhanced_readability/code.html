@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>USA Mortgage Pro - Home Prices by City</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0B3D91',
+            emerald: '#1E8449',
+            softwhite: '#F8F9FA',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-styling">
+    body {
+      background-color: #F8F9FA;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .sticky-footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 50;
+    }
+    .rating-badge {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    .rating-a-plus { background-color: #1E8449; color: white; }
+    .rating-a { background-color: #27AE60; color: white; }
+    .rating-b-plus { background-color: #F1C40F; color: #000; }
+    .rating-b { background-color: #E67E22; color: white; }
+  </style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/></head>
+<body class="flex flex-col min-h-screen">
+<!-- BEGIN: MainHeader -->
+<header class="sticky-header bg-navy text-white p-4 shadow-md" data-purpose="header">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<h1 class="text-xl font-bold" style="">Home Prices by City</h1>
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<!-- Search Bar -->
+<div class="relative text-gray-600">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3">
+<svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+<input autocomplete="off" class="w-full py-2 text-sm text-gray-900 bg-white rounded-md pl-10 focus:outline-none focus:ring-2 focus:ring-emerald-500 border-none" name="q" placeholder="Search cities..." type="search"/>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: CityListContent -->
+<main class="flex-grow p-4 pb-40 overflow-y-auto" data-purpose="main-scroll-area"><!-- Tab Navigation -->
+<div class="sticky top-0 z-30 bg-softwhite border-b border-gray-200 mb-4">
+<div class="flex">
+<button class="flex-1 py-3 text-sm font-bold text-navy border-b-2 border-navy transition-colors">
+      All Cities
+    </button>
+<button class="flex-1 py-3 text-sm font-bold text-gray-400 hover:text-navy transition-colors">
+      Top Rated
+    </button>
+</div>
+</div><!-- Search and Filter Section -->
+<div class="flex gap-2 overflow-x-auto hide-scrollbar pb-2 mb-3" data-purpose="price-filter-chips">
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-navy/20 bg-navy text-white text-xs font-semibold transition-colors" style="">
+    All Prices
+  </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-navy/10 bg-white text-navy text-xs font-medium hover:bg-gray-50 transition-colors shadow-sm" style="">
+    Under $400k
+  </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-navy/10 bg-white text-navy text-xs font-medium hover:bg-gray-50 transition-colors shadow-sm" style="">
+    $400k - $700k
+  </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-navy/10 bg-white text-navy text-xs font-medium hover:bg-gray-50 transition-colors shadow-sm" style="">
+    $700k - $1M
+  </button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-navy/10 bg-white text-navy text-xs font-medium hover:bg-gray-50 transition-colors shadow-sm" style="">
+    $1M+
+  </button>
+</div>
+<div class="grid grid-cols-1 gap-4" id="city-list-container"><!-- City Card List Generated from TEXT_28 -->
+<div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 relative" data-purpose="city-card">
+<div class="h-40 w-full bg-gray-200">
+<img alt="New York" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWx_ZvByFuUUqtwdY-taFxggH_09RRMTftcQ7i5bV2KVgOPObIjULy2v_Ud1zO-d-ur9gPFAjj3Na6INZh8NACY5k6j2vUHxs2a4OdXhsmDDT85CSYpK6pOw-2CGb4cmoZ4BsBh6jIIDGlAHGfIcS9kd9yoiwXNmRFuUyjRQUxGhZ6PWlgDqqW0TC3n7J1IijFalS6NR3DFk6NuT4FX0QV83Tat5WqxGzaNEZEefzT6bjqnCkm5yNInXpaPIfLjZuU9UmbiRuKh2KM" style=""/>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h2 class="font-bold text-navy text-xl" style="">New York, NY</h2>
+<p class="text-gray-500 text-sm" style="">Pop: 8.8M</p>
+</div>
+<span class="rating-badge rating-a" style="">Rating: A</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-2">
+<div>
+<p class="uppercase tracking-wider text-gray-400 font-bold text-xs" style="">Median Price</p>
+<p class="text-lg font-bold text-emerald" style="">$650,000</p>
+</div>
+<div>
+<p class="uppercase tracking-wider text-gray-400 font-bold text-xs" style="">Price / Sqft</p>
+<p class="text-lg font-bold text-navy" style="">$720</p>
+</div>
+</div>
+<p class="mt-2 text-gray-600 line-clamp-2 text-base" style="">Major global financial center with high housing demand and strong property values.</p>
+<button class="w-full mt-4 bg-navy text-white rounded-md font-bold hover:bg-blue-800 transition-colors py-3 text-base" style="">View Details</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 relative" data-purpose="city-card">
+<div class="h-40 w-full bg-gray-200">
+<img alt="Los Angeles" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg1bCRbDiAQmAMNtgKt0T7kNvXvwVZ8h9CAIVEOBdl8-L2Tj90cVM8Ut6xnmG7IM59diLSAtze2MwzcQcugV-5Nfs5zs1MwNuYQFAIpAapoamYtAevTukpNhLnvxikILyU9hU-1WxXdxvIuEJkRgqxYMYvpJ6LKPBxyQ5bnNQudJd4Trgfn9vPyp2NerhmtEBorw9Y_8uO2kWSOFTNTvsw6gRDo_CcIqh3oLmVlA6MISKjeii-KNG0JpOPtYpDfW-2vYS0Ks6v-g0-" style=""/>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h2 class="font-bold text-navy text-xl" style="">Los Angeles, CA</h2>
+<p class="text-gray-500 text-sm" style="">Pop: 3.9M</p>
+</div>
+<span class="rating-badge rating-a-plus" style="">Rating: A+</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-2">
+<div>
+<p class="uppercase tracking-wider text-gray-400 font-bold text-xs" style="">Median Price</p>
+<p class="text-lg font-bold text-emerald" style="">$850,000</p>
+</div>
+<div>
+<p class="uppercase tracking-wider text-gray-400 font-bold text-xs" style="">Price / Sqft</p>
+<p class="text-lg font-bold text-navy" style="">$810</p>
+</div>
+</div>
+<p class="mt-2 text-gray-600 line-clamp-2 text-base" style="">Entertainment capital with a competitive housing market and strong property appreciation.</p>
+<button class="w-full mt-4 bg-navy text-white rounded-md font-bold hover:bg-blue-800 transition-colors py-3 text-base" style="">View Details</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 relative" data-purpose="city-card">
+<div class="h-40 w-full bg-gray-200">
+<img alt="Chicago" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_MFnTsSLt53LdDeoo5QW92xZ_sTyN1N5vRNWmsSHHaDO2DpY44RSTkbb1OxDo4p7hpHymab5Ml_lnxYCSlQvw8D0ASyTeRTKPz-VNKr4Um8SmV8C_NeU9BnWzceVoAeY2jVmHu0GCzXFCcOodVXrO1uevJfrj_-o9M62X-iknKLuoq5ad6bDV07aD-fFgVXk8XUqUSsvzrlbrI5Uu4waD3DnRZgUjf0k8yYn9hAniCAk1H89xUL8AZs_Vyan9k0Vx8l2Fplm8U4VE" style=""/>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h2 class="font-bold text-navy text-xl" style="">Chicago, IL</h2>
+<p class="text-gray-500 text-sm" style="">Pop: 2.7M</p>
+</div>
+<span class="rating-badge rating-a" style="">Rating: A</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-2">
+<div>
+<p class="uppercase tracking-wider text-gray-400 font-bold text-xs" style="">Median Price</p>
+<p class="text-lg font-bold text-emerald" style="">$420,000</p>
+</div>
+<div>
+<p class="uppercase tracking-wider text-gray-400 font-bold text-xs" style="">Price / Sqft</p>
+<p class="text-lg font-bold text-navy" style="">$310</p>
+</div>
+</div>
+<p class="mt-2 text-gray-600 line-clamp-2 text-base" style="">Large metropolitan city offering diverse neighborhoods and stable real estate demand.</p>
+<button class="w-full mt-4 bg-navy text-white rounded-md font-bold hover:bg-blue-800 transition-colors py-3 text-base" style="">View Details</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 relative" data-purpose="city-card">
+<div class="h-40 w-full bg-gray-200">
+<img alt="Houston" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj3-zOgsyBTXKX330dY2nztokEKk8L8LstoDN8tYQ-op2VSSJqvRTTvu8woXmUcLjE0pESfraYiaUPWzxKV8rR3_PPPJkyAVjP4g4Ox2EQWUg7XTMalnMAKgeEsyB-Hcx6QRK1AZjSyu3M2mOA5xqvdmdHeoDfj14cOFYRx6LFqiyNxnfvzIp4Ss-rWF0gRg9P2CKIO0rJPkwqsxdCGe09DHpqF8gupH-bE3rU4_LE9yd1R2W7q55Erm_OgLR4H_chzG1X20vitIFh" style=""/>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h2 class="font-bold text-navy text-xl" style="">Houston, TX</h2>
+<p class="text-gray-500 text-sm" style="">Pop: 2.3M</p>
+</div>
+<span class="rating-badge rating-b-plus" style="">Rating: B+</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-2">
+<div>
+<p class="uppercase tracking-wider text-gray-400 font-bold text-xs" style="">Median Price</p>
+<p class="text-lg font-bold text-emerald" style="">$350,000</p>
+</div>
+<div>
+<p class="uppercase tracking-wider text-gray-400 font-bold text-xs" style="">Price / Sqft</p>
+<p class="text-lg font-bold text-navy" style="">$250</p>
+</div>
+</div>
+<p class="mt-2 text-gray-600 line-clamp-2 text-base" style="">Affordable housing market supported by strong job growth and economic expansion.</p>
+<button class="w-full mt-4 bg-navy text-white rounded-md font-bold hover:bg-blue-800 transition-colors py-3 text-base" style="">View Details</button>
+</div>
+</div></div>
+</main>
+<!-- END: CityListContent -->
+<!-- BEGIN: FooterContainer -->
+<footer class="sticky-footer" data-purpose="navigation-footer">
+<!-- Ad Space -->
+<div class="bg-gray-100 border-t border-gray-200 py-1" data-purpose="ad-container">
+<div class="max-w-[320px] h-[50px] mx-auto bg-gray-300 flex items-center justify-center text-[10px] text-gray-500 font-bold uppercase tracking-widest border border-dashed border-gray-400" style="">
+        Google AdMob Banner Space
+      </div>
+</div>
+<!-- Navigation Bar -->
+<nav class="bg-white border-t border-gray-200 flex justify-around items-center py-2 px-6" data-purpose="bottom-navigation">
+<a class="flex flex-col items-center gap-1 text-gray-400" href="#"><span class="material-symbols-outlined">home</span><span class="text-[10px] font-bold">Home</span></a><a class="flex flex-col items-center gap-1 text-navy" href="#"><span class="material-symbols-outlined">location_city</span><span class="text-[10px] font-bold">Home Price</span></a>
+<a class="flex flex-col items-center gap-1 text-gray-400" href="#" style=""><span class="material-symbols-outlined">shield</span><span class="text-[10px] font-bold">Insurance</span></a>
+<a class="flex flex-col items-center gap-1 text-gray-400" href="#" style=""><span class="material-symbols-outlined">settings</span><span class="text-[10px] font-bold">Settings</span></a>
+</nav>
+</footer>
+<!-- END: FooterContainer -->
+<script data-purpose="interaction-logic">
+    // Logic for search filtering could be added here in a real app
+    document.querySelector('input[type="search"]').addEventListener('input', function(e) {
+      const term = e.target.value.toLowerCase();
+      const cards = document.querySelectorAll('[data-purpose="city-card"]');
+      cards.forEach(card => {
+        const cityName = card.querySelector('h2').textContent.toLowerCase();
+        if (cityName.includes(term)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body></html>

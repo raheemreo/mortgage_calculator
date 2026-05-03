@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#eff1f3",
+              "error": "#ba1a1a",
+              "tertiary-container": "#00685f",
+              "on-error-container": "#93000a",
+              "primary-fixed-dim": "#b7c4ff",
+              "primary": "#0037b1",
+              "tertiary": "#004e47",
+              "outline": "#747686",
+              "on-tertiary-fixed": "#00201d",
+              "inverse-primary": "#b7c4ff",
+              "surface-container-lowest": "#ffffff",
+              "surface": "#f7f9fb",
+              "on-secondary-container": "#57657a",
+              "secondary-fixed-dim": "#b9c7df",
+              "on-surface": "#191c1e",
+              "inverse-surface": "#2d3133",
+              "on-surface-variant": "#434655",
+              "on-primary-fixed": "#001552",
+              "on-tertiary-container": "#7be7d9",
+              "secondary-fixed": "#d5e3fc",
+              "surface-dim": "#d8dadc",
+              "secondary-container": "#d5e3fc",
+              "on-primary-container": "#cad3ff",
+              "surface-container-highest": "#e0e3e5",
+              "surface-container-high": "#e6e8ea",
+              "on-primary": "#ffffff",
+              "primary-fixed": "#dce1ff",
+              "secondary": "#515f74",
+              "surface-container-low": "#f2f4f6",
+              "surface-tint": "#2251da",
+              "surface-container": "#eceef0",
+              "on-tertiary-fixed-variant": "#005049",
+              "on-secondary-fixed": "#0d1c2e",
+              "error-container": "#ffdad6",
+              "on-background": "#191c1e",
+              "on-secondary-fixed-variant": "#3a485b",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed": "#89f5e7",
+              "on-error": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed-variant": "#0038b6",
+              "primary-container": "#1e4ed8",
+              "surface-bright": "#f7f9fb",
+              "surface-variant": "#e0e3e5",
+              "outline-variant": "#c4c5d7",
+              "tertiary-fixed-dim": "#6bd8cb",
+              "background": "#f7f9fb"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "1.5rem", // Consistent with design system 24px
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopAppBar -->
+<nav class="sticky top-0 z-50 glass-nav border-b border-outline-variant/20 px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline text-lg font-bold text-on-surface">Amortization Schedule</h1>
+</div>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">share</span>
+</button>
+</nav>
+<main class="max-w-md mx-auto px-4 py-6 pb-40">
+<!-- Hero Summary Card -->
+<section class="relative overflow-hidden bg-primary-container rounded-xl p-6 text-on-primary mb-8 shadow-lg">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-16 -mt-16"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-6">
+<div>
+<p class="font-label text-xs uppercase tracking-wider opacity-80">Suburban Family Home</p>
+<h2 class="font-headline text-2xl font-bold mt-1">Loan Summary</h2>
+</div>
+<span class="material-symbols-outlined text-3xl opacity-50">home_work</span>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="space-y-1">
+<p class="text-[10px] font-label uppercase opacity-70">Loan Amount</p>
+<p class="font-headline font-bold text-lg">$845,000</p>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] font-label uppercase opacity-70">Term</p>
+<p class="font-headline font-bold text-lg">30 Years</p>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] font-label uppercase opacity-70">Rate</p>
+<p class="font-headline font-bold text-lg">7.2%</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Visualization Section -->
+<section class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline font-semibold text-on-surface">Balance Over Time</h3>
+<div class="flex items-center gap-2 px-3 py-1 bg-tertiary/10 rounded-full">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="text-[10px] font-label font-bold text-tertiary uppercase">Principal Paydown</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/10 shadow-sm relative aspect-[16/9] flex items-end overflow-hidden">
+<!-- Mock Chart Visualization using CSS Shapes -->
+<div class="absolute inset-0 p-6 flex items-end">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 400 200">
+<!-- Background Area -->
+<path d="M0,0 L400,180 L400,200 L0,200 Z" fill="url(#chartGradient)" opacity="0.1"></path>
+<!-- Line Chart -->
+<path class="text-primary" d="M0,0 L100,45 L200,90 L300,135 L400,180" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="3"></path>
+<!-- Data Points -->
+<circle class="fill-primary" cx="0" cy="0" r="4"></circle>
+<circle class="fill-primary" cx="100" cy="45" r="4"></circle>
+<circle class="fill-primary" cx="200" cy="90" r="4"></circle>
+<circle class="fill-primary" cx="300" cy="135" r="4"></circle>
+<circle class="fill-primary" cx="400" cy="180" r="4"></circle>
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#0037b1"></stop>
+<stop offset="100%" stop-color="#0037b1" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<div class="w-full flex justify-between text-[10px] font-label text-on-surface-variant pt-2">
+<span>Year 0</span>
+<span>Year 15</span>
+<span>Year 30</span>
+</div>
+</div>
+</section>
+<!-- Search & Table Section -->
+<section>
+<div class="flex flex-col gap-4 mb-4">
+<h3 class="font-headline font-semibold text-on-surface">Payment Schedule</h3>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="w-full pl-11 pr-4 py-3 bg-surface-container-low border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none placeholder:text-on-surface-variant/50" placeholder="Search by month or year..." type="text"/>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/10">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50">
+<th class="px-4 py-4 text-[10px] font-label font-bold text-on-surface-variant uppercase tracking-wider">Month</th>
+<th class="px-4 py-4 text-[10px] font-label font-bold text-on-surface-variant uppercase tracking-wider">Principal</th>
+<th class="px-4 py-4 text-[10px] font-label font-bold text-on-surface-variant uppercase tracking-wider">Interest</th>
+<th class="px-4 py-4 text-[10px] font-label font-bold text-on-surface-variant uppercase tracking-wider text-right">Balance</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-4 py-5 font-headline font-semibold text-sm">Month 1</td>
+<td class="px-4 py-5 font-body text-sm text-tertiary font-medium">$1,050</td>
+<td class="px-4 py-5 font-body text-sm text-on-surface-variant">$5,070</td>
+<td class="px-4 py-5 font-headline font-bold text-sm text-right">$843,950</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-4 py-5 font-headline font-semibold text-sm">Month 2</td>
+<td class="px-4 py-5 font-body text-sm text-tertiary font-medium">$1,056</td>
+<td class="px-4 py-5 font-body text-sm text-on-surface-variant">$5,064</td>
+<td class="px-4 py-5 font-headline font-bold text-sm text-right">$842,894</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-4 py-5 font-headline font-semibold text-sm">Month 3</td>
+<td class="px-4 py-5 font-body text-sm text-tertiary font-medium">$1,063</td>
+<td class="px-4 py-5 font-body text-sm text-on-surface-variant">$5,057</td>
+<td class="px-4 py-5 font-headline font-bold text-sm text-right">$841,831</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-4 py-5 font-headline font-semibold text-sm">Month 4</td>
+<td class="px-4 py-5 font-body text-sm text-tertiary font-medium">$1,069</td>
+<td class="px-4 py-5 font-body text-sm text-on-surface-variant">$5,051</td>
+<td class="px-4 py-5 font-headline font-bold text-sm text-right">$840,762</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 text-center">
+<button class="text-primary font-label text-xs font-bold uppercase tracking-widest py-2 px-4 hover:bg-primary/5 rounded-full transition-colors">View All 360 Months</button>
+</div>
+</div>
+</section>
+<!-- Ad Banner Placeholder -->
+<div class="mt-10 mb-6 mx-auto w-full aspect-[3/1] bg-surface-container-high rounded-lg flex items-center justify-center border-2 border-dashed border-outline-variant/30 relative overflow-hidden">
+<div class="absolute inset-0 opacity-10">
+<div class="absolute top-0 left-0 w-full h-full flex flex-wrap gap-4 p-4">
+<div class="w-full h-2 bg-on-surface rounded-full"></div>
+<div class="w-2/3 h-2 bg-on-surface rounded-full"></div>
+<div class="w-1/2 h-2 bg-on-surface rounded-full"></div>
+</div>
+</div>
+<div class="z-10 flex flex-col items-center">
+<span class="text-[10px] font-label font-bold uppercase tracking-[0.2em] text-on-surface-variant/40">Sponsored Content</span>
+<span class="font-headline font-bold text-on-surface-variant/40 mt-1">AD BANNER</span>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 left-0 right-0 glass-nav border-t border-outline-variant/20 h-20 flex items-center justify-around px-4 z-50">
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">home</span>
+<span class="text-[10px] font-label text-on-surface-variant group-hover:text-primary">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="p-1 rounded-full text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calculate</span>
+</div>
+<span class="text-[10px] font-label font-bold text-primary">Calculator</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">bookmark</span>
+<span class="text-[10px] font-label text-on-surface-variant group-hover:text-primary">Saved</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">settings</span>
+<span class="text-[10px] font-label text-on-surface-variant group-hover:text-primary">Settings</span>
+</button>
+</footer>
+</body></html>

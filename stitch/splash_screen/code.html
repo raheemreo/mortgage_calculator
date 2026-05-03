@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>USA Mortgage &amp; Loan Calculator Pro - Splash Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#F4D03F",
+                        "background-light": "#0B3D91",
+                        "background-dark": "#0B3D91", // Assuming splash stays dark/navy
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0B3D91 0%, #051F4A 100%);
+        }
+        .loading-bar {
+            width: 0%;
+            animation: loading 2s ease-in-out forwards;
+        }
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display gradient-bg h-screen w-full flex flex-col justify-between items-center overflow-hidden">
+<div class="flex-1"></div>
+<div class="flex flex-col items-center justify-center w-full px-6 text-center z-10">
+<div class="relative mb-8 flex items-center justify-center w-32 h-32 bg-white/10 rounded-3xl backdrop-blur-sm border border-white/20 shadow-2xl">
+<span class="material-icons text-white text-6xl">home</span>
+<span class="material-icons text-primary text-2xl absolute bottom-6 right-6 bg-background-light rounded-full p-1 border-2 border-background-light">calculate</span>
+</div>
+<h1 class="text-3xl font-extrabold text-white tracking-tight mb-3">
+            USA Mortgage &amp;<br/>Loan Calculator <span class="text-primary font-black">Pro</span>
+</h1>
+<p class="text-white/70 text-sm font-medium tracking-wide uppercase">
+            Professional Financial Tools
+        </p>
+</div>
+<div class="flex-1 w-full flex flex-col justify-end items-center pb-16 px-10">
+<div class="w-full max-w-xs space-y-3">
+<div class="h-1.5 w-full bg-white/20 rounded-full overflow-hidden">
+<div class="loading-bar h-full bg-primary rounded-full shadow-[0_0_10px_rgba(244,208,63,0.5)]"></div>
+</div>
+<p class="text-white/50 text-xs text-center font-semibold tracking-widest">LOADING...</p>
+</div>
+</div>
+
+</body></html>

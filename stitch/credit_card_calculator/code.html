@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Credit Card Calculator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2563EB", // Blue-600
+                        "background-light": "#F8FAFC", // Slate-50
+                        "background-dark": "#0F172A", // Slate-900
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen relative pb-24">
+<div class="max-w-md mx-auto p-4 sm:p-6 md:p-8 flex flex-col gap-6">
+<header class="flex items-center justify-between pt-4 pb-2">
+<button class="p-2 -ml-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-icons text-slate-700 dark:text-slate-300">arrow_back_ios</span>
+</button>
+<h1 class="text-xl font-semibold text-center flex-1 mr-8">Credit Card Payoff</h1>
+</header>
+<section class="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-100 dark:border-slate-700">
+<h2 class="text-lg font-medium mb-4 text-slate-800 dark:text-slate-200">Enter Details</h2>
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1" for="balance">Current Balance</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="text-slate-500 dark:text-slate-400">$</span>
+</div>
+<input class="block w-full pl-7 pr-12 sm:text-sm border-slate-300 dark:border-slate-600 rounded-md bg-transparent text-slate-900 dark:text-white focus:ring-primary focus:border-primary dark:focus:ring-primary" id="balance" name="balance" placeholder="5,000" type="number" value="5000"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1" for="payment">Monthly Payment</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="text-slate-500 dark:text-slate-400">$</span>
+</div>
+<input class="block w-full pl-7 pr-12 sm:text-sm border-slate-300 dark:border-slate-600 rounded-md bg-transparent text-slate-900 dark:text-white focus:ring-primary focus:border-primary dark:focus:ring-primary" id="payment" name="payment" placeholder="250" type="number" value="250"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1" for="apr">Interest Rate (APR)</label>
+<div class="relative">
+<input class="block w-full pr-8 sm:text-sm border-slate-300 dark:border-slate-600 rounded-md bg-transparent text-slate-900 dark:text-white focus:ring-primary focus:border-primary dark:focus:ring-primary" id="apr" name="apr" placeholder="18.9" type="number" value="18.9"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<span class="text-slate-500 dark:text-slate-400">%</span>
+</div>
+</div>
+</div>
+</div>
+<button class="mt-6 w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+                Calculate
+            </button>
+</section>
+<section class="bg-primary text-white rounded-xl p-6 shadow-md mt-2">
+<h2 class="text-sm font-medium text-blue-100 uppercase tracking-wider mb-6 text-center">Payoff Summary</h2>
+<div class="grid grid-cols-2 gap-4 divide-x divide-blue-400/30">
+<div class="text-center">
+<p class="text-sm text-blue-100 mb-1">Time to Pay Off</p>
+<p class="text-3xl font-bold">24 <span class="text-lg font-medium text-blue-200">mos</span></p>
+<p class="text-xs text-blue-200 mt-1">2 Years</p>
+</div>
+<div class="text-center">
+<p class="text-sm text-blue-100 mb-1">Total Interest</p>
+<p class="text-3xl font-bold"><span class="text-lg font-medium text-blue-200">$</span>1,024</p>
+<p class="text-xs text-blue-200 mt-1">Over 24 months</p>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-blue-400/30 flex justify-between items-end">
+<div>
+<p class="text-sm text-blue-100 mb-1">Total Paid</p>
+<p class="text-xl font-semibold">$6,024</p>
+</div>
+<button class="text-sm flex items-center gap-1 text-blue-100 hover:text-white transition-colors">
+                    View Schedule <span class="material-icons text-sm">chevron_right</span>
+</button>
+</div>
+</section>
+</div>
+<div class="fixed bottom-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex justify-center py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] z-50">
+<div class="w-[320px] h-[50px] bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-dashed border-slate-300 dark:border-slate-700">
+<span class="text-xs font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase">Ad Space</span>
+</div>
+</div>
+</body></html>

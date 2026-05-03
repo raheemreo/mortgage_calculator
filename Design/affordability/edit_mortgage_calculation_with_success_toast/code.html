@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0037b1",
+              "on-surface": "#191c1e",
+              "on-tertiary-fixed": "#00201d",
+              "error-container": "#ffdad6",
+              "tertiary-container": "#00685f",
+              "on-secondary-fixed": "#0d1c2e",
+              "primary-fixed-dim": "#b7c4ff",
+              "outline": "#747686",
+              "on-primary-fixed-variant": "#0038b6",
+              "tertiary-fixed-dim": "#6bd8cb",
+              "surface-variant": "#e0e3e5",
+              "surface-container-highest": "#e0e3e5",
+              "surface-container-low": "#f2f4f6",
+              "surface-container": "#eceef0",
+              "inverse-surface": "#2d3133",
+              "on-secondary-fixed-variant": "#3a485b",
+              "error": "#ba1a1a",
+              "on-tertiary-container": "#7be7d9",
+              "surface-bright": "#f7f9fb",
+              "on-error-container": "#93000a",
+              "surface-dim": "#d8dadc",
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#d5e3fc",
+              "surface-container-high": "#e6e8ea",
+              "on-secondary-container": "#57657a",
+              "inverse-primary": "#b7c4ff",
+              "surface-tint": "#2251da",
+              "on-primary-container": "#cad3ff",
+              "on-error": "#ffffff",
+              "tertiary-fixed": "#89f5e7",
+              "inverse-on-surface": "#eff1f3",
+              "tertiary": "#004e47",
+              "on-surface-variant": "#434655",
+              "on-secondary": "#ffffff",
+              "secondary-fixed": "#d5e3fc",
+              "on-primary": "#ffffff",
+              "primary-container": "#1e4ed8",
+              "background": "#f7f9fb",
+              "secondary-fixed-dim": "#b9c7df",
+              "surface-container-lowest": "#ffffff",
+              "on-primary-fixed": "#001552",
+              "on-background": "#191c1e",
+              "primary-fixed": "#dce1ff",
+              "outline-variant": "#c4c5d7",
+              "on-tertiary-fixed-variant": "#005049",
+              "secondary": "#515f74",
+              "surface": "#f7f9fb"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Inter', sans-serif; }
+      h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      /* Custom Slider styling for the "Growth Slider" concept */
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        background: transparent;
+        cursor: pointer;
+      }
+      input[type="range"]::-webkit-slider-runnable-track {
+        background: #e0e3e5;
+        height: 6px;
+        border-radius: 3px;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        margin-top: -10px; 
+        background-color: #0037b1;
+        height: 26px;
+        width: 26px;
+        border-radius: 50%;
+        border: 4px solid #ffffff;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/20">
+<div class="px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold font-headline tracking-tight text-on-surface">Mortgage Details</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-error-container/20 transition-colors">
+<span class="material-symbols-outlined text-error" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow max-w-2xl mx-auto w-full px-4 pt-8 pb-32">
+<!-- Editorial Header -->
+<div class="mb-10">
+<h2 class="text-3xl font-bold font-headline text-on-surface mb-3">Edit Calculation</h2>
+<p class="text-on-surface-variant font-body leading-relaxed max-w-md">
+                Modify your mortgage details below to update your saved calculation.
+            </p>
+</div>
+<!-- Form Architecture -->
+<div class="space-y-6">
+<!-- Home Price Section (Hero Input) -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+<label class="block text-[0.6875rem] font-semibold text-primary uppercase tracking-widest mb-2 font-label">Home Price</label>
+<div class="relative flex items-baseline">
+<span class="text-2xl font-bold font-headline text-on-surface-variant mr-1">$</span>
+<input class="w-full bg-transparent border-none p-0 text-4xl font-bold font-headline text-on-surface focus:ring-0 placeholder-surface-dim" placeholder="0" type="text" value="845,000"/>
+</div>
+<div class="mt-6">
+<input class="w-full" max="2000000" min="100000" step="5000" type="range" value="845000"/>
+</div>
+</div>
+<!-- Financial Details Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Down Payment -->
+<div class="bg-surface-container-low p-5 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all">
+<label class="block text-[0.6875rem] font-semibold text-on-surface-variant uppercase tracking-widest mb-3 font-label">Down Payment</label>
+<div class="flex items-center gap-3">
+<div class="relative flex-grow">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-medium">$</span>
+<input class="w-full pl-7 pr-3 py-3 bg-surface-container-lowest rounded-lg border-none focus:ring-1 focus:ring-primary/20 font-semibold text-on-surface" type="text" value="169,000"/>
+</div>
+<div class="relative w-24">
+<input class="w-full pr-7 pl-3 py-3 bg-surface-container-lowest rounded-lg border-none focus:ring-1 focus:ring-primary/20 font-semibold text-on-surface text-right" type="text" value="20"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-medium">%</span>
+</div>
+</div>
+</div>
+<!-- Interest Rate -->
+<div class="bg-surface-container-low p-5 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all">
+<label class="block text-[0.6875rem] font-semibold text-on-surface-variant uppercase tracking-widest mb-3 font-label">Interest Rate</label>
+<div class="relative">
+<input class="w-full pr-8 pl-4 py-3 bg-surface-container-lowest rounded-lg border-none focus:ring-1 focus:ring-primary/20 font-semibold text-on-surface" type="text" value="7.2"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-medium">%</span>
+</div>
+</div>
+<!-- Loan Term -->
+<div class="bg-surface-container-low p-5 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all md:col-span-2">
+<label class="block text-[0.6875rem] font-semibold text-on-surface-variant uppercase tracking-widest mb-3 font-label">Loan Term (Years)</label>
+<div class="flex p-1 bg-surface-container-highest rounded-full">
+<button class="flex-1 py-2 text-sm font-semibold text-on-surface-variant rounded-full transition-all">15</button>
+<button class="flex-1 py-2 text-sm font-semibold text-on-surface-variant rounded-full transition-all">20</button>
+<button class="flex-1 py-2 text-sm font-semibold text-on-primary bg-primary rounded-full shadow-md">30</button>
+</div>
+</div>
+<!-- Recurring Costs -->
+<div class="bg-surface-container-low p-5 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all">
+<label class="block text-[0.6875rem] font-semibold text-on-surface-variant uppercase tracking-widest mb-3 font-label">Property Taxes (Annual)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-medium">$</span>
+<input class="w-full pl-8 pr-4 py-3 bg-surface-container-lowest rounded-lg border-none focus:ring-1 focus:ring-primary/20 font-semibold text-on-surface" type="text" value="4,800"/>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all">
+<label class="block text-[0.6875rem] font-semibold text-on-surface-variant uppercase tracking-widest mb-3 font-label">Home Insurance (Annual)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-medium">$</span>
+<input class="w-full pl-8 pr-4 py-3 bg-surface-container-lowest rounded-lg border-none focus:ring-1 focus:ring-primary/20 font-semibold text-on-surface" type="text" value="1,800"/>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-xl border border-transparent hover:border-outline-variant/20 transition-all md:col-span-2">
+<label class="block text-[0.6875rem] font-semibold text-on-surface-variant uppercase tracking-widest mb-3 font-label">PMI (Monthly)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-medium">$</span>
+<input class="w-full pl-8 pr-4 py-3 bg-surface-container-lowest rounded-lg border-none focus:ring-1 focus:ring-primary/20 font-semibold text-on-surface" type="text" value="50"/>
+</div>
+</div>
+</div>
+<!-- Action Buttons Stack -->
+<div class="pt-8 space-y-4">
+<button class="w-full py-5 px-6 rounded-full bg-gradient-to-br from-primary-container to-primary text-on-primary font-bold text-lg shadow-lg shadow-primary/20 flex items-center justify-center gap-2" onclick="document.getElementById('confirmation-modal').classList.remove('hidden')">
+<span>Update Calculation</span>
+<span class="material-symbols-outlined text-xl" data-icon="refresh">refresh</span>
+</button>
+<button class="w-full py-4 px-6 rounded-full border border-primary/20 text-primary font-bold transition-colors hover:bg-primary/5">
+                    Cancel
+                </button>
+</div>
+</div>
+<!-- Ad Banner Space -->
+<div class="mt-12 p-1 bg-surface-container-high rounded-lg overflow-hidden">
+<div class="bg-surface-container-low border-2 border-dashed border-outline-variant/30 py-8 flex flex-col items-center justify-center rounded-md">
+<span class="text-[0.625rem] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Advertisement</span>
+<div class="w-full h-12 flex items-center justify-center opacity-40 grayscale">
+<img alt="Bank Sponsor Logo" class="h-full object-contain" data-alt="Abstract minimal bank logo for advertisement" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA34Y_mafXaCFmL5fjJ39RN15hUuKrDx8SqLJ6qYRptLxP1Rm3koAzHAxg37ouSNsaj5uA8M1YuRYwAqhQ-NDm4ENBdBgRck12OfLDtSEpNwkod_Wdx75HzfmS_rvMEY1MBs2GzlyfABiBAjSEM6Zjil1iP872h91rJFQwohSuaTF6JOaqChboynNYHKiIsgkK3Ee38JnkfN2qU-3f62Ipi6fndTuHgYD8pMLEzifUSWpwClfejhnbB_J2GmtAqOpFemn7gpKig_Iqa"/>
+</div>
+<p class="text-[0.75rem] text-on-surface-variant mt-2">Special rates for first-time buyers</p>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-surface-container-lowest/90 backdrop-blur-xl border-t border-outline-variant/20 px-6 pt-3 pb-6 safe-area-bottom">
+<div class="max-w-2xl mx-auto flex justify-between items-center">
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="home">home</span>
+<span class="text-[0.6875rem] font-medium text-on-surface-variant group-hover:text-primary">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="calculate">calculate</span>
+<span class="text-[0.6875rem] font-medium text-on-surface-variant group-hover:text-primary">Calculator</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="relative">
+<span class="material-symbols-outlined text-primary" data-icon="bookmark" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+<div class="absolute -top-1 -right-1 w-1.5 h-1.5 bg-primary rounded-full"></div>
+</div>
+<span class="text-[0.6875rem] font-bold text-primary">Saved</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="settings">settings</span>
+<span class="text-[0.6875rem] font-medium text-on-surface-variant group-hover:text-primary">Settings</span>
+</button>
+</div>
+</nav>
+<!-- Confirmation Modal -->
+<div class="fixed inset-0 z-[100] hidden" id="confirmation-modal">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+<!-- Modal Content -->
+<div class="absolute inset-0 flex items-center justify-center p-6">
+<div class="bg-surface-container-lowest w-full max-w-sm rounded-xl shadow-2xl overflow-hidden border border-outline-variant/20">
+<div class="p-6">
+<h3 class="text-xl font-bold font-headline text-on-surface mb-3">Confirm Changes</h3>
+<p class="text-on-surface-variant font-body text-sm leading-relaxed">
+          Are you sure you want to update this saved calculation with the new details?
+        </p>
+</div>
+<div class="flex items-center gap-3 p-6 pt-0">
+<button class="flex-1 py-3 px-4 rounded-full border border-outline text-on-surface-variant font-bold text-sm hover:bg-surface-container-high transition-colors" onclick="document.getElementById('confirmation-modal').classList.add('hidden')">
+          Cancel
+        </button>
+<button class="flex-1 py-3 px-4 rounded-full bg-primary text-on-primary font-bold text-sm shadow-md hover:brightness-110 transition-all" onclick="document.getElementById('confirmation-modal').classList.add('hidden'); const toast = document.getElementById('success-toast'); toast.classList.remove('hidden'); setTimeout(() =&gt; { toast.classList.add('hidden'); }, 3000);">
+          Update
+        </button>
+</div>
+</div>
+</div>
+</div><div class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[110] hidden" id="success-toast">
+<div class="bg-background-dark text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 animate-bounce-in">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-headline font-bold text-sm tracking-wide">Calculation updated successfully</span>
+</div>
+</div>
+<style>
+  @keyframes bounce-in {
+    0% { transform: translateY(20px) scale(0.9); opacity: 0; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  .animate-bounce-in {
+    animation: bounce-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+</style></body></html>

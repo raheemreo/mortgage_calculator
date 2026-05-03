@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400,FILL@0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0b3d93",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>USA Mortgage Pro Dashboard</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden pb-24">
+<header class="bg-primary p-4 shadow-lg sticky top-0 z-50">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-white text-3xl">account_balance</span>
+<h2 class="text-white text-xl font-bold tracking-tight">USA Mortgage Pro</h2>
+</div>
+<button class="text-white p-2">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+<div class="relative">
+<label class="flex flex-col w-full">
+<div class="flex w-full items-stretch rounded-lg h-10 bg-white/10 border border-white/20 backdrop-blur-sm">
+<div class="text-white/70 flex items-center justify-center pl-3">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:outline-0 focus:ring-0 text-white placeholder:text-white/60 px-3 text-sm font-normal" placeholder="Search mortgage tools..." value=""/>
+</div>
+</label>
+</div>
+</header>
+<main class="p-4 space-y-6">
+<section>
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold mb-3 px-1">Calculators &amp; Tools</h3>
+<div class="grid grid-cols-2 gap-3">
+<div class="flex flex-col gap-3 rounded-lg border border-primary/10 bg-white dark:bg-slate-800 p-4 shadow-sm hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-primary text-2xl">add_chart</span>
+<div class="flex flex-col">
+<h4 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight">PITI &amp; Extra</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Payment breakdown</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-lg border border-primary/10 bg-white dark:bg-slate-800 p-4 shadow-sm hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-primary text-2xl">calculate</span>
+<div class="flex flex-col">
+<h4 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight">Mortgage Calc</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Monthly estimate</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-lg border border-primary/10 bg-white dark:bg-slate-800 p-4 shadow-sm hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-primary text-2xl">analytics</span>
+<div class="flex flex-col">
+<h4 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight">DTI Calculator</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Debt-to-income</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-lg border border-primary/10 bg-white dark:bg-slate-800 p-4 shadow-sm hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-primary text-2xl">directions_car</span>
+<div class="flex flex-col">
+<h4 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight">Auto Loan</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Vehicle finance</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-lg border border-primary/10 bg-white dark:bg-slate-800 p-4 shadow-sm hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-primary text-2xl">percent</span>
+<div class="flex flex-col">
+<h4 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight">Mortgage Rates</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Market trends</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-lg border border-primary/10 bg-white dark:bg-slate-800 p-4 shadow-sm hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-primary text-2xl">home_work</span>
+<div class="flex flex-col">
+<h4 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight">Home Prices</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Property values</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-lg border border-primary/10 bg-white dark:bg-slate-800 p-4 shadow-sm hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-primary text-2xl">home</span>
+<div class="flex flex-col">
+<h4 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight">Affordability</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">How much house?</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-lg border border-primary/10 bg-white dark:bg-slate-800 p-4 shadow-sm hover:border-primary/30 transition-colors">
+<span class="material-symbols-outlined text-primary text-2xl">apps</span>
+<div class="flex flex-col">
+<h4 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight">More Tools</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">View all 20+</p>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-xl p-4 flex items-center gap-4">
+<div class="bg-primary rounded-lg p-3 text-white flex items-center justify-center">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-slate-900 dark:text-slate-100">AI Assistant</h4>
+<p class="text-sm text-slate-600 dark:text-slate-400">Ask me anything about mortgage rates or loan qualifications.</p>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</section>
+<section class="space-y-3">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold px-1">Recommended for You</h3>
+<div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700">
+<div class="h-32 bg-primary/10 relative">
+<div class="absolute inset-0 bg-gradient-to-r from-primary/40 to-transparent"></div>
+<div class="absolute bottom-3 left-4">
+<span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Top Offer</span>
+</div>
+<img class="w-full h-full object-cover mix-blend-overlay" data-alt="Modern house architecture at sunset" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDopvz1Tntg-LR7LMHuM4RcQ0izoblv5o2p_mjPICcGDMTM4aokXSaa4sE9D70RPjDGdXouwOZMOwQ5qHQeZamL_DiocM2Yb6ApG0wfK6M0t-ekkHqvGQ51dXX6J4rgdm6nAkh4bfEgofic9C0_ZCFtC4kXt_9aqrI6n_cqeHGVVsSFGPVycRGvt5SZmm2slelo2Deibic4u5Vf42hEUFXR-rcqbD1D9F2kh0Ofmb9d_a3eIfGb7KmQkwGP4eYo9m2SX1sr7uYpsWYK"/>
+</div>
+<div class="p-4">
+<h4 class="font-bold text-slate-900 dark:text-slate-100">Time to Refinance?</h4>
+<p class="text-sm text-slate-600 dark:text-slate-400 mt-1">Rates have dropped in your area. See how much you could save monthly.</p>
+<button class="mt-4 w-full bg-primary text-white font-bold py-2 rounded-lg">Check Savings</button>
+</div>
+</div>
+</section>
+<section class="space-y-3">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold px-1">Local Market Status</h3>
+<div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-700 space-y-4">
+<div class="aspect-video bg-slate-200 dark:bg-slate-700 rounded-lg relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Stylized map showing city grid layout" data-location="Chicago" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApPfxub1e8a3dMT1LiXRxfwvQxCLjlbbXQaxW7KHOyTMbNhI4FA7dGzKzAt_79dezovsWe6pPjJSWUk4ReMdNLqqmFOo8f-wbfmeQ9BokwZB0yqbEFUPldq_rIT3MVu06okeTox9u4g3xllBL9Ly9LH-1bKdG0mbPEFNNlRIwqWZSA697ZaH0tYdBZWMRRaq8avIwlZpYDwP2qMoKULEob71WilsMKY4zPS--aJ_ZoUH_U4g_7GggG9_H-rMaQX8Z3xOqO1FDrYqKp"/>
+<div class="absolute top-2 right-2 bg-white/90 dark:bg-slate-900/90 px-2 py-1 rounded text-[10px] font-bold shadow-sm">
+                            LIVE TRENDS
+                        </div>
+</div>
+<div class="grid grid-cols-3 gap-2 text-center">
+<div>
+<p class="text-[10px] text-slate-500 uppercase font-bold">Avg Price</p>
+<p class="text-sm font-bold text-primary">$425k</p>
+<span class="text-[10px] text-green-500 font-bold">↑ 2.4%</span>
+</div>
+<div>
+<p class="text-[10px] text-slate-500 uppercase font-bold">Inventory</p>
+<p class="text-sm font-bold text-primary">1.2k</p>
+<span class="text-[10px] text-red-500 font-bold">↓ 0.8%</span>
+</div>
+<div>
+<p class="text-[10px] text-slate-500 uppercase font-bold">Days on Market</p>
+<p class="text-sm font-bold text-primary">42</p>
+<span class="text-[10px] text-slate-400 font-bold">Stable</span>
+</div>
+</div>
+</div>
+</section>
+<section class="pt-4">
+<div class="w-full h-24 bg-slate-200 dark:bg-slate-800 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700">
+<p class="text-slate-400 dark:text-slate-600 font-bold text-sm tracking-widest uppercase">Banner Ad Space</p>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex justify-around items-center px-2 py-3 z-50">
+<a class="flex flex-col items-center gap-1 text-primary" href="#"><span class="material-symbols-outlined fill-1">home</span><p class="text-[10px] font-bold">Home</p></a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#"><span class="material-symbols-outlined">verified_user</span><p class="text-[10px] font-medium">Insurance</p></a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">show_chart</span>
+<p class="text-[10px] font-medium">Market</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium">Settings</p>
+</a>
+</nav>
+</div>
+</body></html>

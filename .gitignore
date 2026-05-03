@@ -1,0 +1,138 @@
+# ================================
+
+# FLUTTER / DART
+
+# ================================
+
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+.pub-cache/
+build/
+coverage/
+
+# Optional (uncomment if you don’t want lock file)
+
+# pubspec.lock
+
+# ================================
+
+# ANDROID
+
+# ================================
+
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+
+# Generated files
+
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# APK / App Bundle
+
+*.apk
+*.aab
+
+# ================================
+
+# IOS
+
+# ================================
+
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/App.framework
+ios/Flutter/engine/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+
+# ================================
+
+# MACOS / LINUX / WINDOWS
+
+# ================================
+
+linux/build/
+macos/Build/
+windows/flutter/ephemeral/
+
+# ================================
+
+# WEB
+
+# ================================
+
+build/web/
+
+# ================================
+
+# IDE / EDITOR
+
+# ================================
+
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/  # remove this line if you want to keep VS Code settings
+
+# ================================
+
+# SYSTEM FILES
+
+# ================================
+
+.DS_Store
+Thumbs.db
+
+# ================================
+
+# LOGS & TEMP FILES
+
+# ================================
+
+*.log
+*.tmp
+*.swp
+
+# ================================
+
+# ENV / SECRETS
+
+# ================================
+
+.env
+android/key.properties
+*.jks
+*.keystore
+
+# ================================
+
+# FLUTTER GENERATED (IMPORTANT)
+
+# ================================
+
+**/ios/Flutter/.last_build_id
+**/doc/api/
+
+# ================================
+
+# MISC
+
+# ================================
+
+*.class
+*.pyc
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/

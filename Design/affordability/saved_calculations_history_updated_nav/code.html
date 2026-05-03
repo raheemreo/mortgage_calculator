@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Saved Calculations - USA Mortgage Calculator Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f7f9fb",
+                        "on-secondary-container": "#57657a",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "on-surface": "#191c1e",
+                        "inverse-surface": "#2d3133",
+                        "on-surface-variant": "#434655",
+                        "on-primary-fixed": "#001552",
+                        "on-tertiary-container": "#7be7d9",
+                        "secondary-fixed": "#d5e3fc",
+                        "surface-dim": "#d8dadc",
+                        "secondary-container": "#d5e3fc",
+                        "on-primary-container": "#cad3ff",
+                        "surface-container-highest": "#e0e3e5",
+                        "inverse-on-surface": "#eff1f3",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#00685f",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "primary": "#0037b1",
+                        "tertiary": "#004e47",
+                        "outline": "#747686",
+                        "on-tertiary-fixed": "#00201d",
+                        "inverse-primary": "#b7c4ff",
+                        "tertiary-fixed": "#89f5e7",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "primary-container": "#1e4ed8",
+                        "surface-bright": "#f7f9fb",
+                        "surface-variant": "#e0e3e5",
+                        "outline-variant": "#c4c5d7",
+                        "tertiary-fixed-dim": "#6bd8cb",
+                        "background": "#f7f9fb",
+                        "surface-container-high": "#e6e8ea",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#dce1ff",
+                        "secondary": "#515f74",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-tint": "#2251da",
+                        "surface-container": "#eceef0",
+                        "on-tertiary-fixed-variant": "#005049",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "error-container": "#ffdad6",
+                        "on-background": "#191c1e",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-secondary": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1.5rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .custom-shadow {
+            box-shadow: 0 8px 24px rgba(25, 28, 30, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style></head>
+<body class="bg-background text-on-surface min-h-screen pb-48">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 glass-nav border-b border-outline-variant/20 px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">menu</span>
+<h1 class="text-headline-md font-semibold text-on-surface">Saved Calculations</h1>
+</div>
+<div class="flex items-center gap-4"><button class="text-sm font-semibold text-error/80 hover:text-error transition-colors px-2 py-1">Delete All</button>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+</div>
+</header>
+<main class="max-w-3xl mx-auto px-6 pt-8">
+<!-- Search Section -->
+<div class="mb-10">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-outline" placeholder="Search by property name or location..." type="text"/>
+</div>
+</div><!-- Date Range Filters -->
+<div class="mb-8 overflow-x-auto no-scrollbar pb-2">
+<div class="flex gap-3 min-w-max px-1">
+<button class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm font-semibold shadow-sm transition-all">
+      This Week
+    </button>
+<button class="px-5 py-2 bg-surface-container-high text-on-surface-variant hover:bg-surface-dim rounded-full text-sm font-medium transition-all">
+      This Month
+    </button>
+<button class="px-5 py-2 bg-surface-container-high text-on-surface-variant hover:bg-surface-dim rounded-full text-sm font-medium transition-all">
+      Last 3 Months
+    </button>
+<button class="px-5 py-2 bg-surface-container-high text-on-surface-variant hover:bg-surface-dim rounded-full text-sm font-medium transition-all">
+      Year to Date
+    </button>
+</div>
+</div>
+<!-- History List -->
+<div class="space-y-6">
+<!-- Calculation Card 1 -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 custom-shadow group relative overflow-hidden border border-outline-variant/10">
+<div class="flex justify-between items-start mb-6">
+<div>
+<p class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline mb-1">Oct 24, 2023</p>
+<h3 class="text-xl font-bold text-on-surface">Suburban Family Home</h3>
+</div>
+<button class="text-error/60 hover:text-error transition-colors p-2 hover:bg-error-container/20 rounded-full">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-12 mb-6">
+<div>
+<p class="text-sm text-on-surface-variant mb-1">Estimated Budget</p>
+<p class="text-2xl font-bold text-primary">$845,000</p>
+</div>
+<div>
+<p class="text-sm text-on-surface-variant mb-1">Monthly Payment</p>
+<p class="text-2xl font-bold text-on-surface">$4,120<span class="text-sm font-normal text-outline">/mo</span></p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant/10">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-tertiary/10 text-tertiary rounded-full text-xs font-semibold">7.2% APR</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-semibold">30 Year Fixed</span>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary px-6 py-2.5 rounded-full font-semibold transition-all flex items-center gap-2 group">
+                        View Details
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Calculation Card 2 -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 custom-shadow group relative overflow-hidden border border-outline-variant/10">
+<div class="flex justify-between items-start mb-6">
+<div>
+<p class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline mb-1">Sep 12, 2023</p>
+<h3 class="text-xl font-bold text-on-surface">Downtown Loft Condo</h3>
+</div>
+<button class="text-error/60 hover:text-error transition-colors p-2 hover:bg-error-container/20 rounded-full">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-12 mb-6">
+<div>
+<p class="text-sm text-on-surface-variant mb-1">Estimated Budget</p>
+<p class="text-2xl font-bold text-primary">$520,000</p>
+</div>
+<div>
+<p class="text-sm text-on-surface-variant mb-1">Monthly Payment</p>
+<p class="text-2xl font-bold text-on-surface">$2,850<span class="text-sm font-normal text-outline">/mo</span></p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant/10">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-tertiary/10 text-tertiary rounded-full text-xs font-semibold">6.8% APR</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-semibold">15 Year Fixed</span>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary px-6 py-2.5 rounded-full font-semibold transition-all flex items-center gap-2">
+                        View Details
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Calculation Card 3 -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 custom-shadow group relative overflow-hidden border border-outline-variant/10">
+<div class="flex justify-between items-start mb-6">
+<div>
+<p class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline mb-1">Aug 05, 2023</p>
+<h3 class="text-xl font-bold text-on-surface">Beachfront Rental Unit</h3>
+</div>
+<button class="text-error/60 hover:text-error transition-colors p-2 hover:bg-error-container/20 rounded-full">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<div class="flex flex-col md:flex-row gap-6 md:gap-12 mb-6">
+<div>
+<p class="text-sm text-on-surface-variant mb-1">Estimated Budget</p>
+<p class="text-2xl font-bold text-primary">$1,250,000</p>
+</div>
+<div>
+<p class="text-sm text-on-surface-variant mb-1">Monthly Payment</p>
+<p class="text-2xl font-bold text-on-surface">$6,180<span class="text-sm font-normal text-outline">/mo</span></p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant/10">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-tertiary/10 text-tertiary rounded-full text-xs font-semibold">7.5% APR</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-semibold">30 Year Fixed</span>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary px-6 py-2.5 rounded-full font-semibold transition-all flex items-center gap-2">
+                        View Details
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Banner Ad Space -->
+<div class="mt-12 mb-8 p-4 bg-surface-container-high rounded-xl border border-outline-variant/30 flex items-center justify-center min-h-[120px]">
+<div class="text-center">
+<p class="text-[0.625rem] font-bold text-outline uppercase tracking-[0.2em] mb-2">Advertisement</p>
+<p class="text-sm text-on-secondary-fixed-variant font-medium">Refinance now and save up to $400/month.</p>
+<button class="mt-2 text-primary font-bold text-xs uppercase hover:underline">Check Rates</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 right-0 glass-nav border-t border-outline-variant/20 px-4 py-3 pb-8 flex items-center justify-around z-50"><div class="flex flex-col items-center gap-1 cursor-pointer transition-colors text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[0.625rem] font-medium">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer transition-colors text-[#1E4ED8]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calculate</span>
+<span class="text-[0.625rem] font-bold">Calculator</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer transition-colors text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="text-[0.625rem] font-medium">Saved</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer transition-colors text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[0.625rem] font-medium">Settings</span>
+</div></nav>
+</body></html>
