@@ -1,4 +1,5 @@
 import 'dart:math';
+import '../widgets/gradient_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -266,7 +267,7 @@ class _MarketComparisonScreenState extends State<MarketComparisonScreen> {
 
   // ── App Bar ──────────────────────────────────────────────────────────────
   PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return AppBar(
+    return GradientAppBar(
       backgroundColor: context.cs.surface,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
@@ -275,7 +276,7 @@ class _MarketComparisonScreenState extends State<MarketComparisonScreen> {
         child: Container(height: 1, color: context.borderColor),
       ),
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: _primaryBlue),
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () => Navigator.pop(context),
       ),
       title: Text(
@@ -290,7 +291,7 @@ class _MarketComparisonScreenState extends State<MarketComparisonScreen> {
       centerTitle: true,
       actions: [
         IconButton(
-          icon: const Icon(Icons.share_outlined, color: _primaryBlue),
+          icon: const Icon(Icons.share_outlined, color: Colors.white),
           onPressed: () {},
         ),
       ],
@@ -986,23 +987,51 @@ class _MarketComparisonScreenState extends State<MarketComparisonScreen> {
         elevation: 0,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+            icon: Text('🏠', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.compare_arrows_outlined),
-            activeIcon: Icon(Icons.compare_arrows),
+            icon: Text('⚖️', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('⚖️', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Compare',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shield_outlined),
-            activeIcon: Icon(Icons.shield),
+            icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Insurance',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
+            icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Settings',
           ),
         ],

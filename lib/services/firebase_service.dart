@@ -34,9 +34,17 @@ class FirebaseService {
       FlutterError.onError =
           FirebaseCrashlytics.instance.recordFlutterFatalError;
 
-      // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework
+      // FIX Crash #1: Pass all uncaught async errors to Crashlytics.
+      // Previously, PlatformDispatcher.onError would surface FormError as
+      // "Instance of 'FormError'" because .toString() wasn't called.
+      // Now we safely stringify the error before recording.
       PlatformDispatcher.instance.onError = (error, stack) {
-        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        FirebaseCrashlytics.instance.recordError(
+          error,
+          stack,
+          reason: error.toString(), // explicit reason avoids opaque type names
+          fatal: true,
+        );
         return true;
       };
     }
@@ -55,11 +63,11 @@ class FirebaseService {
           'Hi! I can help you with mortgage calculations, DTI ratios, loan comparisons, and more. What would you like to know?',
       'insurance_marketplace_enabled': true,
       'promo_banner_text': '',
-      'latest_version_name': '1.0.0',
-      'latest_version_code': 1,
+      'latest_version_name': '3.0.1',
+      'latest_version_code': 10,
       'update_required': false,
       'update_message':
-          'A new version of USA Mortgage Pro is available with improvements and bug fixes. Update now for the best experience.',
+          'A new version of Mortgage Calculator - PITI, DTI is available with improvements and bug fixes. Update now for the best experience.',
     });
 
     // 4. Trigger network-dependent tasks in the background
@@ -147,18 +155,38 @@ class FirebaseService {
     final messaging = FirebaseMessaging.instance;
 
     // 1. Request permission
-    final settings = await messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-      provisional: false,
-    );
-    debugPrint('🔔 FCM permission: ${settings.authorizationStatus}');
+    // FIX Crash #3: Wrap in try/catch — requestPermission() throws
+    // PlatformException on devices with outdated/missing Google Play Services.
+    NotificationSettings? settings;
+    try {
+      settings = await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+        provisional: false,
+      );
+      debugPrint('🔔 FCM permission: ${settings.authorizationStatus}');
+    } catch (e, stack) {
+      debugPrint('⚠️ FCM requestPermission failed: $e');
+      if (!kDebugMode) {
+        FirebaseCrashlytics.instance.recordError(
+          e, stack,
+          reason: 'FCM requestPermission failed',
+          fatal: false,
+        );
+      }
+    }
 
     // 2. Log the FCM token in debug mode
+    // FIX Crash #3: Wrap getToken() separately — it can throw
+    // PlatformException independently of requestPermission().
     if (kDebugMode) {
-      final token = await messaging.getToken();
-      debugPrint('📲 FCM_TOKEN: $token');
+      try {
+        final token = await messaging.getToken();
+        debugPrint('📲 FCM_TOKEN: $token');
+      } catch (e) {
+        debugPrint('⚠️ FCM getToken failed: $e');
+      }
     }
 
     // 3. Foreground messages

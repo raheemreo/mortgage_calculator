@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -177,7 +178,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
         : 50.0;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: context.pageBackground,
       appBar: _buildAppBar(),
       // ── Body: scrollable content + fixed bottom banner ──────────────────
       body: Column(
@@ -225,16 +226,16 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
   // ── AppBar ─────────────────────────────────────────────────────────────────
 
   PreferredSizeWidget _buildAppBar() {
-    return AppBar(
+    return GradientAppBar(
       title: Text(
         'Market Comparison',
         style: GoogleFonts.inter(
           fontWeight: FontWeight.bold,
-          color: context.cs.surface,
+          color: Colors.white,
         ),
       ),
       backgroundColor: const Color(0xFF0B3D91),
-      iconTheme: IconThemeData(color: context.cs.surface),
+      iconTheme: const IconThemeData(color: Colors.white),
       elevation: 0,
     );
   }
@@ -276,7 +277,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
           style: GoogleFonts.inter(
             fontSize: 10,
             fontWeight: FontWeight.bold,
-            color: const Color(0xFF0B3D91),
+            color: context.textPrimary,
           ),
         ),
         const SizedBox(height: 4),
@@ -298,14 +299,15 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
       decoration: BoxDecoration(
         color: context.cs.surface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: context.borderColor),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<CityData>(
           isExpanded: true,
           value: effectiveSelection,
-          icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF0B3D91)),
-          style: GoogleFonts.inter(fontSize: 14, color: context.textPrimary87),
+          icon: Icon(Icons.arrow_drop_down, color: context.primaryColor),
+          dropdownColor: context.cs.surface,
+          style: GoogleFonts.inter(fontSize: 14, color: context.textPrimary),
           onChanged: onChanged,
           items: (() {
             // Ensure unique items by city + state to avoid "2 or more items with same value" crash
@@ -385,7 +387,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
       decoration: BoxDecoration(
         color: context.cs.surface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: context.borderColor),
         boxShadow: [
           BoxShadow(
             color: context.textPrimary.withValues(alpha: 0.04),
@@ -479,8 +481,8 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
+        color: context.isDark ? context.cardColor : Colors.grey.shade50,
+        border: Border(bottom: BorderSide(color: context.borderColor)),
       ),
       child: Row(
         children: [
@@ -491,7 +493,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
               style: GoogleFonts.inter(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey.shade500,
+                color: context.textSecondary,
               ),
             ),
           ),
@@ -502,7 +504,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
               style: GoogleFonts.inter(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF0B3D91),
+                color: context.textPrimary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -514,7 +516,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
               style: GoogleFonts.inter(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF0B3D91),
+                color: context.textPrimary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -536,7 +538,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey.shade100)),
+        border: Border(bottom: BorderSide(color: context.borderColor)),
       ),
       child: Row(
         children: [
@@ -548,7 +550,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
                 metric,
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w500,
-                  color: Colors.grey.shade600,
+                  color: context.textSecondary,
                   fontSize: 13,
                 ),
               ),
@@ -564,7 +566,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
                 valA,
                 style: GoogleFonts.inter(
                   fontWeight: aWins ? FontWeight.bold : FontWeight.normal,
-                  color: aWins ? winColor : context.textPrimary87,
+                  color: aWins ? winColor : context.textPrimary,
                   fontSize: 13,
                 ),
                 textAlign: TextAlign.center,
@@ -581,7 +583,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
                 valB,
                 style: GoogleFonts.inter(
                   fontWeight: bWins ? FontWeight.bold : FontWeight.normal,
-                  color: bWins ? winColor : context.textPrimary87,
+                  color: bWins ? winColor : context.textPrimary,
                   fontSize: 13,
                 ),
                 textAlign: TextAlign.center,
@@ -599,7 +601,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
     final bLeads = bWins > aWins;
 
     return Container(
-      color: Colors.grey.shade50,
+      color: context.isDark ? context.cardColor : Colors.grey.shade50,
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       child: Row(
         children: [
@@ -610,7 +612,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
               style: GoogleFonts.inter(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey.shade500,
+                color: context.textSecondary,
               ),
             ),
           ),
@@ -628,7 +630,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
         decoration: BoxDecoration(
           color: highlight
               ? const Color(0xFF1E8449).withValues(alpha: 0.12)
-              : Colors.grey.shade200,
+              : (context.isDark ? Colors.grey.shade800 : Colors.grey.shade200),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
@@ -636,7 +638,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
           style: GoogleFonts.inter(
             fontSize: 13,
             fontWeight: FontWeight.bold,
-            color: highlight ? const Color(0xFF1E8449) : Colors.grey.shade500,
+            color: highlight ? const Color(0xFF1E8449) : (context.isDark ? Colors.grey.shade400 : Colors.grey.shade600),
           ),
         ),
       ),
@@ -671,7 +673,7 @@ class _CityComparisonScreenState extends State<CityComparisonScreen> {
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: context.cs.surface,
+                  color: Colors.white,
                   letterSpacing: 1,
                 ),
               ),

@@ -20,6 +20,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  FRED API CONFIG
@@ -28,17 +29,17 @@ import 'package:http/http.dart' as http;
 class FredConfig {
   FredConfig._();
 
-  static const String _apiKey = 'c474fce3dd81f47defc2a031d651021b';
+  static String get _apiKey => dotenv.env['FRED_API_KEY'] ?? '';
   static const String _base =
       'https://api.stlouisfed.org/fred/series/observations';
 
   // Fetch latest 52 observations (1 year of weekly data) for the trend chart.
-  static const String url30Y =
+  static String get url30Y =>
       '$_base?series_id=MORTGAGE30US&api_key=$_apiKey&file_type=json'
       '&sort_order=desc&limit=52';
 
   // Only need the most recent 15Y observation.
-  static const String url15Y =
+  static String get url15Y =>
       '$_base?series_id=MORTGAGE15US&api_key=$_apiKey&file_type=json'
       '&sort_order=desc&limit=1';
 

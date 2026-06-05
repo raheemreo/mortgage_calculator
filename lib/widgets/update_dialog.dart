@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../core/constants/theme_extensions.dart';
 
 /// Shows an in-app update dialog.
 ///
@@ -58,7 +59,7 @@ class UpdateDialog extends StatelessWidget {
       canPop: !isForced,
       child: Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        backgroundColor: Colors.white,
+        backgroundColor: context.cardColor,
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -94,10 +95,10 @@ class UpdateDialog extends StatelessWidget {
               // Title
               Text(
                 isForced ? 'Update Required' : 'Update Available',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF0F172A),
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(height: 6),
@@ -128,9 +129,9 @@ class UpdateDialog extends StatelessWidget {
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xFF475569),
+                  color: context.textSecondary,
                   height: 1.5,
                 ),
               ),
@@ -163,9 +164,9 @@ class UpdateDialog extends StatelessWidget {
                 const SizedBox(height: 8),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text(
+                  child: Text(
                     'Maybe Later',
-                    style: TextStyle(color: Color(0xFF94A3B8), fontSize: 13),
+                    style: TextStyle(color: context.textSecondary, fontSize: 13),
                   ),
                 ),
               ],

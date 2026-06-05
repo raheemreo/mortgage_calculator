@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -135,13 +136,13 @@ class _CreditCardScheduleScreenState extends State<CreditCardScheduleScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
-      appBar: AppBar(
+      appBar: GradientAppBar(
         backgroundColor: context.cs.surface,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: context.textSecondary,
+            color: Colors.white,
             size: 20,
           ),
           onPressed: () => Navigator.pop(context),
@@ -149,7 +150,7 @@ class _CreditCardScheduleScreenState extends State<CreditCardScheduleScreen> {
         title: Text(
           'Payment Schedule',
           style: TextStyle(
-            color: context.textPrimary,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),

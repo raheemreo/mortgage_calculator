@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -16,21 +17,14 @@ class NotificationScreen extends StatelessWidget {
     final notifications = provider.notifications;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
-      appBar: AppBar(
+      backgroundColor: context.pageBackground,
+      appBar: GradientAppBar(
         title: Text(
           'Notifications',
           style: GoogleFonts.manrope(
             fontWeight: FontWeight.bold,
-            color: const Color(0xFF0F172A),
+            color: Colors.white,
           ),
-        ),
-        backgroundColor: context.cs.surface,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF0F172A)),
-          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           if (notifications.isNotEmpty)
@@ -39,7 +33,7 @@ class NotificationScreen extends StatelessWidget {
               child: const Text(
                 'Clear All',
                 style: TextStyle(
-                  color: Color(0xFF0B3D91),
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -47,7 +41,7 @@ class NotificationScreen extends StatelessWidget {
         ],
       ),
       body: notifications.isEmpty
-          ? _buildEmptyState()
+          ? _buildEmptyState(context)
           : ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: notifications.length,
@@ -59,7 +53,7 @@ class NotificationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -67,13 +61,13 @@ class NotificationScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: const Color(0xFFF1F5F9),
+              color: context.isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.notifications_none_rounded,
               size: 64,
-              color: Color(0xFF94A3B8),
+              color: context.textSecondary,
             ),
           ),
           const SizedBox(height: 16),
@@ -82,13 +76,13 @@ class NotificationScreen extends StatelessWidget {
             style: GoogleFonts.manrope(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF475569),
+              color: context.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'We will notify you about updates and news.',
-            style: TextStyle(color: const Color(0xFF64748B)),
+            style: TextStyle(color: context.textSecondary),
           ),
         ],
       ),
@@ -117,8 +111,8 @@ class NotificationScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: item.isRead ? Colors.transparent : Colors.blue.withAlpha(10),
-            border: const Border(bottom: BorderSide(color: Color(0xFFF1F5F9))),
+            color: item.isRead ? Colors.transparent : context.cs.primary.withValues(alpha: 0.05),
+            border: Border(bottom: BorderSide(color: context.borderColor)),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,15 +122,15 @@ class NotificationScreen extends StatelessWidget {
                 height: 44,
                 decoration: BoxDecoration(
                   color: item.isRead
-                      ? const Color(0xFFF1F5F9)
-                      : const Color(0xFFDBEAFE),
+                      ? (context.isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9))
+                      : (context.isDark ? const Color(0xFF1E3A8A) : const Color(0xFFDBEAFE)),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.notifications_active_rounded,
                   color: item.isRead
-                      ? const Color(0xFF94A3B8)
-                      : const Color(0xFF2563EB),
+                      ? context.textSecondary
+                      : (context.isDark ? const Color(0xFF60A5FA) : const Color(0xFF2563EB)),
                   size: 20,
                 ),
               ),
@@ -156,7 +150,7 @@ class NotificationScreen extends StatelessWidget {
                                   ? FontWeight.w600
                                   : FontWeight.w800,
                               fontSize: 15,
-                              color: const Color(0xFF0F172A),
+                              color: context.textPrimary,
                             ),
                           ),
                         ),
@@ -164,8 +158,8 @@ class NotificationScreen extends StatelessWidget {
                           Container(
                             width: 8,
                             height: 8,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFF2563EB),
+                            decoration: BoxDecoration(
+                              color: context.isDark ? const Color(0xFF60A5FA) : const Color(0xFF2563EB),
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -176,16 +170,16 @@ class NotificationScreen extends StatelessWidget {
                       item.body,
                       style: TextStyle(
                         fontSize: 14,
-                        color: const Color(0xFF475569),
+                        color: context.textSecondary,
                         height: 1.4,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       timeStr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
-                        color: Color(0xFF94A3B8),
+                        color: context.textSecondary.withValues(alpha: 0.7),
                         fontWeight: FontWeight.w500,
                       ),
                     ),

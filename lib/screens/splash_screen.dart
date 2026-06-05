@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import '../core/constants/app_colors.dart';
-import '../core/constants/theme_extensions.dart';
 
 class SplashScreen extends StatefulWidget {
   final Widget nextScreen;
@@ -76,14 +75,14 @@ class _SplashScreenState extends State<SplashScreen>
               width: 128,
               height: 128,
               decoration: BoxDecoration(
-                color: context.cs.surface.withValues(alpha: 0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(32),
                 border: Border.all(
-                  color: context.cs.surface.withValues(alpha: 0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: context.textPrimary.withValues(alpha: 0.2),
+                    color: Colors.black.withValues(alpha: 0.2),
                     blurRadius: 40,
                     offset: const Offset(0, 20),
                   ),
@@ -92,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen>
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Icon(Icons.home, color: context.cs.surface, size: 60),
+                  const Icon(Icons.home, color: Colors.white, size: 60),
                   Positioned(
                     bottom: 24,
                     right: 24,
@@ -123,7 +122,7 @@ class _SplashScreenState extends State<SplashScreen>
                 Text(
                   'USA Mortgage &',
                   style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                    color: context.cs.surface,
+                    color: Colors.white,
                     fontWeight: FontWeight.w800,
                     height: 1.1,
                   ),
@@ -133,7 +132,7 @@ class _SplashScreenState extends State<SplashScreen>
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                      color: context.cs.surface,
+                      color: Colors.white,
                       fontWeight: FontWeight.w800,
                       height: 1.1,
                     ),
@@ -156,7 +155,7 @@ class _SplashScreenState extends State<SplashScreen>
             Text(
               'PROFESSIONAL FINANCIAL TOOLS',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: context.cs.surface.withValues(alpha: 0.7),
+                color: Colors.white.withValues(alpha: 0.7),
                 fontWeight: FontWeight.w600,
                 letterSpacing: 2.0,
               ),
@@ -171,7 +170,7 @@ class _SplashScreenState extends State<SplashScreen>
                     width: 280,
                     height: 6,
                     decoration: BoxDecoration(
-                      color: context.cs.surface.withValues(alpha: 0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: AnimatedBuilder(
@@ -203,7 +202,7 @@ class _SplashScreenState extends State<SplashScreen>
                   Text(
                     'LOADING...',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: context.cs.surface.withValues(alpha: 0.5),
+                      color: Colors.white.withValues(alpha: 0.5),
                       fontWeight: FontWeight.w700,
                       letterSpacing: 4.0,
                     ),

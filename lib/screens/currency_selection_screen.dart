@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../services/ad_service.dart';
@@ -118,26 +119,29 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
     );
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
-      appBar: AppBar(
-        backgroundColor: context.cs.surface,
+      backgroundColor: context.pageBackground,
+      appBar: GradientAppBar(
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF333333)),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Currency & Region',
           style: TextStyle(
-            color: Color(0xFF333333),
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
         centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(color: Colors.grey.shade200, height: 1),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: SizedBox(
+            height: 1,
+            child: Divider(height: 1, color: Colors.white24),
+          ),
         ),
       ),
 
@@ -158,12 +162,13 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ── Format preview card ─────────────────────────────────────
-            const Text(
+            Text(
               'Regional Format Preview',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 letterSpacing: -0.5,
+                color: context.textPrimary,
               ),
             ),
             const SizedBox(height: 16),
@@ -189,7 +194,7 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
                         Text(
                           'SELECTED FORMAT',
                           style: TextStyle(
-                            color: context.cs.surface.withValues(alpha: 0.8),
+                            color: Colors.white.withValues(alpha: 0.8),
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                             letterSpacing: 1.2,
@@ -198,8 +203,8 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
                         const SizedBox(height: 4),
                         Text(
                           selectedCurrency['format']!,
-                          style: TextStyle(
-                            color: context.cs.surface,
+                          style: const TextStyle(
+                            color: Colors.white,
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                           ),
@@ -208,7 +213,7 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
                         Text(
                           selectedCurrency['code']!.split(' - ').last,
                           style: TextStyle(
-                            color: context.cs.surface.withValues(alpha: 0.9),
+                            color: Colors.white.withValues(alpha: 0.9),
                             fontSize: 12,
                           ),
                         ),
@@ -218,7 +223,7 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
                   Icon(
                     Icons.public,
                     size: 48,
-                    color: context.cs.surface.withValues(alpha: 0.3),
+                    color: Colors.white.withValues(alpha: 0.3),
                   ),
                 ],
               ),
@@ -229,12 +234,13 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
             // ── Currency selection list ───────────────────────────────────
             // FIX: Plain Column — no RadioGroup wrapper needed.
             // Provider + GestureDetector handles selection correctly.
-            const Text(
+            Text(
               'Preferred Currency',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 letterSpacing: -0.5,
+                color: context.textPrimary,
               ),
             ),
             const SizedBox(height: 16),
@@ -278,12 +284,12 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: context.cs.surface,
+            color: context.cardColor,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: isSelected
                   ? const Color(0xFF1E8449)
-                  : Colors.grey.shade200,
+                  : context.borderColor,
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -303,10 +309,10 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
                   children: [
                     Text(
                       currency['code']!,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF333333),
+                        color: context.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -314,7 +320,7 @@ class _CurrencySelectionScreenState extends State<CurrencySelectionScreen> {
                       currency['format']!,
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.grey.shade600,
+                        color: context.textSecondary,
                       ),
                     ),
                   ],

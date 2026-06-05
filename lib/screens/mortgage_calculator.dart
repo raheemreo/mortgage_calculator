@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,9 @@ import '../providers/settings_provider.dart';
 
 import 'amortization_schedule_screen.dart';
 import '../core/constants/theme_extensions.dart';
+import '../models/affordability_model.dart';
+import '../providers/affordability_provider.dart';
+import 'saved_calculations_screen.dart';
 
 class MortgageCalculatorScreen extends StatefulWidget {
   const MortgageCalculatorScreen({super.key});
@@ -40,7 +44,6 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
   // ── Design Constants ───────────────────────────────────────────────────────
   static const Color _primaryBlue = Color(0xFF1E3A8A);
   static const Color _emerald = Color(0xFF10B981);
-  static final Color _slate = const Color(0xFF64748B);
 
   @override
   void initState() {
@@ -146,6 +149,198 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
     );
   }
 
+  void _saveCalculation() {
+    final String pText = _principalController.text.replaceAll(',', '');
+    final double homePrice = double.tryParse(pText) ?? 0;
+
+    if (homePrice <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a valid home price before saving.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    _calculate(shouldUnfocus: false);
+
+    final settings = Provider.of<SettingsProvider>(context, listen: false);
+    final formatCurrency = NumberFormat.currency(
+      symbol: settings.currencySymbol,
+      decimalDigits: 0,
+    );
+
+    final defaultName = 'Mortgage - ${formatCurrency.format(homePrice)}';
+    final nameCtrl = TextEditingController(text: defaultName);
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: context.cardColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          'Save Calculation',
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontWeight: FontWeight.bold,
+            color: context.textPrimary,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Enter a name to identify this calculation:',
+              style: TextStyle(
+                fontSize: 13,
+                color: context.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: nameCtrl,
+              autofocus: true,
+              style: TextStyle(
+                color: context.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+              decoration: InputDecoration(
+                hintText: 'e.g. My Next Home',
+                hintStyle: TextStyle(
+                  color: context.textSecondary.withValues(alpha: 0.5),
+                ),
+                filled: true,
+                fillColor: context.inputFill,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 14,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.borderColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.borderColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.primaryColor, width: 2),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: context.textSecondary,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              final name = nameCtrl.text.trim().isNotEmpty
+                  ? nameCtrl.text.trim()
+                  : defaultName;
+
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+              final primaryColor = context.primaryColor;
+              final navigator = Navigator.of(context);
+              final dialogNavigator = Navigator.of(ctx);
+
+              final String dText = _downPaymentController.text.replaceAll(',', '');
+              final double downPayment = double.tryParse(dText) ?? 0;
+              final double interestRate = double.tryParse(_interestController.text) ?? 0;
+              final int years = int.parse(_selectedTerm.split(' ')[0]);
+              final double principal = homePrice - downPayment;
+
+              double taxAndIns = 0;
+              if (_includeEscrow) {
+                taxAndIns = (homePrice * 0.015) / 12;
+              }
+
+              double pmiVal = 0;
+              if (_includePmi && downPayment < (homePrice * 0.20)) {
+                pmiVal = (principal * 0.005) / 12;
+              }
+
+              final input = AffordabilityInput(
+                annualIncome: homePrice,
+                monthlyDebts: 0,
+                downPayment: downPayment,
+                loanTerm: years,
+                interestRate: interestRate,
+              );
+
+              final result = AffordabilityResult(
+                maxHomePrice: homePrice,
+                monthlyMortgage: _piAmount,
+                totalMonthlyPayment: _monthlyPayment,
+                debtToIncomeRatio: 0,
+                breakdown: PaymentBreakdown(
+                  principalAndInterest: _piAmount,
+                  propertyTaxes: _includeEscrow ? taxAndIns : 0,
+                  homeInsurance: 0,
+                  pmi: _includePmi ? pmiVal : 0,
+                ),
+              );
+
+              final metadata = {
+                'homePrice': homePrice,
+                'includePmi': _includePmi,
+                'includeEscrow': _includeEscrow,
+                'pmiMonthly': pmiVal,
+                'taxInsMonthly': taxAndIns,
+              };
+
+              await context.read<AffordabilityProvider>().saveCustomCalculation(
+                name,
+                input,
+                result,
+                calculatorType: CalculatorType.mortgage,
+                metadata: metadata,
+              );
+
+              dialogNavigator.pop();
+              scaffoldMessenger.showSnackBar(
+                SnackBar(
+                  content: const Text('Calculation saved successfully!'),
+                  behavior: SnackBarBehavior.floating,
+                  action: SnackBarAction(
+                    label: 'View',
+                    textColor: primaryColor,
+                    onPressed: () {
+                      navigator.push(
+                        MaterialPageRoute(
+                          builder: (_) => const SavedCalculationsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              'Save',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: context.primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
   // ── Build ──────────────────────────────────────────────────────────────────
 
   @override
@@ -157,7 +352,7 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
     );
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: context.pageBackground,
       appBar: _buildAppBar(),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -183,13 +378,13 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
   // ── UI Components ──────────────────────────────────────────────────────────
 
   PreferredSizeWidget _buildAppBar() {
-    return AppBar(
+    return GradientAppBar(
       backgroundColor: context.cs.surface,
       elevation: 0,
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back_ios_new,
-          color: _primaryBlue,
+          color: Colors.white,
           size: 20,
         ),
         onPressed: () => Navigator.pop(context),
@@ -197,12 +392,12 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.real_estate_agent_rounded, color: _primaryBlue),
+          Icon(Icons.real_estate_agent_rounded, color: Colors.white),
           SizedBox(width: 8),
           Text(
             'Mortgage Calc',
             style: TextStyle(
-              color: context.textPrimary,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -211,7 +406,7 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
       centerTitle: true,
       actions: [
         IconButton(
-          icon: Icon(Icons.refresh_rounded, color: _slate),
+          icon: const Icon(Icons.refresh_rounded, color: Colors.white),
           onPressed: _resetForm,
         ),
       ],
@@ -222,7 +417,7 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: context.cs.surface,
+        color: context.cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: context.borderColor),
         boxShadow: [
@@ -242,7 +437,7 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
               fontSize: 12,
               fontWeight: FontWeight.w600,
               letterSpacing: 1.2,
-              color: _slate,
+              color: context.textSecondary,
             ),
           ),
           const SizedBox(height: 8),
@@ -254,9 +449,9 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
               color: _emerald,
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Divider(color: Color(0xFFF1F5F9)),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Divider(color: context.borderColor),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -281,7 +476,8 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
               icon: const Icon(Icons.table_chart_rounded, size: 18),
               label: const Text('View Detailed Schedule'),
               style: OutlinedButton.styleFrom(
-                foregroundColor: _primaryBlue,
+                foregroundColor: context.isDark ? context.primaryColor : _primaryBlue,
+                side: BorderSide(color: (context.isDark ? context.primaryColor : _primaryBlue).withValues(alpha: 0.5)),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -301,11 +497,15 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
     return Column(
       crossAxisAlignment: alignment,
       children: [
-        Text(label, style: TextStyle(color: _slate, fontSize: 13)),
+        Text(label, style: TextStyle(color: context.textSecondary, fontSize: 13)),
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+            color: context.textPrimary,
+          ),
         ),
       ],
     );
@@ -315,18 +515,18 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: context.cs.surface,
+        color: context.cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: context.borderColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Loan Details',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: context.textPrimary),
           ),
-          const Divider(height: 32, color: Color(0xFFF1F5F9)),
+          Divider(height: 32, color: context.borderColor),
 
           _buildInputField(
             'Home Price',
@@ -383,20 +583,49 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
   }
 
   Widget _buildActionButtons() {
-    return ElevatedButton.icon(
-      onPressed: () => _calculate(shouldUnfocus: true),
-      icon: const Icon(Icons.calculate_rounded),
-      label: const Text(
-        'Calculate Payment',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: _primaryBlue,
-        foregroundColor: context.cs.surface,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 4,
-      ),
+    return Row(
+      children: [
+        Expanded(
+          flex: 3,
+          child: ElevatedButton.icon(
+            onPressed: () => _calculate(shouldUnfocus: true),
+            icon: const Icon(Icons.calculate_rounded),
+            label: const Text(
+              'Calculate Payment',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _primaryBlue,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              elevation: 4,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          flex: 2,
+          child: OutlinedButton.icon(
+            onPressed: _saveCalculation,
+            icon: Icon(Icons.bookmark_add_outlined, size: 20, color: context.primaryColor),
+            label: Text(
+              'Save',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: context.primaryColor,
+              ),
+            ),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(color: context.primaryColor, width: 1.5),
+              minimumSize: const Size(0, 52),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -428,7 +657,7 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: _slate,
+            color: context.textSecondary,
           ),
         ),
         const SizedBox(height: 8),
@@ -441,13 +670,15 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
           ),
           decoration: InputDecoration(
             prefixText: prefix != null ? '$prefix ' : null,
+            prefixStyle: TextStyle(color: context.textSecondary),
             suffixText: suffix != null ? ' $suffix' : null,
+            suffixStyle: TextStyle(color: context.textSecondary),
             contentPadding: const EdgeInsets.symmetric(
               vertical: 16,
               horizontal: 16,
             ),
             filled: true,
-            fillColor: const Color(0xFFF8FAFC),
+            fillColor: context.inputFill,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: context.borderColor),
@@ -471,12 +702,13 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: _slate,
+            color: context.textSecondary,
           ),
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           initialValue: _selectedTerm,
+          dropdownColor: context.cardColor,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: context.textPrimary,
@@ -487,7 +719,7 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
               horizontal: 16,
             ),
             filled: true,
-            fillColor: const Color(0xFFF8FAFC),
+            fillColor: context.inputFill,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: context.borderColor),
@@ -539,9 +771,10 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(width: 6),
@@ -551,7 +784,7 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
                 child: Icon(
                   Icons.info_outline_rounded,
                   size: 16,
-                  color: _slate,
+                  color: context.textSecondary,
                 ),
               ),
             ],
@@ -560,7 +793,8 @@ class _MortgageCalculatorScreenState extends State<MortgageCalculatorScreen> {
         Switch.adaptive(
           value: value,
           onChanged: onChanged,
-          activeThumbColor: _primaryBlue,
+          activeTrackColor: (context.isDark ? context.primaryColor : _primaryBlue).withValues(alpha: 0.5),
+          activeThumbColor: context.isDark ? context.primaryColor : _primaryBlue,
         ),
       ],
     );

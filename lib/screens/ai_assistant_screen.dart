@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import '../core/constants/app_colors.dart';
 import '../services/gemini_service.dart';
 import '../core/constants/theme_extensions.dart';
@@ -84,28 +85,28 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F8),
-      appBar: AppBar(
+      backgroundColor: context.pageBackground,
+      appBar: GradientAppBar(
         title: const Text(
           'AI Financial Assistant',
           style: TextStyle(
-            color: Color(0xFF0F172A),
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
-        backgroundColor: context.cs.surface,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Color(0xFF334155)),
+          icon: const Icon(Icons.chevron_left, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
             icon: const Icon(
               Icons.delete_outline_rounded,
-              color: Color(0xFF334155),
+              color: Colors.white,
             ),
             tooltip: 'Clear chat',
             onPressed: () {
@@ -129,9 +130,9 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFFBEB),
+                    color: context.isDark ? Colors.amber.withValues(alpha: 0.1) : const Color(0xFFFFFBEB),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFFFDE68A)),
+                    border: Border.all(color: context.isDark ? Colors.amber.withValues(alpha: 0.3) : const Color(0xFFFDE68A)),
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,11 +143,11 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                         size: 20,
                       ),
                       const SizedBox(width: 10),
-                      const Expanded(
+                      Expanded(
                         child: Text(
                           'AI estimates only. Not professional financial advice. Consult a licensed advisor for specific situations.',
                           style: TextStyle(
-                            color: Color(0xFF92400E),
+                            color: context.isDark ? Colors.amber.shade200 : const Color(0xFF92400E),
                             fontSize: 12,
                             height: 1.4,
                           ),
@@ -160,20 +161,20 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
 
                 // Empty state: Suggestion chips
                 if (_messages.isEmpty && !_isLoading) ...[
-                  const Center(
+                  Center(
                     child: Icon(
                       Icons.smart_toy_rounded,
                       size: 64,
-                      color: Color(0xFFCBD5E1),
+                      color: context.textSecondary,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Center(
+                  Center(
                     child: Text(
                       'Ask me anything about\nmortgages & finance',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xFF94A3B8),
+                        color: context.textSecondary,
                         fontSize: 15,
                         height: 1.5,
                       ),
@@ -198,7 +199,7 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                                 color: context.cs.surface,
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: const Color(0xFFCBD5E1),
+                                  color: context.borderColor,
                                 ),
                                 boxShadow: const [
                                   BoxShadow(
@@ -210,9 +211,9 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                               ),
                               child: Text(
                                 s,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 13,
-                                  color: Color(0xFF334155),
+                                  color: context.textPrimary,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -275,7 +276,7 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                                 decoration: BoxDecoration(
                                   color: isUser
                                       ? const Color(0xFF0B3893)
-                                      : const Color(0xFFF1F5F9),
+                                      : (context.isDark ? context.cardColor : const Color(0xFFF1F5F9)),
                                   borderRadius: BorderRadius.only(
                                     topLeft: const Radius.circular(16),
                                     topRight: const Radius.circular(16),
@@ -298,8 +299,8 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                                   msg['text']!,
                                   style: TextStyle(
                                     color: isUser
-                                        ? context.cs.surface
-                                        : AppColors.textPrimary,
+                                        ? Colors.white
+                                        : context.textPrimary,
                                     height: 1.5,
                                     fontSize: 14,
                                   ),
@@ -350,7 +351,7 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                           vertical: 14,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF1F5F9),
+                          color: context.isDark ? context.cardColor : const Color(0xFFF1F5F9),
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(16),
                             topRight: Radius.circular(16),
@@ -389,7 +390,7 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF1F5F9),
+                        color: context.inputFill,
                         borderRadius: BorderRadius.circular(24),
                         border: Border.all(color: context.borderColor),
                       ),
@@ -398,6 +399,7 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                         enabled: !_isLoading,
                         maxLines: null,
                         textInputAction: TextInputAction.send,
+                        style: TextStyle(color: context.textPrimary),
                         decoration: const InputDecoration(
                           hintText: 'Ask about mortgages...',
                           border: InputBorder.none,
@@ -413,14 +415,14 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
                   Container(
                     decoration: BoxDecoration(
                       color: _isLoading
-                          ? const Color(0xFFCBD5E1)
+                          ? (context.isDark ? Colors.white10 : const Color(0xFFCBD5E1))
                           : const Color(0xFF0B3893),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.send_rounded,
-                        color: context.cs.surface,
+                        color: Colors.white,
                         size: 18,
                       ),
                       onPressed: _isLoading ? null : () => _sendMessage(),

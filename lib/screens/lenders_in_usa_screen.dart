@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../widgets/gradient_app_bar.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -251,7 +252,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
               onPressed: () => Navigator.of(context).pop(true),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryBlue,
-                foregroundColor: context.cs.surface,
+                foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -367,7 +368,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
   // ── App bar ──────────────────────────────────────────────────────────────────
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return AppBar(
+    return GradientAppBar(
       backgroundColor: context.cs.surface,
       surfaceTintColor: context.cs.surface,
       elevation: 0,
@@ -378,17 +379,17 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
         child: Container(height: 1, color: context.borderColor),
       ),
       leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: context.textSecondary),
+        icon: Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () => Navigator.pop(context),
       ),
       title: Row(
         children: [
-          const Icon(Icons.account_balance, color: _primaryBlue),
+          const Icon(Icons.account_balance, color: Colors.white),
           const SizedBox(width: 8),
           Text(
             'USA Mortgage Pro',
             style: GoogleFonts.inter(
-              color: _primaryBlue,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 18,
               letterSpacing: -0.5,
@@ -398,7 +399,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.notifications_none, color: context.textSecondary),
+          icon: Icon(Icons.notifications_none, color: Colors.white),
           onPressed: () {},
         ),
       ],
@@ -423,7 +424,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
       decoration: BoxDecoration(
         color: context.cs.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: context.borderColor),
         boxShadow: [
           BoxShadow(
             color: context.textPrimary.withValues(alpha: 0.05),
@@ -445,7 +446,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
                 decoration: BoxDecoration(
                   color: context.cs.surface,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFF1F5F9)),
+                  border: Border.all(color: context.borderColor),
                   boxShadow: [
                     BoxShadow(
                       color: context.textPrimary.withValues(alpha: 0.03),
@@ -477,7 +478,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
                             style: GoogleFonts.inter(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0xFF0F172A),
+                              color: context.textPrimary,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -489,9 +490,9 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFFFBEB),
+                            color: context.isDark ? const Color(0xFFF59E0B).withValues(alpha: 0.15) : const Color(0xFFFFFBEB),
                             borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: const Color(0xFFFEF3C7)),
+                            border: Border.all(color: context.isDark ? const Color(0xFFF59E0B).withValues(alpha: 0.3) : const Color(0xFFFEF3C7)),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -507,7 +508,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
-                                  color: const Color(0xFF92400E),
+                                  color: context.isDark ? const Color(0xFFF59E0B) : const Color(0xFF92400E),
                                 ),
                               ),
                             ],
@@ -544,14 +545,14 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF1F5F9),
+                            color: context.isDark ? context.borderColor : const Color(0xFFF1F5F9),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(color: context.borderColor),
                           ),
                           child: Text(
                             type,
                             style: GoogleFonts.inter(
-                              color: const Color(0xFF475569),
+                              color: context.textSecondary,
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
                             ),
@@ -568,7 +569,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF8FAFC),
+              color: context.isDark ? context.inputFill : const Color(0xFFF8FAFC),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: context.borderColor),
             ),
@@ -589,7 +590,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
                     Text(
                       'See Website for Details',
                       style: GoogleFonts.inter(
-                        color: const Color(0xFF0F172A),
+                        color: context.textPrimary,
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                       ),
@@ -598,7 +599,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
                 ),
                 Icon(
                   Icons.percent_rounded,
-                  color: _primaryBlue.withValues(alpha: 0.2),
+                  color: context.primaryColor.withValues(alpha: 0.2),
                   size: 28,
                 ),
               ],
@@ -611,7 +612,7 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: _primaryBlue,
-              foregroundColor: context.cs.surface,
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -718,23 +719,51 @@ class _LendersInUsaScreenState extends State<LendersInUsaScreen> {
         elevation: 0,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+            icon: Text('🏠', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_outlined),
-            activeIcon: Icon(Icons.account_balance),
+            icon: Text('🏦', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('🏦', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Lenders',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shield_outlined),
-            activeIcon: Icon(Icons.shield),
+            icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Insurance',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
+            icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Settings',
           ),
         ],

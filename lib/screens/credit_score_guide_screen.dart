@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'insurance_marketplace.dart';
 import 'settings_screen.dart';
 import '../core/constants/theme_extensions.dart';
@@ -92,17 +93,17 @@ class _CreditScoreGuideScreenState extends State<CreditScoreGuideScreen> {
 
     return Scaffold(
       backgroundColor: context.pageBackground,
-      appBar: AppBar(
+      appBar: GradientAppBar(
         backgroundColor: primaryColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: context.cs.surface),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
+        title: const Text(
           'Mortgage Eligibility Guide',
           style: TextStyle(
-            color: context.cs.surface,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
@@ -145,19 +146,51 @@ class _CreditScoreGuideScreenState extends State<CreditScoreGuideScreen> {
             elevation: 0,
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home_rounded, size: 28),
+                icon: Text('🏠', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.speed_rounded, size: 28),
+                icon: Text('📈', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('📈', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Score',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.shield_rounded, size: 28),
+                icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Insurance',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings_rounded, size: 28),
+                icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Settings',
               ),
             ],
@@ -187,28 +220,28 @@ class _CreditScoreGuideScreenState extends State<CreditScoreGuideScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Current Standard',
                     style: TextStyle(
-                      color: context.surface70,
+                      color: Colors.white70,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
+                  const Text(
                     'Excellent Range',
                     style: TextStyle(
-                      color: context.cs.surface,
+                      color: Colors.white,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
+                  const Text(
                     '760+',
                     style: TextStyle(
-                      color: context.cs.surface,
+                      color: Colors.white,
                       fontSize: 42,
                       fontWeight: FontWeight.w800,
                     ),
@@ -220,22 +253,22 @@ class _CreditScoreGuideScreenState extends State<CreditScoreGuideScreen> {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: context.cs.surface.withValues(alpha: 0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           Icons.verified_user,
-                          color: context.cs.surface,
+                          color: Colors.white,
                           size: 16,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'Best Interest Rates',
                           style: TextStyle(
-                            color: context.cs.surface,
+                            color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
@@ -249,12 +282,12 @@ class _CreditScoreGuideScreenState extends State<CreditScoreGuideScreen> {
 
             const SizedBox(height: 24),
 
-            const Text(
+            Text(
               'Credit Score Breakdown',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF0F172A),
+                color: context.textPrimary,
               ),
             ),
             const SizedBox(height: 16),
@@ -282,8 +315,8 @@ class _CreditScoreGuideScreenState extends State<CreditScoreGuideScreen> {
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: isSpecial
-                            ? primaryColor.withValues(alpha: 0.2)
-                            : Colors.grey.withValues(alpha: 0.2),
+                            ? context.primaryColor.withValues(alpha: 0.2)
+                            : context.borderColor,
                       ),
                     ),
                     child: Column(
@@ -298,8 +331,8 @@ class _CreditScoreGuideScreenState extends State<CreditScoreGuideScreen> {
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 color: isSpecial
-                                    ? primaryColor
-                                    : const Color(0xFF0F172A),
+                                    ? context.primaryColor
+                                    : context.textPrimary,
                               ),
                             ),
                             Container(
@@ -329,7 +362,7 @@ class _CreditScoreGuideScreenState extends State<CreditScoreGuideScreen> {
                           range['description'],
                           style: TextStyle(
                             fontSize: 13,
-                            color: Colors.grey[700],
+                            color: context.textSecondary,
                             height: 1.5,
                           ),
                         ),
@@ -348,23 +381,23 @@ class _CreditScoreGuideScreenState extends State<CreditScoreGuideScreen> {
               decoration: BoxDecoration(
                 color: context.cs.surface,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
+                border: Border.all(color: context.borderColor),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.info_outline, color: primaryColor, size: 24),
+                  Icon(Icons.info_outline, color: context.primaryColor, size: 24),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Pro Tip',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF0F172A),
+                            color: context.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 8),

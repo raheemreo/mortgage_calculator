@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -147,18 +148,18 @@ class _AmortizationScheduleScreenState
     const Color goldColor = Color(0xFFF4D03F);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
-      appBar: AppBar(
+      backgroundColor: context.pageBackground,
+      appBar: GradientAppBar(
         backgroundColor: context.cs.surface,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: navyColor),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Amortization Chart',
           style: TextStyle(
-            color: navyColor,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
@@ -184,13 +185,13 @@ class _AmortizationScheduleScreenState
               padding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                border: Border.all(color: navyColor, width: 2),
+                border: Border.all(color: Colors.white, width: 2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Text(
                 'Export PDF',
                 style: TextStyle(
-                  color: navyColor,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),
@@ -204,13 +205,16 @@ class _AmortizationScheduleScreenState
         children: [
           // ── Tabs ────────────────────────────────────────────────────────
           Container(
-            color: context.cs.surface,
+            color: context.cardColor,
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: context.borderColor)),
+            ),
             child: Row(
               children: [
                 _buildTab('Balance', _activeTab == 0,
-                    () => setState(() => _activeTab = 0), navyColor),
+                    () => setState(() => _activeTab = 0), context.isDark ? context.primaryColor : navyColor),
                 _buildTab('Interest', _activeTab == 1,
-                    () => setState(() => _activeTab = 1), navyColor),
+                    () => setState(() => _activeTab = 1), context.isDark ? context.primaryColor : navyColor),
               ],
             ),
           ),
@@ -223,7 +227,7 @@ class _AmortizationScheduleScreenState
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: context.cs.surface,
+                    color: context.cardColor,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: context.borderColor),
                     boxShadow: [
@@ -259,10 +263,10 @@ class _AmortizationScheduleScreenState
                                   ? widget.principal
                                   : _getLifetimeInterest(),
                             ),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
-                              color: navyColor,
+                              color: context.isDark ? context.primaryColor : navyColor,
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -274,7 +278,7 @@ class _AmortizationScheduleScreenState
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: navyColor.withValues(alpha: 0.05),
+                                  color: (context.isDark ? context.primaryColor : navyColor).withValues(alpha: 0.05),
                                   blurRadius: 8,
                                 ),
                               ],
@@ -286,7 +290,8 @@ class _AmortizationScheduleScreenState
                       Row(
                         children: [
                           _buildChip('${widget.years} Years',
-                              Colors.grey.shade100, Colors.grey.shade600),
+                              context.isDark ? context.inputFill : Colors.grey.shade100,
+                              context.isDark ? context.textSecondary : Colors.grey.shade600),
                         ],
                       ),
                       const SizedBox(height: 24),
@@ -304,12 +309,12 @@ class _AmortizationScheduleScreenState
                               LineChartBarData(
                                 spots: _getChartSpots(),
                                 isCurved: true,
-                                color: navyColor,
+                                color: context.isDark ? context.primaryColor : navyColor,
                                 barWidth: 3,
                                 dotData: const FlDotData(show: false),
                                 belowBarData: BarAreaData(
                                   show: true,
-                                  color: navyColor.withValues(alpha: 0.1),
+                                  color: (context.isDark ? context.primaryColor : navyColor).withValues(alpha: 0.1),
                                 ),
                               ),
                             ],
@@ -319,7 +324,7 @@ class _AmortizationScheduleScreenState
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          _buildLegend('Standard Schedule', navyColor),
+                          _buildLegend('Standard Schedule', context.isDark ? context.primaryColor : navyColor),
                           const SizedBox(width: 16),
                           _buildLegend('Accelerated Payoff', emeraldColor,
                               dashed: true),
@@ -334,29 +339,30 @@ class _AmortizationScheduleScreenState
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Payment Breakdown',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: navyColor,
+                        color: context.textPrimary,
                       ),
                     ),
                     Container(
                       height: 36,
                       padding: const EdgeInsets.all(2),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: context.isDark ? context.inputFill : Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: context.borderColor),
                       ),
                       child: Row(
                         children: [
                           _buildToggleButton('Monthly', _isMonthly,
                               () => setState(() => _isMonthly = true),
-                              navyColor),
+                              context.isDark ? context.primaryColor : navyColor),
                           _buildToggleButton('Yearly', !_isMonthly,
                               () => setState(() => _isMonthly = false),
-                              navyColor),
+                              context.isDark ? context.primaryColor : navyColor),
                         ],
                       ),
                     ),
@@ -367,7 +373,7 @@ class _AmortizationScheduleScreenState
                 // ── First 12 rows ──────────────────────────────────────────
                 Container(
                   decoration: BoxDecoration(
-                    color: context.cs.surface,
+                    color: context.cardColor,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: context.borderColor),
                     boxShadow: [
@@ -380,7 +386,7 @@ class _AmortizationScheduleScreenState
                   ),
                   child: Column(
                     children: [
-                      _buildTableHeader(navyColor),
+                      _buildTableHeader(context.isDark ? context.inputFill : navyColor),
                       ...(_isMonthly ? _monthlySchedule : _yearlySchedule)
                           .take(12)
                           .indexed
@@ -419,7 +425,7 @@ class _AmortizationScheduleScreenState
                 // ── Remaining rows (13–50) ─────────────────────────────────
                 Container(
                   decoration: BoxDecoration(
-                    color: context.cs.surface,
+                    color: context.cardColor,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: context.borderColor),
                     boxShadow: [
@@ -558,7 +564,7 @@ class _AmortizationScheduleScreenState
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: isSelected ? context.cs.surface : Colors.transparent,
+          color: isSelected ? (context.isDark ? context.cardColor : context.cs.surface) : Colors.transparent,
           borderRadius: BorderRadius.circular(6),
           boxShadow: isSelected
               ? [ BoxShadow(color: context.textPrimary12, blurRadius: 4)]
@@ -592,8 +598,8 @@ class _AmortizationScheduleScreenState
         children: [
           Text(
             'PAYMENT DETAILS',
-            style: TextStyle(
-              color: context.cs.surface,
+            style: const TextStyle(
+              color: Colors.white,
               fontSize: 10,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.2,
@@ -601,8 +607,8 @@ class _AmortizationScheduleScreenState
           ),
           Text(
             'BALANCE',
-            style: TextStyle(
-              color: context.cs.surface,
+            style: const TextStyle(
+              color: Colors.white,
               fontSize: 10,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.2,
@@ -617,7 +623,9 @@ class _AmortizationScheduleScreenState
       bool isAlt, Color emeraldColor) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: isAlt ? const Color(0xFFF8FAFC) : context.cs.surface,
+      color: isAlt
+          ? (context.isDark ? context.inputFill : const Color(0xFFF8FAFC))
+          : (context.isDark ? context.cardColor : context.cs.surface),
       child: Row(
         children: [
           Container(
@@ -635,10 +643,10 @@ class _AmortizationScheduleScreenState
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF0F172A),
+                    color: context.textPrimary,
                   ),
                 ),
                 Text(
@@ -653,10 +661,10 @@ class _AmortizationScheduleScreenState
           ),
           Text(
             balance,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF334155),
+              color: context.textPrimary,
             ),
           ),
         ],
@@ -729,8 +737,9 @@ class _NativeAdScheduleItemState extends State<NativeAdScheduleItem> {
       return Container(
         height: 60,
         decoration: BoxDecoration(
-          color: Colors.blue.shade50,
+          color: context.isDark ? context.cardColor : Colors.blue.shade50,
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: context.borderColor),
         ),
         child: const Center(
           child: SizedBox(
@@ -746,9 +755,9 @@ class _NativeAdScheduleItemState extends State<NativeAdScheduleItem> {
       height: 340,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.blue.shade50,
+        color: context.isDark ? context.cardColor : Colors.blue.shade50,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.blue.shade200),
+        border: Border.all(color: context.isDark ? context.borderColor : Colors.blue.shade200),
         boxShadow: [
           BoxShadow(
             color: context.textPrimary.withValues(alpha: 0.05),
@@ -768,19 +777,19 @@ class _NativeAdScheduleItemState extends State<NativeAdScheduleItem> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade100,
+                  color: context.isDark ? context.inputFill : Colors.blue.shade100,
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: const Text(
+                child: Text(
                   'Sponsored',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: context.isDark ? context.primaryColor : Colors.blue,
                   ),
                 ),
               ),
-              const Icon(Icons.info_outline, size: 14, color: Colors.grey),
+              Icon(Icons.info_outline, size: 14, color: context.textSecondary),
             ],
           ),
           const SizedBox(height: 12),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 
 import 'insurance_marketplace.dart';
 import 'settings_screen.dart';
@@ -73,17 +74,17 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
 
     return Scaffold(
       backgroundColor: context.pageBackground,
-      appBar: AppBar(
-        backgroundColor: context.cs.surface,
+      appBar: GradientAppBar(
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF0F172A)),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Loan Types',
           style: TextStyle(
-            color: Color(0xFF0F172A),
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
@@ -126,19 +127,51 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
             elevation: 0,
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home_rounded, size: 28),
+                icon: Text('🏠', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.payments_rounded, size: 28),
+                icon: Text('💵', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('💵', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Loans',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.shield_rounded, size: 28),
+                icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Insurance',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings_rounded, size: 28),
+                icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Settings',
               ),
             ],
@@ -187,12 +220,12 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Requirement Comparison',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF0F172A),
+                    color: context.textPrimary,
                   ),
                 ),
                 Container(
@@ -220,7 +253,7 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
             // ── Table header ──────────────────────────────────────────────
             Container(
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F5F9),
+                color: context.isDark ? Colors.white10 : const Color(0xFFF1F5F9),
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(12),
                 ),
@@ -281,7 +314,7 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: _loanTypes.length,
                 separatorBuilder: (context, index) =>
-                    const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                    Divider(height: 1, color: context.borderColor),
                 itemBuilder: (context, index) {
                   final loan = _loanTypes[index];
                   return Row(
@@ -297,9 +330,9 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
                                 children: [
                                   Text(
                                     loan['program'],
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: primaryColor,
+                                      color: context.primaryColor,
                                       fontSize: 15,
                                     ),
                                   ),
@@ -311,7 +344,7 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
                                         vertical: 2,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFFF1F5F9),
+                                        color: context.isDark ? Colors.white10 : const Color(0xFFF1F5F9),
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                       child: Text(
@@ -348,18 +381,18 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
                             children: [
                               Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.payments_outlined,
                                     size: 14,
-                                    color: primaryColor,
+                                    color: context.primaryColor,
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
                                     '${loan['downPayment']} Down',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w500,
-                                      color: Color(0xFF0F172A),
+                                      color: context.textPrimary,
                                     ),
                                   ),
                                 ],
@@ -367,18 +400,18 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
                               const SizedBox(height: 4),
                               Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.credit_score_outlined,
                                     size: 14,
-                                    color: primaryColor,
+                                    color: context.primaryColor,
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
                                     '${loan['creditScore']} Score',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w500,
-                                      color: Color(0xFF0F172A),
+                                      color: context.textPrimary,
                                     ),
                                   ),
                                 ],
@@ -403,37 +436,37 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
             ),
 
             // ── Quick Tips (buffer zone between ad and CTA) ───────────────
-            const Text(
+            Text(
               'Quick Tips',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF0F172A),
+                color: context.textPrimary,
               ),
             ),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: primaryColor.withValues(alpha: 0.05),
+                color: context.primaryColor.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: primaryColor.withValues(alpha: 0.1)),
+                border: Border.all(color: context.primaryColor.withValues(alpha: 0.15)),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.info_outline, color: primaryColor, size: 20),
+                  Icon(Icons.info_outline, color: context.primaryColor, size: 20),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Did you know?',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: primaryColor,
+                            color: context.primaryColor,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -467,7 +500,7 @@ class _LoanTypesScreenState extends State<LoanTypesScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
-                  foregroundColor: context.cs.surface,
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),

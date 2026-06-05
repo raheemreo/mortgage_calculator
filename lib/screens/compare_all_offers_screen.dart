@@ -11,6 +11,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -28,13 +29,7 @@ abstract final class _AppColors {
   static const primary = Color(0xFF0B3D91);
   static const accent = Color(0xFF1E4ED8);
   static const emerald = Color(0xFF10B981);
-  static const bg = Color(0xFFF7F9FB);
   static const slate100 = Color(0xFFF1F5F9);
-  static final slate200 = const Color(0xFFE2E8F0);
-  static const slate400 = Color(0xFF94A3B8);
-  static final slate500 = const Color(0xFF64748B);
-  static const slate700 = Color(0xFF334155);
-  static const slate900 = Color(0xFF0F172A);
   static const successBg = Color(0xFFDCFCE7);
   static const successFg = Color(0xFF16A34A);
   static const errorBg = Color(0xFFFEF2F2);
@@ -168,7 +163,7 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _AppColors.bg,
+      backgroundColor: context.pageBackground,
       appBar: _buildAppBar(),
       body: SingleChildScrollView(
         // Bottom padding accounts for nav bar.
@@ -202,12 +197,12 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
   // ─────────────────────────────────────────────
 
   PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      backgroundColor: context.cs.surface,
+    return GradientAppBar(
+      backgroundColor: Colors.transparent,
       elevation: 0,
       centerTitle: false,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: _AppColors.primary),
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
         tooltip: 'Back',
         onPressed: () => Navigator.pop(context),
       ),
@@ -216,14 +211,14 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
         style: GoogleFonts.manrope(
           fontSize: 20,
           fontWeight: FontWeight.w800,
-          color: _AppColors.slate900,
+          color: Colors.white,
         ),
       ),
       actions: [
         IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.notifications_none,
-            color: _AppColors.slate500,
+            color: Colors.white70,
           ),
           tooltip: 'Notifications',
           onPressed: () {
@@ -233,7 +228,7 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
       ],
       bottom: const PreferredSize(
         preferredSize: Size.fromHeight(1),
-        child: Divider(height: 1, color: _AppColors.slate100),
+        child: Divider(height: 1, color: Colors.white24),
       ),
     );
   }
@@ -265,6 +260,7 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
                   style: GoogleFonts.manrope(
                     fontSize: 17,
                     fontWeight: FontWeight.w800,
+                    color: context.textPrimary,
                   ),
                 ),
                 const Spacer(),
@@ -277,7 +273,7 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
                 'As of ${data.date}',
                 style: TextStyle(
                   fontSize: 11,
-                  color: _AppColors.slate500,
+                  color: context.textSecondary,
                 ),
               ),
             ],
@@ -349,7 +345,7 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
       label: const Text('Compare All Offers Side by Side'),
       style: ElevatedButton.styleFrom(
         backgroundColor: _AppColors.accent,
-        foregroundColor: context.cs.surface,
+        foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 3,
@@ -373,13 +369,14 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
         // Section header
         Row(
           children: [
-            const Icon(Icons.verified, color: _AppColors.primary, size: 20),
+            Icon(Icons.verified, color: context.primaryColor, size: 20),
             const SizedBox(width: 8),
             Text(
               'Personalized Offers',
               style: GoogleFonts.manrope(
                 fontSize: 17,
                 fontWeight: FontWeight.w800,
+                color: context.textPrimary,
               ),
             ),
           ],
@@ -453,9 +450,9 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
         // Section header
         Row(
           children: [
-            const Icon(
+            Icon(
               Icons.table_chart_outlined,
-              color: _AppColors.primary,
+              color: context.primaryColor,
               size: 20,
             ),
             const SizedBox(width: 8),
@@ -464,6 +461,7 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
               style: GoogleFonts.manrope(
                 fontSize: 17,
                 fontWeight: FontWeight.w800,
+                color: context.textPrimary,
               ),
             ),
           ],
@@ -479,7 +477,7 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
               decoration: BoxDecoration(
                 color: context.cs.surface,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: _AppColors.slate100),
+                border: Border.all(color: context.borderColor),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x05000000),
@@ -512,7 +510,7 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
   }
 
   TableRow _tableHeader() => TableRow(
-    decoration: const BoxDecoration(color: Color(0xFFF8FAFC)),
+    decoration: BoxDecoration(color: context.isDark ? context.cardColor : const Color(0xFFF8FAFC)),
     children: [
       'Lender',
       'Rate',
@@ -525,8 +523,8 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
     final isTop = index == 0;
     return TableRow(
       decoration: BoxDecoration(
-        color: isTop ? const Color(0xFFF8FAFF) : context.cs.surface,
-        border: const Border(top: BorderSide(color: _AppColors.slate100)),
+        color: isTop ? context.primaryColor.withValues(alpha: 0.1) : context.cs.surface,
+        border: Border(top: BorderSide(color: context.borderColor)),
       ),
       children: [
         _TableCell(text: offer.name.split(' ').first, bold: true),
@@ -552,7 +550,7 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
     return Container(
       decoration: BoxDecoration(
         color: context.cs.surface,
-        border: Border(top: BorderSide(color: _AppColors.slate200)),
+        border: Border(top: BorderSide(color: context.borderColor)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -563,30 +561,58 @@ class _CompareAllOffersScreenState extends State<CompareAllOffersScreen> {
             onTap: _onBottomNavTap,
             type: BottomNavigationBarType.fixed,
             backgroundColor: context.cs.surface,
-            selectedItemColor: _AppColors.primary,
-            unselectedItemColor: _AppColors.slate500,
+            selectedItemColor: context.cs.primary,
+            unselectedItemColor: context.textSecondary,
             selectedFontSize: 10,
             unselectedFontSize: 10,
             elevation: 0,
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                activeIcon: Icon(Icons.home),
+                icon: Text('🏠', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.compare_arrows),
-                activeIcon: Icon(Icons.compare_arrows),
+                icon: Text('⚖️', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('⚖️', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Compare',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.shield_outlined),
-                activeIcon: Icon(Icons.shield),
+                icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Insurance',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings_outlined),
-                activeIcon: Icon(Icons.settings),
+                icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Settings',
               ),
             ],
@@ -626,7 +652,7 @@ class _TableCell extends StatelessWidget {
             : bold
             ? FontWeight.w800
             : FontWeight.w500,
-        color: color ?? (isHeader ? _AppColors.slate400 : _AppColors.slate900),
+        color: color ?? (isHeader ? context.textSecondary : context.textPrimary),
       ),
     ),
   );
@@ -675,26 +701,26 @@ class _NativeOfferAdState extends State<_NativeOfferAd> {
       // No MainActivity.kt / AppDelegate.swift factory registration needed.
       nativeTemplateStyle: NativeTemplateStyle(
         templateType: TemplateType.medium,
-        mainBackgroundColor: context.cs.surface,
+        mainBackgroundColor: context.isDark ? context.cardColor : Colors.white,
         cornerRadius: 12.0,
         callToActionTextStyle: NativeTemplateTextStyle(
-          textColor: context.cs.surface,
-          backgroundColor: _AppColors.accent,
+          textColor: context.isDark ? Colors.black : Colors.white,
+          backgroundColor: context.primaryColor,
           style: NativeTemplateFontStyle.bold,
           size: 14.0,
         ),
         primaryTextStyle: NativeTemplateTextStyle(
-          textColor: _AppColors.slate900,
+          textColor: context.isDark ? Colors.white : const Color(0xFF0F172A),
           style: NativeTemplateFontStyle.bold,
           size: 15.0,
         ),
         secondaryTextStyle: NativeTemplateTextStyle(
-          textColor: _AppColors.slate500,
+          textColor: context.isDark ? Colors.white70 : const Color(0xFF64748B),
           style: NativeTemplateFontStyle.normal,
           size: 13.0,
         ),
         tertiaryTextStyle: NativeTemplateTextStyle(
-          textColor: _AppColors.slate400,
+          textColor: context.isDark ? Colors.white54 : const Color(0xFF94A3B8),
           style: NativeTemplateFontStyle.normal,
           size: 12.0,
         ),
@@ -725,7 +751,7 @@ class _NativeOfferAdState extends State<_NativeOfferAd> {
       decoration: BoxDecoration(
         color: context.cs.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _AppColors.slate100),
+        border: Border.all(color: context.borderColor),
         boxShadow: [
           BoxShadow(
             color: context.textPrimary.withValues(alpha: 0.04),
@@ -753,7 +779,7 @@ class _NativeOfferAdState extends State<_NativeOfferAd> {
                     vertical: 3,
                   ),
                   decoration: BoxDecoration(
-                    color: _AppColors.slate100,
+                    color: context.isDark ? context.inputFill : _AppColors.slate100,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
@@ -761,7 +787,7 @@ class _NativeOfferAdState extends State<_NativeOfferAd> {
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
-                      color: _AppColors.slate500,
+                      color: context.textSecondary,
                       letterSpacing: 0.3,
                     ),
                   ),
@@ -769,10 +795,10 @@ class _NativeOfferAdState extends State<_NativeOfferAd> {
                 const Spacer(),
                 Tooltip(
                   message: 'This is a paid advertisement',
-                  child: const Icon(
+                  child: Icon(
                     Icons.info_outline,
                     size: 15,
-                    color: _AppColors.slate400,
+                    color: context.textSecondary,
                   ),
                 ),
               ],
@@ -807,7 +833,7 @@ class _OfferCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.cs.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _AppColors.slate200),
+        border: Border.all(color: context.borderColor),
         boxShadow: [
           BoxShadow(
             color: context.textPrimary.withValues(alpha: 0.07),
@@ -818,15 +844,15 @@ class _OfferCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildHeader(),
-          const Divider(height: 1, color: _AppColors.slate100),
-          _buildBody(),
+          _buildHeader(context),
+          Divider(height: 1, color: context.borderColor),
+          _buildBody(context),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
       child: Row(
@@ -842,14 +868,14 @@ class _OfferCard extends StatelessWidget {
                   style: GoogleFonts.manrope(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
-                    color: _AppColors.slate900,
+                    color: context.textPrimary,
                   ),
                 ),
                 Text(
                   offer.loanTerm,
                   style: TextStyle(
                     fontSize: 12,
-                    color: _AppColors.slate500,
+                    color: context.textSecondary,
                   ),
                 ),
               ],
@@ -861,7 +887,7 @@ class _OfferCard extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -869,8 +895,8 @@ class _OfferCard extends StatelessWidget {
           // Rate / APR + Monthly payment
           Row(
             children: [
-              Expanded(child: _buildRateColumn()),
-              _buildMonthlyColumn(),
+              Expanded(child: _buildRateColumn(context)),
+              _buildMonthlyColumn(context),
             ],
           ),
           const SizedBox(height: 14),
@@ -916,7 +942,7 @@ class _OfferCard extends StatelessWidget {
     );
   }
 
-  Widget _buildRateColumn() {
+  Widget _buildRateColumn(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -935,9 +961,9 @@ class _OfferCard extends StatelessWidget {
               ),
               TextSpan(
                 text: '  / ${offer.apr.toStringAsFixed(2)}%',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
-                  color: _AppColors.slate400,
+                  color: context.textSecondary,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -948,7 +974,7 @@ class _OfferCard extends StatelessWidget {
     );
   }
 
-  Widget _buildMonthlyColumn() {
+  Widget _buildMonthlyColumn(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -959,7 +985,7 @@ class _OfferCard extends StatelessWidget {
           style: GoogleFonts.manrope(
             fontSize: 22,
             fontWeight: FontWeight.w900,
-            color: _AppColors.primary,
+            color: context.primaryColor,
           ),
         ),
       ],
@@ -978,10 +1004,10 @@ class _FieldLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     text,
-    style: const TextStyle(
+    style: TextStyle(
       fontSize: 10,
       fontWeight: FontWeight.w700,
-      color: _AppColors.slate400,
+      color: context.textSecondary,
       letterSpacing: 0.7,
     ),
   );
@@ -1018,9 +1044,9 @@ class _LogoWidget extends StatelessWidget {
     width: 48,
     height: 48,
     decoration: BoxDecoration(
-      color: _AppColors.slate100,
+      color: context.isDark ? context.inputFill : _AppColors.slate100,
       borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: _AppColors.slate100),
+      border: Border.all(color: context.borderColor),
     ),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -1031,7 +1057,7 @@ class _LogoWidget extends StatelessWidget {
         fit: BoxFit.contain,
         // Graceful fallback using single wildcards to satisfy lint preferences
         errorBuilder: (_, _, _) =>
-            const Icon(Icons.account_balance, color: _AppColors.slate400),
+            Icon(Icons.account_balance, color: context.textSecondary),
       ),
     ),
   );
@@ -1049,7 +1075,7 @@ class _FeeBreakdown extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
-      color: const Color(0xFFF8FAFC),
+      color: context.isDark ? context.inputFill : const Color(0xFFF8FAFC),
       borderRadius: BorderRadius.circular(10),
     ),
     child: Column(
@@ -1073,14 +1099,14 @@ class _FeeRow extends StatelessWidget {
     children: [
       Text(
         label,
-        style: TextStyle(fontSize: 13, color: _AppColors.slate500),
+        style: TextStyle(fontSize: 13, color: context.textSecondary),
       ),
       Text(
         value,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w700,
-          color: _AppColors.slate700,
+          color: context.textPrimary,
         ),
       ),
     ],
@@ -1096,17 +1122,17 @@ class _EmptyOffersPlaceholder extends StatelessWidget {
     child: Center(
       child: Column(
         children: [
-          const Icon(
+          Icon(
             Icons.inbox_outlined,
             size: 40,
-            color: _AppColors.slate400,
+            color: context.textSecondary,
           ),
           const SizedBox(height: 8),
           Text(
             'No offers available',
             style: GoogleFonts.manrope(
               fontSize: 14,
-              color: _AppColors.slate500,
+              color: context.textSecondary,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -1129,20 +1155,20 @@ class _FredStatusBadge extends StatelessWidget {
     return switch (state) {
       FredLoadState.loading => _chip(
         'LOADING',
-        _AppColors.slate100,
-        _AppColors.slate400,
+        context.isDark ? context.inputFill : _AppColors.slate100,
+        context.textSecondary,
         spinner: true,
       ),
       FredLoadState.loaded => _chip(
         'LIVE',
-        _AppColors.successBg,
-        _AppColors.successFg,
+        context.isDark ? _AppColors.emerald.withValues(alpha: 0.15) : _AppColors.successBg,
+        context.isDark ? Colors.green.shade300 : _AppColors.successFg,
         dot: true,
       ),
       FredLoadState.error => _chip(
         'EST. DATA',
-        _AppColors.errorBg,
-        _AppColors.errorFg,
+        context.isDark ? Colors.red.withValues(alpha: 0.15) : _AppColors.errorBg,
+        context.isDark ? Colors.red.shade300 : _AppColors.errorFg,
       ),
       FredLoadState.idle => const SizedBox.shrink(),
     };
@@ -1217,7 +1243,7 @@ class _RateCard extends StatelessWidget {
     decoration: BoxDecoration(
       color: context.cs.surface,
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: _AppColors.slate100),
+      border: Border.all(color: context.borderColor),
       boxShadow: [
         BoxShadow(
           color: context.textPrimary.withValues(alpha: 0.05),
@@ -1250,7 +1276,7 @@ class _RateCard extends StatelessWidget {
             ),
             Text(
               sourceLabel,
-              style: const TextStyle(fontSize: 10, color: _AppColors.slate400),
+              style: TextStyle(fontSize: 10, color: context.textSecondary),
             ),
           ],
         ),
@@ -1264,13 +1290,13 @@ class _RateCard extends StatelessWidget {
                 style: GoogleFonts.manrope(
                   fontSize: 26,
                   fontWeight: FontWeight.w900,
-                  color: _AppColors.slate900,
+                  color: context.textPrimary,
                 ),
               ),
         const SizedBox(height: 4),
         Text(
           subtitle,
-          style: TextStyle(fontSize: 11, color: _AppColors.slate500),
+          style: TextStyle(fontSize: 11, color: context.textSecondary),
           maxLines: 2,
         ),
         if (change != null) ...[
@@ -1294,7 +1320,7 @@ class _RateChangeBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final bps = (change * 100).round();
     if (bps == 0) {
-      return _pill('No change wk', _AppColors.slate100, _AppColors.slate400);
+      return _pill('No change wk', context.isDark ? context.inputFill : _AppColors.slate100, context.textSecondary);
     }
     final isUp = bps > 0;
     return _pill(

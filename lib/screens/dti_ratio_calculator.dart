@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -108,20 +109,20 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
     const double bottomPadding = kBottomNavigationBarHeight + 24;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F8),
-      appBar: AppBar(
-        backgroundColor: context.cs.surface,
+      backgroundColor: context.pageBackground,
+      appBar: GradientAppBar(
+        backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Color(0xFF334155)),
+          icon: const Icon(Icons.chevron_left, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'DTI Ratio Calculator',
           style: GoogleFonts.manrope(
             textStyle: const TextStyle(
-              color: Color(0xFF0F172A),
+              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 17,
             ),
@@ -129,7 +130,7 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.more_horiz, color: Color(0xFF94A3B8)),
+            icon: const Icon(Icons.more_horiz, color: Colors.white70),
             onPressed: () {},
           ),
         ],
@@ -139,7 +140,7 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
         child: Container(
           decoration: BoxDecoration(
             color: context.cs.surface,
-            border: Border(top: BorderSide(color: Color(0xFFF1F5F9))),
+            border: Border(top: BorderSide(color: context.borderColor)),
             boxShadow: [
               BoxShadow(
                 color: Color(0x0A000000),
@@ -169,22 +170,46 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
             },
             type: BottomNavigationBarType.fixed,
             backgroundColor: context.cs.surface,
-            selectedItemColor: const Color(0xFF0B3893),
-            unselectedItemColor: const Color(0xFF94A3B8),
+            selectedItemColor: context.primaryColor,
+            unselectedItemColor: context.textSecondary.withValues(alpha: 0.6),
             selectedFontSize: 11,
             unselectedFontSize: 11,
             elevation: 0,
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home_rounded, size: 26),
+                icon: Text('🏠', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.shield_rounded, size: 26),
+                icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Insurance',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings_rounded, size: 26),
+                icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+                activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
+                
+                
+                
+                
+                
+                
+                
                 label: 'Settings',
               ),
             ],
@@ -206,7 +231,7 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
                   style: GoogleFonts.manrope(
                     fontSize: 28,
                     fontWeight: FontWeight.w800,
-                    color: const Color(0xFF0F172A),
+                    color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -229,12 +254,12 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF0B3893).withValues(alpha: 0.04),
+                        color: context.primaryColor.withValues(alpha: 0.04),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
                     ],
-                    border: Border.all(color: const Color(0xFFF1F5F9)),
+                    border: Border.all(color: context.borderColor),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,12 +271,12 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 'CURRENT RATIO',
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF94A3B8),
+                                  color: context.textSecondary,
                                   letterSpacing: 1.2,
                                 ),
                               ),
@@ -279,21 +304,21 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
                           Text.rich(
                             TextSpan(
                               children: [
-                                TextSpan(
-                                  text: _dtiRatio.toStringAsFixed(0),
-                                  style: const TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.w800,
-                                    color: Color(0xFF0F172A),
-                                    letterSpacing: -1,
+                                  TextSpan(
+                                    text: _dtiRatio.toStringAsFixed(0),
+                                    style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.w800,
+                                      color: context.textPrimary,
+                                      letterSpacing: -1,
+                                    ),
                                   ),
-                                ),
-                                const TextSpan(
+                                  TextSpan(
                                   text: '%',
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w800,
-                                    color: Color(0xFF94A3B8),
+                                    color: context.textSecondary,
                                   ),
                                 ),
                               ],
@@ -312,7 +337,7 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
                         ],
                       ),
                       const SizedBox(height: 24),
-                      const Divider(color: Color(0xFFF1F5F9), height: 1),
+                      Divider(color: context.borderColor, height: 1),
                       const SizedBox(height: 16),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,12 +348,12 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
                             size: 20,
                           ),
                           const SizedBox(width: 12),
-                          const Expanded(
+                          Expanded(
                             child: Text(
                               'Your DTI is in a healthy range. You are likely to qualify for most standard loan options.',
                               style: TextStyle(
                                 fontSize: 13,
-                                color: Color(0xFF475569),
+                                color: context.textSecondary,
                                 fontWeight: FontWeight.w500,
                                 height: 1.5,
                               ),
@@ -372,8 +397,8 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
                     icon: const Icon(Icons.refresh, size: 20),
                     label: const Text('Recalculate Ratio'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0B3893),
-                      foregroundColor: context.cs.surface,
+                      backgroundColor: context.primaryColor,
+                      foregroundColor: context.isDark ? const Color(0xFF0A0E1A) : Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -383,9 +408,7 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                       elevation: 4,
-                      shadowColor: const Color(
-                        0xFF0B3893,
-                      ).withValues(alpha: 0.25),
+                      shadowColor: context.primaryColor.withValues(alpha: 0.25),
                     ),
                   ),
                 ),
@@ -409,7 +432,7 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
               height: 12,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F5F9),
+                color: context.isDark ? const Color(0xFF1E2D45) : const Color(0xFFF1F5F9),
                 borderRadius: BorderRadius.circular(6),
               ),
             ),
@@ -484,18 +507,18 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF94A3B8),
+              color: context.textSecondary,
             ),
           ),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w500,
-              color: Color(0xFFCBD5E1),
+              color: context.textSecondary,
             ),
           ),
         ],
@@ -518,27 +541,27 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
           children: [
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF0F172A),
+                color: context.textPrimary,
               ),
             ),
             if (showDetails)
               TextButton.icon(
                 onPressed: () {},
-                icon: const Text(
+                icon: Text(
                   'Details',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF0B3893),
+                    color: context.primaryColor,
                   ),
                 ),
-                label: const Icon(
+                label: Icon(
                   Icons.chevron_right,
                   size: 16,
-                  color: Color(0xFF0B3893),
+                  color: context.primaryColor,
                 ),
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
@@ -547,7 +570,7 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
                 ),
               )
             else
-              const Icon(Icons.info, size: 18, color: Color(0xFF0B3893)),
+              Icon(Icons.info, size: 18, color: context.primaryColor),
           ],
         ),
         const SizedBox(height: 8),
@@ -564,18 +587,18 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
           child: TextField(
             controller: controller,
             keyboardType: TextInputType.number,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF0F172A),
+              color: context.textPrimary,
             ),
             decoration: InputDecoration(
               prefixIcon: Padding(
                 padding: const EdgeInsets.only(left: 16, right: 8),
                 child: Text(
                   symbol,
-                  style: const TextStyle(
-                    color: Color(0xFF94A3B8),
+                  style: TextStyle(
+                    color: context.textSecondary,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -586,7 +609,7 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
                 minHeight: 0,
               ),
               filled: true,
-              fillColor: context.cs.surface,
+              fillColor: context.inputFill,
               contentPadding: const EdgeInsets.symmetric(
                 vertical: 14,
                 horizontal: 16,
@@ -601,8 +624,8 @@ class _DtiRatioCalculatorScreenState extends State<DtiRatioCalculatorScreen> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(
-                  color: Color(0xFF0B3893),
+                borderSide: BorderSide(
+                  color: context.primaryColor,
                   width: 2,
                 ),
               ),

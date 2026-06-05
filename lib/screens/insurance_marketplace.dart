@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../widgets/gradient_app_bar.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -257,23 +258,22 @@ class _InsuranceMarketplaceScreenState
   @override
   Widget build(BuildContext context) {
     const Color primaryBlue = Color(0xFF0B3D91);
-    const Color backgroundLight = Color(0xFFF8F9FC);
     final textStyle = GoogleFonts.inter();
 
     return Scaffold(
-      backgroundColor: backgroundLight,
-      appBar: AppBar(
-        backgroundColor: context.cs.surface,
+      backgroundColor: context.pageBackground,
+      appBar: GradientAppBar(
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        surfaceTintColor: context.cs.surface,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF334155)),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Insurance Providers',
           style: textStyle.copyWith(
-            color: context.textPrimary,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
@@ -411,7 +411,7 @@ class _InsuranceMarketplaceScreenState
                               style: textStyle.copyWith(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: const Color(0xFF0F172A),
+                                color: context.textPrimary,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -458,13 +458,13 @@ class _InsuranceMarketplaceScreenState
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF1F5F9),
+                          color: context.isDark ? Colors.white10 : const Color(0xFFF1F5F9),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
                           provider.category,
                           style: textStyle.copyWith(
-                            color: const Color(0xFF475569),
+                            color: context.textSecondary,
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                           ),
@@ -521,7 +521,7 @@ class _InsuranceMarketplaceScreenState
                     onPressed: () => _launchUrl(provider.website),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryColor,
-                      foregroundColor: context.cs.surface,
+                      foregroundColor: Colors.white,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
@@ -547,7 +547,7 @@ class _InsuranceMarketplaceScreenState
                 const SizedBox(width: 12),
                 Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF1F5F9),
+                    color: context.isDark ? Colors.white10 : const Color(0xFFF1F5F9),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: context.borderColor),
                   ),

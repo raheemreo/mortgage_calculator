@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
@@ -25,12 +26,6 @@ abstract final class _AdIds {
 // ─────────────────────────────────────────────────────────────────────────────
 abstract final class _AppColors {
   static const primary = Color(0xFF0B3D93);
-  static final background = const Color(0xFFF6F7F8);
-  static const textDark = Color(0xFF0F172A);
-  static final textMid = const Color(0xFF64748B);
-  static const textLight = Color(0xFF94A3B8);
-  static final border = const Color(0xFFE2E8F0);
-  static const divider = Color(0xFFF1F5F9);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -156,7 +151,7 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
     final loadState = fredProvider.loadState;
 
     return Scaffold(
-      backgroundColor: _AppColors.background,
+      backgroundColor: context.pageBackground,
       appBar: _buildAppBar(),
 
       bottomNavigationBar: _buildBottomNavBar(),
@@ -171,24 +166,24 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
   // tree swapped between two Scaffold instances. Now there's one Scaffold;
   // the body switches between a loading indicator and the content.
   PreferredSizeWidget _buildAppBar() {
-    return AppBar(
+    return GradientAppBar(
       backgroundColor: _AppColors.primary,
       elevation: 4,
       leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: context.cs.surface),
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () => Navigator.pop(context),
       ),
-      title: Text(
+      title: const Text(
         'Mortgage Rates',
         style: TextStyle(
-          color: context.cs.surface,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
           fontSize: 18,
         ),
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.info_outline, color: context.cs.surface),
+          icon: const Icon(Icons.info_outline, color: Colors.white),
           onPressed: _showInfoDialog,
         ),
       ],
@@ -204,7 +199,7 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
           'About These Rates',
           style: GoogleFonts.manrope(
             fontWeight: FontWeight.bold,
-            color: _AppColors.textDark,
+            color: context.textPrimary,
           ),
         ),
         content: Text(
@@ -214,7 +209,7 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
           'approval, and market conditions.',
           style: GoogleFonts.inter(
             fontSize: 14,
-            color: const Color(0xFF434655),
+            color: context.textSecondary,
             height: 1.5,
           ),
         ),
@@ -250,7 +245,7 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
               const Icon(
                 Icons.wifi_off_rounded,
                 size: 48,
-                color: _AppColors.textLight,
+                color: Color(0xFF94A3B8),
               ),
               const SizedBox(height: 16),
               Text(
@@ -258,7 +253,7 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: _AppColors.textDark,
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(height: 8),
@@ -267,7 +262,7 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
                 textAlign: TextAlign.center,
                 style: GoogleFonts.inter(
                   fontSize: 14,
-                  color: _AppColors.textMid,
+                  color: context.textSecondary,
                 ),
               ),
               const SizedBox(height: 24),
@@ -308,7 +303,7 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
                   style: GoogleFonts.inter(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: _AppColors.textDark,
+                    color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -317,7 +312,7 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
                   '(30-Year Fixed)',
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    color: _AppColors.textMid,
+                    color: context.textSecondary,
                   ),
                 ),
               ],
@@ -345,7 +340,7 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
                     onPressed: _navigateToOffers,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _AppColors.primary,
-                      foregroundColor: context.cs.surface,
+                      foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -365,13 +360,13 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Estimated rates only. Actual rates vary based on credit '
                   'score, property location, and loan amount.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,
-                    color: _AppColors.textLight,
+                    color: context.textSecondary,
                     height: 1.5,
                   ),
                 ),
@@ -393,58 +388,64 @@ class _MortgageRatesScreenState extends State<MortgageRatesScreen> {
   // its own white background.
   Widget _buildBottomNavBar() {
     return DecoratedBox(
-      decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: _AppColors.divider)),
+      decoration: BoxDecoration(
+        color: context.cs.surface,
+        border: Border(top: BorderSide(color: context.borderColor)),
       ),
       child: BottomNavigationBar(
         currentIndex: 1, // 'Rates' tab
-        onTap: _onNavTap,
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.popUntil(context, (route) => route.isFirst);
+          } else if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const InsuranceMarketplaceScreen(),
+              ),
+            );
+          } else if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+            );
+          }
+        },
         type: BottomNavigationBarType.fixed,
         backgroundColor: context.cs.surface,
-        selectedItemColor: _AppColors.primary,
-        unselectedItemColor: _AppColors.textLight,
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
+        selectedItemColor: context.cs.primary,
+        unselectedItemColor: context.textSecondary,
+        selectedFontSize: 11,
+        unselectedFontSize: 11,
         elevation: 0,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded, size: 28),
+            icon: Text('🏠', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
+            
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.analytics_rounded, size: 28),
+            icon: Text('📈', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('📈', style: TextStyle(fontSize: 26)),
+            
             label: 'Rates',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shield_rounded, size: 28),
+            icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
+            
             label: 'Insurance',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings_rounded, size: 28),
+            icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
+            
             label: 'Settings',
           ),
         ],
       ),
     );
-  }
-
-  void _onNavTap(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pop(context);
-      case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const InsuranceMarketplaceScreen()),
-        );
-      case 3:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const SettingsScreen()),
-        );
-      default:
-        break; // index == 1 is the current screen; do nothing
-    }
   }
 }
 
@@ -501,7 +502,7 @@ class _RateCardList extends StatelessWidget {
         title: 'VA Loan',
         subtitle:
             'Exclusive for veterans and active service members with '
-            '\$0 down payment.',
+            r'$0 down payment.',
         rate: baseRate - 0.55,
         type: 'Fixed',
         icon: Icons.military_tech_rounded,
@@ -544,12 +545,13 @@ class _RateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primary = context.cs.primary;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: context.cs.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _AppColors.border),
+        border: Border.all(color: context.borderColor),
         boxShadow: const [
           BoxShadow(
             color: Color(0x05000000),
@@ -565,11 +567,10 @@ class _RateCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              // BUG FIX: withAlpha() deprecated — replaced with withValues().
-              color: _AppColors.primary.withValues(alpha: 0.10),
+              color: primary.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(data.icon, color: _AppColors.primary, size: 24),
+            child: Icon(data.icon, color: primary, size: 24),
           ),
           const SizedBox(width: 16),
 
@@ -580,10 +581,10 @@ class _RateCard extends StatelessWidget {
               children: [
                 Text(
                   data.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    color: _AppColors.textDark,
+                    color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -593,7 +594,7 @@ class _RateCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 12,
-                    color: _AppColors.textMid,
+                    color: context.textSecondary,
                   ),
                 ),
               ],
@@ -607,17 +608,17 @@ class _RateCard extends StatelessWidget {
             children: [
               Text(
                 '${data.rate.toStringAsFixed(2)}%',
-                style: const TextStyle(
-                  color: _AppColors.primary,
+                style: TextStyle(
+                  color: primary,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
               ),
               Text(
                 data.type.toUpperCase(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 10,
-                  color: _AppColors.textLight,
+                  color: context.textSecondary,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 0.5,
                 ),

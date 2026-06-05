@@ -25,14 +25,37 @@ class _AdNativeWidgetState extends State<AdNativeWidget> {
   NativeAd? _nativeAd;
   bool _isLoaded = false;
   bool _isFailed = false;
+  int _retryCount = 0;
 
   @override
   void initState() {
     super.initState();
-    _loadAd();
+    _checkInitAndLoad();
+  }
+
+  Future<void> _checkInitAndLoad() async {
+    await AdService().initializationComplete;
+    if (mounted) {
+      _loadAd();
+    }
   }
 
   void _loadAd() {
+    if (!AdService().isInitialized || _nativeAd != null) return;
+
+    // Try to get preloaded cached ad
+    final cachedAd = AdService().getAndRefreshCachedNativeAd();
+    if (cachedAd != null) {
+      debugPrint('[AdMob] AdNativeWidget: Using preloaded/cached NativeAd');
+      _nativeAd = cachedAd;
+      setState(() {
+        _isLoaded = true;
+        _isFailed = false;
+      });
+      return;
+    }
+
+    debugPrint('[AdMob] AdNativeWidget: Loading fresh NativeAd...');
     _nativeAd = NativeAd(
       adUnitId: AdService.nativeAdUnitId,
       // NativeTemplateStyle uses the SDK's built-in medium template.
@@ -69,12 +92,32 @@ class _AdNativeWidgetState extends State<AdNativeWidget> {
       ),
       listener: NativeAdListener(
         onAdLoaded: (ad) {
-          if (mounted) setState(() => _isLoaded = true);
+          _retryCount = 0; // Reset retry count
+          if (mounted) {
+            setState(() {
+              _isLoaded = true;
+              _isFailed = false;
+            });
+          }
         },
         onAdFailedToLoad: (ad, error) {
-          debugPrint('[AdMob] NativeAd failed: $error');
-          if (mounted) setState(() => _isFailed = true);
+          debugPrint('[AdMob] NativeAd failed: ${error.message}');
           ad.dispose();
+          _nativeAd = null;
+          if (mounted) setState(() => _isFailed = true);
+
+          // Retry logic (max 3 retries with exponential backoff)
+          if (_retryCount < 3) {
+            _retryCount++;
+            final delay = Duration(seconds: 1 << _retryCount);
+            debugPrint('[AdMob] AdNativeWidget retrying load in ${delay.inSeconds} seconds...');
+            Future.delayed(delay, () {
+              if (mounted) {
+                setState(() => _isFailed = false);
+                _loadAd();
+              }
+            });
+          }
         },
       ),
     )..load();

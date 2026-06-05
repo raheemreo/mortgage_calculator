@@ -32,11 +32,11 @@ class UpdateService {
 
   /// Set sensible defaults so the app works even before Remote Config is set.
   static Map<String, dynamic> get remoteConfigDefaults => {
-    _keyLatestVersionName: '1.0.0',
-    _keyLatestVersionCode: 1,
+    _keyLatestVersionName: '3.0.1',
+    _keyLatestVersionCode: 10,
     _keyUpdateRequired: false,
     _keyUpdateMessage:
-        'A new version of USA Mortgage Pro is available with improvements and bug fixes. Update now for the best experience.',
+        'A new version of Mortgage & Loan Calculator - DTI is available with improvements and bug fixes. Update now for the best experience.',
   };
 
   /// Fetches current device version and compares with Remote Config.

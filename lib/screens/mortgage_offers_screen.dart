@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -26,12 +27,7 @@ class CompareMortgageScreen extends StatefulWidget {
 
 class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
   // ── Palette ────────────────────────────────────────────────────────────────
-  static const Color _primary = Color(0xFF0037B1);
   static const Color _emerald = Color(0xFF10B981);
-  static const Color _bg = Color(0xFFF7F9FB);
-  static const Color _slate400 = Color(0xFF94A3B8);
-  static final Color _slate500 = const Color(0xFF64748B);
-  static const Color _onSurface = Color(0xFF191C1E);
 
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
@@ -66,7 +62,7 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bg,
+      backgroundColor: context.pageBackground,
       appBar: _buildAppBar(),
       body: Column(
         children: [
@@ -83,13 +79,13 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
                     style: GoogleFonts.manrope(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
-                      color: _onSurface,
+                      color: context.textPrimary,
                       letterSpacing: -0.5,
                     ),
                   ),
                   Text(
                     'Real-time market data and personalized quotes',
-                    style: TextStyle(color: _slate500, fontSize: 14),
+                    style: TextStyle(color: context.textSecondary, fontSize: 14),
                   ),
                   const SizedBox(height: 24),
 
@@ -108,7 +104,7 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
                   _sectionHeader(
                     icon: Icons.verified,
                     title: 'Personalized Offers',
-                    iconColor: _primary,
+                    iconColor: context.primaryColor,
                   ),
                   const SizedBox(height: 12),
                   _buildCompareAllButton(context),
@@ -124,7 +120,7 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
                   _sectionHeader(
                     icon: Icons.table_chart_outlined,
                     title: 'Detailed Comparison',
-                    iconColor: _primary,
+                    iconColor: context.primaryColor,
                   ),
                   const SizedBox(height: 12),
                   _buildComparisonTable(),
@@ -141,18 +137,18 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
 
   // ── Helper Widgets ─────────────────────────────────────────────────────────
 
-  PreferredSizeWidget _buildAppBar() => AppBar(
+  PreferredSizeWidget _buildAppBar() => GradientAppBar(
     backgroundColor: context.cs.surface,
     elevation: 1,
     shadowColor: context.textPrimary12,
     leading: const Padding(
       padding: EdgeInsets.only(left: 8.0),
-      child: Icon(Icons.account_balance_wallet, color: _primary, size: 24),
+      child: Icon(Icons.account_balance_wallet, color: Colors.white, size: 24),
     ),
     title: Text(
       'Mortgage Pro',
       style: GoogleFonts.manrope(
-        color: _primary,
+        color: Colors.white,
         fontWeight: FontWeight.w800,
         fontSize: 20,
         letterSpacing: -0.5,
@@ -160,7 +156,7 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
     ),
     actions: [
       IconButton(
-        icon: Icon(Icons.notifications_none, color: _slate500),
+        icon: const Icon(Icons.notifications_none, color: Colors.white),
         onPressed: () {},
       ),
       const SizedBox(width: 8),
@@ -181,7 +177,7 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
         style: GoogleFonts.manrope(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: _onSurface,
+          color: context.textPrimary,
         ),
       ),
       const Spacer(),
@@ -189,15 +185,15 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color: const Color(0xFFF1F5F9),
+            color: context.isDark ? context.inputFill : const Color(0xFFF1F5F9),
             borderRadius: BorderRadius.circular(4),
           ),
-          child: const Text(
+          child: Text(
             'LIVE DATA',
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w800,
-              color: _slate400,
+              color: context.textSecondary,
               letterSpacing: 0.5,
             ),
           ),
@@ -220,7 +216,7 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
               _fredRateCard(
                 label: '30-Y Fixed',
                 labelBg: const Color(0xFFD5E3FC),
-                labelColor: _primary,
+                labelColor: context.primaryColor,
                 rate: loading ? '—' : FredMortgageProvider.fmtPct(fd.rate30Y),
                 desc: 'Standard 30-year fixed rate national average.',
               ),
@@ -258,10 +254,10 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
     decoration: BoxDecoration(
       color: context.cs.surface,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: const Color(0xFFF1F5F9)),
+      border: Border.all(color: context.borderColor),
       boxShadow: [
         BoxShadow(
-          color: context.textPrimary.withAlpha(8),
+          color: context.textPrimary.withValues(alpha: 0.03),
           blurRadius: 10,
           offset: const Offset(0, 4),
         ),
@@ -288,9 +284,9 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
                 ),
               ),
             ),
-            const Text(
+            Text(
               'Source: FRED',
-              style: TextStyle(fontSize: 10, color: _slate400),
+              style: TextStyle(fontSize: 10, color: context.textSecondary),
             ),
           ],
         ),
@@ -300,13 +296,13 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
           style: GoogleFonts.manrope(
             fontSize: 28,
             fontWeight: FontWeight.w900,
-            color: _onSurface,
+            color: context.textPrimary,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           desc,
-          style: TextStyle(fontSize: 12, color: _slate500, height: 1.2),
+          style: TextStyle(fontSize: 12, color: context.textSecondary, height: 1.2),
         ),
       ],
     ),
@@ -321,11 +317,11 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
       label: const Text('Compare All Offers'),
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF1E4ED8),
-        foregroundColor: context.cs.surface,
+        foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 8,
-        shadowColor: const Color(0xFF1E4ED8).withAlpha(77),
+        shadowColor: const Color(0xFF1E4ED8).withValues(alpha: 0.3),
         textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
       ),
     ),
@@ -364,11 +360,11 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
         color: context.cs.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isBest ? _emerald.withAlpha(51) : const Color(0xFFF1F5F9),
+          color: isBest ? _emerald.withValues(alpha: 0.2) : context.borderColor,
         ),
         boxShadow: [
           BoxShadow(
-            color: context.textPrimary.withAlpha(13),
+            color: context.textPrimary.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -392,10 +388,10 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
                     bottomLeft: Radius.circular(12),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'BEST RATE',
                   style: TextStyle(
-                    color: context.cs.surface,
+                    color: Colors.white,
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
@@ -415,13 +411,13 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF8FAFC),
+                            color: context.isDark ? context.inputFill : const Color(0xFFF8FAFC),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: const Color(0xFFF1F5F9)),
+                            border: Border.all(color: context.borderColor),
                           ),
                           child: Icon(
                             Icons.rocket_launch,
-                            color: isBest ? _emerald : _slate400,
+                            color: isBest ? _emerald : context.textSecondary,
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -430,15 +426,16 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
                           children: [
                             Text(
                               o.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                color: context.textPrimary,
                               ),
                             ),
                             Text(
                               o.loanTerm,
                               style: TextStyle(
                                 fontSize: 12,
-                                color: _slate500,
+                                color: context.textSecondary,
                               ),
                             ),
                           ],
@@ -453,15 +450,15 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
                           style: GoogleFonts.manrope(
                             fontSize: 24,
                             fontWeight: FontWeight.w900,
-                            color: isBest ? _emerald : _onSurface,
+                            color: isBest ? _emerald : context.textPrimary,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'INTEREST RATE',
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
-                            color: _slate400,
+                            color: context.textSecondary,
                           ),
                         ),
                       ],
@@ -472,7 +469,7 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF7F9FB),
+                    color: context.isDark ? context.inputFill : const Color(0xFFF7F9FB),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -497,10 +494,10 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
 
   Widget _offerStat(String label, String value) => Column(
     children: [
-      Text(label, style: TextStyle(fontSize: 12, color: _slate500)),
+      Text(label, style: TextStyle(fontSize: 12, color: context.textSecondary)),
       Text(
         value,
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: context.textPrimary),
       ),
     ],
   );
@@ -515,10 +512,10 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
           decoration: BoxDecoration(
             color: context.cs.surface,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFF1F5F9)),
+            border: Border.all(color: context.borderColor),
             boxShadow: [
               BoxShadow(
-                color: context.textPrimary.withAlpha(5),
+                color: context.textPrimary.withValues(alpha: 0.02),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -528,7 +525,7 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
           child: Table(
             children: [
               TableRow(
-                decoration: const BoxDecoration(color: Color(0xFFF8FAFC)),
+                decoration: BoxDecoration(color: context.isDark ? context.cardColor : const Color(0xFFF8FAFC)),
                 children: ['Lender', 'Rate', 'APR', 'Monthly']
                     .map(
                       (h) => Padding(
@@ -547,15 +544,15 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
               ),
               ...offers.map(
                 (o) => TableRow(
-                  decoration: const BoxDecoration(
-                    border: Border(top: BorderSide(color: Color(0xFFF1F5F9))),
+                  decoration: BoxDecoration(
+                    border: Border(top: BorderSide(color: context.borderColor)),
                   ),
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Text(
                         o.name.split(' ').first,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: context.textPrimary),
                       ),
                     ),
                     Padding(
@@ -570,13 +567,16 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16),
-                      child: Text(FredMortgageProvider.fmtPct(o.apr)),
+                      child: Text(
+                        FredMortgageProvider.fmtPct(o.apr),
+                        style: TextStyle(color: context.textPrimary),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Text(
                         FredMortgageProvider.fmtCurrency(o.monthlyTotal),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: context.textPrimary),
                       ),
                     ),
                   ],
@@ -594,7 +594,7 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
     return Container(
       decoration: BoxDecoration(
         color: context.cs.surface,
-        border: Border(top: BorderSide(color: Color(0xFFF1F5F9))),
+        border: Border(top: BorderSide(color: context.borderColor)),
       ),
       child: BottomNavigationBar(
         currentIndex: 1, // Represents 'Rates' or 'Offers' page
@@ -617,30 +617,58 @@ class _CompareMortgageScreenState extends State<CompareMortgageScreen> {
         },
         type: BottomNavigationBarType.fixed,
         backgroundColor: context.cs.surface,
-        selectedItemColor: _primary,
-        unselectedItemColor: _slate400,
+        selectedItemColor: context.cs.primary,
+        unselectedItemColor: context.textSecondary,
         selectedFontSize: 10,
         unselectedFontSize: 10,
         elevation: 0,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+            icon: Text('🏠', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.analytics_outlined),
-            activeIcon: Icon(Icons.analytics),
+            icon: Text('📈', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('📈', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Rates',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shield_outlined),
-            activeIcon: Icon(Icons.shield),
+            icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Insurance',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
+            icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+            activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
+            
+            
+            
+            
+            
+            
+            
             label: 'Settings',
           ),
         ],

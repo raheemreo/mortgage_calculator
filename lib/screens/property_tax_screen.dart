@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../widgets/gradient_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -189,18 +190,18 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
 
     return Scaffold(
       backgroundColor: context.pageBackground,
-      appBar: AppBar(
+      appBar: GradientAppBar(
         backgroundColor: context.pageBackground,
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
             decoration: BoxDecoration(
-              color: primaryBlue.withAlpha(26),
+              color: Colors.white.withAlpha(26),
               shape: BoxShape.circle,
             ),
             child: IconButton(
-              icon: Icon(Icons.arrow_back, color: primaryBlue, size: 20),
+              icon: Icon(Icons.arrow_back, color: Colors.white, size: 20),
               onPressed: () => Navigator.pop(context),
             ),
           ),
@@ -208,7 +209,7 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
         title: Text(
           'Real Estate Insights',
           style: textStyle.copyWith(
-            color: const Color(0xFF0F172A),
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
@@ -219,11 +220,11 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: primaryBlue.withAlpha(26),
+                color: Colors.white.withAlpha(26),
                 shape: BoxShape.circle,
               ),
               child: IconButton(
-                icon: Icon(Icons.more_vert, color: primaryBlue, size: 20),
+                icon: Icon(Icons.more_vert, color: Colors.white, size: 20),
                 onPressed: () {},
               ),
             ),
@@ -231,7 +232,7 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Container(color: primaryBlue.withAlpha(26), height: 1),
+          child: Container(color: Colors.white.withAlpha(26), height: 1),
         ),
       ),
       // BottomNavigationBar — sole occupant, SafeArea wraps correctly.
@@ -274,7 +275,7 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
                         style: textStyle.copyWith(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF0F172A),
+                          color: context.textPrimary,
                           letterSpacing: -0.5,
                         ),
                       ),
@@ -318,7 +319,7 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
                         ),
                         prefixIcon: Icon(
                           Icons.search,
-                          color: primaryBlue.withAlpha(153),
+                          color: context.primaryColor.withValues(alpha: 0.6),
                         ),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.symmetric(
@@ -368,13 +369,37 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
   // ── State card ───────────────────────────────────────────────────────────────
 
   Widget _buildStateCard(StateTaxRate state) {
+    final isDark = context.isDark;
+    Color badgeTextColor;
+    Color badgeBgColor;
+
+    if (isDark) {
+      switch (state.status.toLowerCase()) {
+        case 'high':
+          badgeTextColor = const Color(0xFFEF4444);
+          break;
+        case 'above avg':
+          badgeTextColor = const Color(0xFFF97316);
+          break;
+        case 'moderate':
+          badgeTextColor = const Color(0xFF3B82F6);
+          break;
+        default: // low
+          badgeTextColor = const Color(0xFF22C55E);
+      }
+      badgeBgColor = badgeTextColor.withValues(alpha: 0.15);
+    } else {
+      badgeTextColor = state.statusColor;
+      badgeBgColor = state.statusBgColor;
+    }
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
         color: context.cs.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: primaryBlue.withAlpha(13)),
+        border: Border.all(color: context.borderColor),
         boxShadow: const [
           BoxShadow(
             color: Color(0x05000000),
@@ -395,7 +420,7 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF0F172A),
+                    color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -404,7 +429,7 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: primaryBlue,
+                    color: context.primaryColor,
                   ),
                 ),
               ],
@@ -413,13 +438,13 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: state.statusBgColor,
+              color: badgeBgColor,
               borderRadius: BorderRadius.circular(99),
             ),
             child: Text(
               state.status.toUpperCase(),
               style: GoogleFonts.inter(
-                color: state.statusColor,
+                color: badgeTextColor,
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.5,
@@ -469,19 +494,51 @@ class _PropertyTaxScreenState extends State<PropertyTaxScreen> {
           elevation: 0,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded, size: 28),
+              icon: Text('🏠', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
+              
+              
+              
+              
+              
+              
+              
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.map_rounded, size: 28),
+              icon: Text('🇺🇸', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🇺🇸', style: TextStyle(fontSize: 26)),
+              
+              
+              
+              
+              
+              
+              
               label: 'States',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shield_rounded, size: 28),
+              icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
+              
+              
+              
+              
+              
+              
+              
               label: 'Insurance',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings_rounded, size: 28),
+              icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
+              
+              
+              
+              
+              
+              
+              
               label: 'Settings',
             ),
           ],
@@ -558,7 +615,7 @@ class _NativePropertyTaxAdItemState extends State<_NativePropertyTaxAdItem> {
       return Container(
         height: 60,
         decoration: BoxDecoration(
-          color: Colors.blue.shade50,
+          color: context.isDark ? context.cardColor : Colors.blue.shade50,
           borderRadius: BorderRadius.circular(12),
         ),
         child: const Center(
@@ -575,9 +632,9 @@ class _NativePropertyTaxAdItemState extends State<_NativePropertyTaxAdItem> {
       height: 340,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.blue.shade50,
+        color: context.isDark ? context.cardColor : Colors.blue.shade50,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.blue.shade200),
+        border: Border.all(color: context.isDark ? context.borderColor : Colors.blue.shade200),
         boxShadow: [
           BoxShadow(
             color: context.textPrimary.withValues(alpha: 0.05),
@@ -596,15 +653,15 @@ class _NativePropertyTaxAdItemState extends State<_NativePropertyTaxAdItem> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade100,
+                  color: context.isDark ? Colors.blue.withValues(alpha: 0.15) : Colors.blue.shade100,
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: const Text(
+                child: Text(
                   'Sponsored',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: context.isDark ? const Color(0xFF3B82F6) : Colors.blue,
                   ),
                 ),
               ),

@@ -1,7 +1,8 @@
-name: mortgage_calculator
-description: "USA Mortgage Pro Calculator."
+name: mortgage_and_loan_calculator_dti
+description: "Calculate mortgage payments, DTI, PITI, amortization schedule &
+  more. Free. No Signup required."
 publish_to: "none"
-version: 1.0.3+4
+version: 3.0.1+10
 
 environment:
   sdk: ^3.11.0
@@ -28,6 +29,7 @@ dependencies:
   pdf: ^3.11.1
   printing: ^5.13.2
   share_plus: ^12.0.1
+  path_provider: ^2.1.4
   in_app_review: ^2.0.11
   cached_network_image: ^3.3.0
   flutter_staggered_animations: ^1.1.1

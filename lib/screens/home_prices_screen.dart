@@ -1,4 +1,5 @@
 import 'dart:io';
+import '../widgets/gradient_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -242,16 +243,16 @@ class _HomePricesScreenState extends State<HomePricesScreen> {
 
     return Scaffold(
       backgroundColor: context.pageBackground,
-      appBar: AppBar(
+      appBar: GradientAppBar(
         backgroundColor: headerBgColor,
         title: Text(
           'Home Prices by City',
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
-            color: context.cs.surface,
+            color: Colors.white,
           ),
         ),
-        iconTheme: IconThemeData(color: context.cs.surface),
+        iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
       ),
       // Body is now a plain Column — no sticky ad widget at the bottom.
@@ -264,7 +265,7 @@ class _HomePricesScreenState extends State<HomePricesScreen> {
             child: Container(
               height: 40,
               decoration: BoxDecoration(
-                color: context.cs.surface,
+                color: context.isDark ? context.inputFill : context.cs.surface,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: TextField(
@@ -296,7 +297,9 @@ class _HomePricesScreenState extends State<HomePricesScreen> {
                     child: FilterChip(
                       label: Text(filter),
                       labelStyle: GoogleFonts.inter(
-                        color: isSelected ? context.cs.surface : Colors.grey.shade700,
+                        color: isSelected
+                            ? (isDark ? Colors.black87 : Colors.white)
+                            : context.textSecondary,
                         fontWeight: isSelected
                             ? FontWeight.bold
                             : FontWeight.w500,
@@ -311,13 +314,15 @@ class _HomePricesScreenState extends State<HomePricesScreen> {
                       },
                       backgroundColor: context.cs.surface,
                       selectedColor: primaryBlue,
-                      checkmarkColor: context.cs.surface,
+                      checkmarkColor: isSelected
+                          ? (isDark ? Colors.black87 : Colors.white)
+                          : null,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                         side: BorderSide(
                           color: isSelected
                               ? primaryBlue
-                              : Colors.grey.shade300,
+                              : context.borderColor,
                         ),
                       ),
                     ),
@@ -489,7 +494,7 @@ class _HomePricesScreenState extends State<HomePricesScreen> {
                         child: Text(
                           'Rating: ${city.rating}',
                           style: GoogleFonts.inter(
-                            color: context.cs.surface,
+                            color: Colors.white,
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),
@@ -704,7 +709,7 @@ class _NativeAdListItemState extends State<NativeAdListItem> {
         height: 60,
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: context.isDark ? const Color(0xFF1F2937) : Colors.blue.shade50,
+          color: context.isDark ? context.cardColor : Colors.blue.shade50,
           borderRadius: BorderRadius.circular(16),
         ),
         child: const Center(
@@ -722,9 +727,9 @@ class _NativeAdListItemState extends State<NativeAdListItem> {
       margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: context.isDark ? const Color(0xFF1F2937) : Colors.blue.shade50,
+        color: context.isDark ? context.cardColor : Colors.blue.shade50,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: context.isDark ? const Color(0xFF374151) : Colors.blue.shade200),
+        border: Border.all(color: context.isDark ? context.borderColor : Colors.blue.shade200),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -735,15 +740,15 @@ class _NativeAdListItemState extends State<NativeAdListItem> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade100,
+                  color: context.isDark ? Colors.blue.withValues(alpha: 0.15) : Colors.blue.shade100,
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: const Text(
+                child: Text(
                   'Sponsored',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: context.isDark ? const Color(0xFF60A5FA) : Colors.blue,
                   ),
                 ),
               ),

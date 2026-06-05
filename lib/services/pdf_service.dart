@@ -10,9 +10,13 @@ class PdfService {
     required int years,
     required List<Map<String, dynamic>> schedule,
     bool isMonthly = true,
+    String currencySymbol = '\$',
   }) async {
     final pdf = pw.Document();
-    final NumberFormat currencyFormat = NumberFormat.simpleCurrency();
+    final NumberFormat currencyFormat = NumberFormat.currency(
+      symbol: currencySymbol,
+      decimalDigits: 0,
+    );
 
     pdf.addPage(
       pw.MultiPage(

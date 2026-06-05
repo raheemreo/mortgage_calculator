@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -7,16 +8,7 @@ import '../providers/settings_provider.dart';
 import 'dart:math' as math;
 import '../core/constants/theme_extensions.dart';
 
-/// Professional Theme Constants for DTI Calculator
-class DtiTheme {
-  static const Color primary = Color(0xFF1E3A8A);
-  static const Color background = Color(0xFFF3F4F6);
-  static final Color card = Colors.white;
-  static const Color textPrimary = Color(0xFF1F2937);
-  static const Color textSecondary = Color(0xFF6B7280);
-  static const Color border = Color(0xFFE5E7EB);
-  static const Color accent = Color(0xFF10B981); // Success color for "Healthy"
-}
+// Custom theme constants removed in favor of dynamic BuildContext extensions.
 
 // ─────────────────────────────────────────────────────────────────────────────
 // AD PLACEMENT STRATEGY — what changed and why
@@ -121,24 +113,24 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
     final textStyle = GoogleFonts.inter();
 
     return Scaffold(
-      backgroundColor: DtiTheme.background,
-      appBar: AppBar(
-        backgroundColor: DtiTheme.card,
+      backgroundColor: context.pageBackground,
+      appBar: GradientAppBar(
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: DtiTheme.textSecondary),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: _handleBackNavigation,
         ),
         title: Text(
           'DTI Calculator',
           style: textStyle.copyWith(
-            color: DtiTheme.textPrimary,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
         centerTitle: true,
-        shape: const Border(bottom: BorderSide(color: DtiTheme.border)),
+        shape: const Border(bottom: BorderSide(color: Colors.white24)),
       ),
 
       body: GestureDetector(
@@ -168,16 +160,16 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: DtiTheme.card,
+        color: context.cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: DtiTheme.border),
+        border: Border.all(color: context.borderColor),
       ),
       child: Column(
         children: [
           Text(
             'TOTAL DEBT-TO-INCOME',
             style: textStyle.copyWith(
-              color: DtiTheme.textSecondary,
+              color: context.textSecondary,
               fontSize: 12,
               letterSpacing: 1.2,
               fontWeight: FontWeight.bold,
@@ -192,7 +184,11 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
               children: [
                 CustomPaint(
                   size: const Size(240, 120),
-                  painter: DtiSemiCirclePainter(ratio: _backendRatio),
+                  painter: DtiSemiCirclePainter(
+                    ratio: _backendRatio,
+                    activeColor: context.primaryColor,
+                    trackColor: context.borderColor,
+                  ),
                 ),
                 Positioned(
                   bottom: 0,
@@ -201,7 +197,7 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
                     style: textStyle.copyWith(
                       fontSize: 42,
                       fontWeight: FontWeight.w800,
-                      color: DtiTheme.textPrimary,
+                      color: context.textPrimary,
                     ),
                   ),
                 ),
@@ -214,7 +210,7 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
             children: [
               Icon(
                 Icons.verified,
-                color: _backendRatio <= 0.36 ? DtiTheme.accent : Colors.orange,
+                color: _backendRatio <= 0.36 ? const Color(0xFF10B981) : Colors.orange,
                 size: 18,
               ),
               const SizedBox(width: 6),
@@ -222,7 +218,7 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
                 _backendRatio <= 0.36 ? 'Healthy Range' : 'High DTI',
                 style: textStyle.copyWith(
                   color: _backendRatio <= 0.36
-                      ? DtiTheme.accent
+                      ? const Color(0xFF10B981)
                       : Colors.orange,
                   fontWeight: FontWeight.w600,
                 ),
@@ -276,13 +272,20 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
       children: [
         Text(
           label,
-          style: style.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+          style: style.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: context.textPrimary,
+          ),
         ),
         const SizedBox(height: 8),
         TextField(
           controller: ctrl,
           keyboardType: TextInputType.number,
-          style: style.copyWith(color: DtiTheme.textPrimary, fontWeight: FontWeight.w600),
+          style: style.copyWith(
+            color: context.textPrimary,
+            fontWeight: FontWeight.w600,
+          ),
           decoration: InputDecoration(
             prefixIcon: Container(
               padding: const EdgeInsets.all(14),
@@ -290,19 +293,19 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
                 symbol,
                 style: style.copyWith(
                   fontSize: 18,
-                  color: DtiTheme.textSecondary,
+                  color: context.textSecondary,
                 ),
               ),
             ),
             filled: true,
-            fillColor: DtiTheme.card,
+            fillColor: context.cardColor,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: DtiTheme.border),
+              borderSide: BorderSide(color: context.borderColor),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: DtiTheme.primary, width: 2),
+              borderSide: BorderSide(color: context.primaryColor, width: 2),
             ),
             hintText: '0.00',
           ),
@@ -311,7 +314,7 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
           padding: const EdgeInsets.only(top: 4, left: 4),
           child: Text(
             sub,
-            style: style.copyWith(color: DtiTheme.textSecondary, fontSize: 12),
+            style: style.copyWith(color: context.textSecondary, fontSize: 12),
           ),
         ),
       ],
@@ -321,9 +324,9 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
   Widget _buildSummaryCard(TextStyle style) {
     return Container(
       decoration: BoxDecoration(
-        color: DtiTheme.card,
+        color: context.cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: DtiTheme.border),
+        border: Border.all(color: context.borderColor),
       ),
       child: Column(
         children: [
@@ -349,18 +352,18 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         border: border
-            ? const Border(bottom: BorderSide(color: DtiTheme.border))
+            ? Border(bottom: BorderSide(color: context.borderColor))
             : null,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: style.copyWith(color: DtiTheme.textSecondary)),
+          Text(label, style: style.copyWith(color: context.textSecondary)),
           Text(
             val,
             style: style.copyWith(
               fontWeight: FontWeight.bold,
-              color: DtiTheme.textPrimary,
+              color: context.textPrimary,
             ),
           ),
         ],
@@ -378,8 +381,8 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
           FocusScope.of(context).unfocus();
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: DtiTheme.primary,
-          foregroundColor: context.cs.surface,
+          backgroundColor: context.primaryColor,
+          foregroundColor: context.isDark ? const Color(0xFF0A0E1A) : Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -398,7 +401,14 @@ class _DtiCalculatorScreenState extends State<DtiCalculatorScreen> {
 
 class DtiSemiCirclePainter extends CustomPainter {
   final double ratio;
-  DtiSemiCirclePainter({required this.ratio});
+  final Color activeColor;
+  final Color trackColor;
+
+  DtiSemiCirclePainter({
+    required this.ratio,
+    required this.activeColor,
+    required this.trackColor,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -407,13 +417,13 @@ class DtiSemiCirclePainter extends CustomPainter {
     const strokeWidth = 14.0;
 
     final bgPaint = Paint()
-      ..color = DtiTheme.border
+      ..color = trackColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
 
     final activePaint = Paint()
-      ..color = DtiTheme.primary
+      ..color = activeColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
@@ -435,5 +445,8 @@ class DtiSemiCirclePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(DtiSemiCirclePainter old) => old.ratio != ratio;
+  bool shouldRepaint(DtiSemiCirclePainter old) =>
+      old.ratio != ratio ||
+      old.activeColor != activeColor ||
+      old.trackColor != trackColor;
 }

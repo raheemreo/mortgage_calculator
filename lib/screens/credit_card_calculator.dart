@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../utils/calculator_logic.dart';
@@ -175,14 +176,14 @@ class _CreditCardCalculatorScreenState
     final double bottomPadding = 16.0;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
-      appBar: AppBar(
+      backgroundColor: context.pageBackground,
+      appBar: GradientAppBar(
         backgroundColor: context.cs.surface,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: context.textSecondary,
+            color: Colors.white,
             size: 20,
           ),
           onPressed: () => Navigator.pop(context),
@@ -190,7 +191,7 @@ class _CreditCardCalculatorScreenState
         title: Text(
           'Credit Card Payoff',
           style: TextStyle(
-            color: context.textPrimary,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -207,9 +208,9 @@ class _CreditCardCalculatorScreenState
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: context.cs.surface,
+                  color: context.cardColor,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFF1F5F9)),
+                  border: Border.all(color: context.borderColor),
                   boxShadow: const [
                     BoxShadow(
                       color: Color(0x08000000),
@@ -256,8 +257,8 @@ class _CreditCardCalculatorScreenState
                         FocusScope.of(context).unfocus();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2563EB),
-                        foregroundColor: context.cs.surface,
+                        backgroundColor: context.primaryColor,
+                        foregroundColor: context.isDark ? const Color(0xFF0A0E1A) : Colors.white,
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -310,13 +311,13 @@ class _CreditCardCalculatorScreenState
                   width: double.infinity,
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2563EB),
+                    color: context.primaryColor,
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
-                        color: Color(0x332563EB),
+                        color: context.primaryColor.withValues(alpha: 0.2),
                         blurRadius: 15,
-                        offset: Offset(0, 8),
+                        offset: const Offset(0, 8),
                       ),
                     ],
                   ),
@@ -495,9 +496,18 @@ class _CreditCardCalculatorScreenState
         TextField(
           controller: controller,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: context.textPrimary,
+          ),
           decoration: InputDecoration(
             prefixText: prefix != null ? '$prefix ' : null,
             suffixText: suffix != null ? ' $suffix' : null,
+            prefixStyle: TextStyle(color: context.textSecondary, fontSize: 15),
+            suffixStyle: TextStyle(color: context.textSecondary, fontSize: 15),
+            filled: true,
+            fillColor: context.inputFill,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 12,
               vertical: 14,
@@ -509,6 +519,10 @@ class _CreditCardCalculatorScreenState
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(color: context.borderColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: context.primaryColor, width: 2),
             ),
           ),
         ),

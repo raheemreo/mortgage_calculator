@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../core/constants/app_colors.dart';
 
 import '../services/firebase_service.dart';
 import '../services/update_service.dart';
@@ -21,6 +22,7 @@ import 'home_affordability_screen.dart';
 import 'lenders_in_usa_screen.dart';
 import 'ai_assistant_screen.dart';
 import 'notification_screen.dart';
+import 'saved_calculations_screen.dart';
 import '../core/constants/theme_extensions.dart';
 import '../widgets/promo_banner.dart';
 
@@ -75,25 +77,25 @@ class _HomeDashboardState extends State<HomeDashboard> {
     {
       'title': 'PITI & Extra',
       'subtitle': 'Payment breakdown',
-      'icon': Icons.add_chart_rounded,
+      'icon': Icons.bar_chart_rounded,
       'route': const PitiCalculatorScreen(),
     },
     {
       'title': 'Mortgage Calc',
       'subtitle': 'Monthly estimate',
-      'icon': Icons.calculate_rounded,
+      'icon': Icons.calculate_outlined,
       'route': const MortgageCalculatorScreen(),
     },
     {
       'title': 'DTI Calculator',
       'subtitle': 'Debt-to-income',
-      'icon': Icons.analytics_rounded,
+      'icon': Icons.donut_large_rounded,
       'route': const DtiCalculatorScreen(),
     },
     {
       'title': 'Auto Loan',
       'subtitle': 'Vehicle finance',
-      'icon': Icons.directions_car_rounded,
+      'icon': Icons.directions_car_filled_rounded,
       'route': const AutoLoanCalculatorScreen(),
     },
     {
@@ -105,19 +107,19 @@ class _HomeDashboardState extends State<HomeDashboard> {
     {
       'title': 'Home Prices',
       'subtitle': 'Property values',
-      'icon': Icons.home_work_rounded,
+      'icon': Icons.home_work_outlined,
       'route': const HomePricesScreen(),
     },
     {
       'title': 'Affordability',
       'subtitle': 'How much house?',
-      'icon': Icons.account_balance_wallet_rounded,
+      'icon': Icons.account_balance_wallet_outlined,
       'route': const HomeAffordabilityScreen(),
     },
     {
       'title': 'More Tools',
       'subtitle': 'View all 20+',
-      'icon': Icons.apps_rounded,
+      'icon': Icons.handyman_outlined,
       'route': const MoreToolsScreen(),
     },
   ];
@@ -222,25 +224,13 @@ class _HomeDashboardState extends State<HomeDashboard> {
     final cs = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
 
-    // Use a lighter, vibrant blue for dark mode to ensure contrast
-    final resolvedPrimary = isDark
-        ? const Color(0xFF3B82F6)
-        : const Color(0xFF0B3D91);
-    final headerBgColor = isDark ? cs.surface : const Color(0xFF0B3D91);
-
-    final scaffoldBg = isDark
-        ? const Color(0xFF111827)
-        : context.pageBackground;
+    final resolvedPrimary = context.primaryColor;
+    final scaffoldBg = context.pageBackground;
     final cardBg = cs.surface;
-    final textPrimary = isDark ? const Color(0xFFF9FAFB) : context.textPrimary;
-    final textSecondary = isDark
-        ? const Color(0xFF9CA3AF)
-        : context.textSecondary;
-    final borderColor = isDark ? const Color(0xFF374151) : context.borderColor;
+    final textPrimary = context.textPrimary;
+    final borderColor = context.borderColor;
     final dialogBg = cs.surface;
-    final dialogTextColor = isDark
-        ? const Color(0xFFF9FAFB)
-        : context.textPrimary;
+    final dialogTextColor = context.textPrimary;
 
     return PopScope(
       canPop: false,
@@ -328,19 +318,25 @@ class _HomeDashboardState extends State<HomeDashboard> {
                 left: 16,
                 right: 16,
               ),
-              decoration: BoxDecoration(color: headerBgColor),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: AppColors.headerGradient,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.account_balance_rounded,
-                    color: context.cs.surface,
+                    color: Colors.white,
                     size: 28,
                   ),
                   const SizedBox(width: 8),
-                  Text(
+                  const Text(
                     'USA Mortgage Pro',
                     style: TextStyle(
-                      color: context.cs.surface,
+                      color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -383,23 +379,83 @@ class _HomeDashboardState extends State<HomeDashboard> {
                           crossAxisCount: 2,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 12,
-                          childAspectRatio: 1.1,
+                          childAspectRatio: 0.80,
                         ),
                     itemCount: _modules.length,
                     itemBuilder: (context, index) {
                       final module = _modules[index];
+                      
+                      // Resolve card colors based on index/module color scheme
+                      final Color resolvedCardBg;
+                      final Color resolvedTextColor;
+                      final Color resolvedSubColor;
+                      final Color resolvedIconColor;
+                      final Color resolvedIconBg;
+                      
+                      // Map each card index to its premium colour scheme
+                      if (index == 0) {
+                        // Navy (PITI)
+                        resolvedCardBg = context.cardNavy;
+                        resolvedTextColor = Colors.white;
+                        resolvedSubColor = Colors.white.withValues(alpha: 0.72);
+                        resolvedIconColor = Colors.white;
+                        resolvedIconBg = Colors.white.withValues(alpha: 0.15);
+                      } else if (index == 1 || index == 2) {
+                        // White cards (Mortgage Calc, DTI)
+                        resolvedCardBg = context.cardWhite;
+                        resolvedTextColor = context.textPrimary;
+                        resolvedSubColor = context.textSecondary;
+                        resolvedIconColor = resolvedPrimary;
+                        resolvedIconBg = resolvedPrimary.withValues(alpha: 0.08);
+                      } else if (index == 3) {
+                        // Teal Green (Auto Loan)
+                        resolvedCardBg = context.cardGreen;
+                        resolvedTextColor = Colors.white;
+                        resolvedSubColor = Colors.white.withValues(alpha: 0.72);
+                        resolvedIconColor = Colors.white;
+                        resolvedIconBg = Colors.white.withValues(alpha: 0.15);
+                      } else if (index == 4) {
+                        // Burnt Orange (Mortgage Rates)
+                        resolvedCardBg = context.cardOrange;
+                        resolvedTextColor = Colors.white;
+                        resolvedSubColor = Colors.white.withValues(alpha: 0.72);
+                        resolvedIconColor = Colors.white;
+                        resolvedIconBg = Colors.white.withValues(alpha: 0.15);
+                      } else if (index == 5) {
+                        // Deep Red (Home Prices)
+                        resolvedCardBg = context.cardRed;
+                        resolvedTextColor = Colors.white;
+                        resolvedSubColor = Colors.white.withValues(alpha: 0.72);
+                        resolvedIconColor = Colors.white;
+                        resolvedIconBg = Colors.white.withValues(alpha: 0.15);
+                      } else if (index == 6) {
+                        // Indigo (Affordability)
+                        resolvedCardBg = context.cardIndigo;
+                        resolvedTextColor = Colors.white;
+                        resolvedSubColor = Colors.white.withValues(alpha: 0.72);
+                        resolvedIconColor = Colors.white;
+                        resolvedIconBg = Colors.white.withValues(alpha: 0.15);
+                      } else {
+                        // Slate (More Tools)
+                        resolvedCardBg = context.cardSlate;
+                        resolvedTextColor = Colors.white;
+                        resolvedSubColor = Colors.white.withValues(alpha: 0.72);
+                        resolvedIconColor = Colors.white;
+                        resolvedIconBg = Colors.white.withValues(alpha: 0.15);
+                      }
+
                       return InkWell(
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(builder: (_) => module['route']),
                         ),
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(16),
                         child: Container(
-                          padding: const EdgeInsets.all(14),
+                          padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: cardBg,
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: borderColor),
+                            color: resolvedCardBg,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: resolvedTextColor.withValues(alpha: 0.08)),
                             boxShadow: [
                               BoxShadow(
                                 color: context.textPrimary.withValues(
@@ -410,42 +466,74 @@ class _HomeDashboardState extends State<HomeDashboard> {
                               ),
                             ],
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                          child: Stack(
                             children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: resolvedPrimary.withValues(
-                                    alpha: isDark ? 0.15 : 0.10,
-                                  ),
-                                  shape: BoxShape.circle,
-                                ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
                                 child: Icon(
-                                  module['icon'],
-                                  color: resolvedPrimary,
-                                  size: 32,
+                                  Icons.chevron_right_rounded,
+                                  color: resolvedTextColor.withValues(alpha: 0.5),
+                                  size: 18,
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              Text(
-                                module['title'],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color: textPrimary,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                module['subtitle'],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color: textSecondary,
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: resolvedIconBg,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Icon(
+                                      module['icon'],
+                                      color: resolvedIconColor,
+                                      size: 24,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    module['title'],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: resolvedTextColor,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    module['subtitle'],
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: resolvedSubColor,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: index == 1 || index == 2
+                                          ? (isDark ? Colors.white.withValues(alpha: 0.1) : const Color(0xFFEFF6FF))
+                                          : Colors.white.withValues(alpha: 0.2),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      _getCategoryLabel(index),
+                                      style: TextStyle(
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.bold,
+                                        color: index == 1 || index == 2
+                                            ? (isDark ? Colors.white : const Color(0xFF1E40AF))
+                                            : Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -504,47 +592,91 @@ class _HomeDashboardState extends State<HomeDashboard> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const MoreToolsScreen()),
-              );
+              ).then((_) {
+                if (mounted) setState(() => _currentIndex = 0);
+              });
             } else if (index == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SavedCalculationsScreen()),
+              ).then((_) {
+                if (mounted) setState(() => _currentIndex = 0);
+              });
+            } else if (index == 3) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) => const InsuranceMarketplaceScreen(),
                 ),
-              );
-            } else if (index == 3) {
+              ).then((_) {
+                if (mounted) setState(() => _currentIndex = 0);
+              });
+            } else if (index == 4) {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
+              ).then((_) {
+                if (mounted) setState(() => _currentIndex = 0);
+              });
             }
           },
           type: BottomNavigationBarType.fixed,
           selectedItemColor: resolvedPrimary,
-          unselectedItemColor: isDark
-              ? const Color(0xFF6B7280)
-              : const Color(0xFF94A3B8),
+          unselectedItemColor: context.textSecondary,
+          selectedFontSize: 11,
+          unselectedFontSize: 11,
+          elevation: 16,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded),
+              icon: Text('🏠', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.grid_view_rounded),
+              icon: Text('🛠️', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🛠️', style: TextStyle(fontSize: 26)),
               label: 'Tools',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shield_rounded),
+              icon: Text('💾', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('💾', style: TextStyle(fontSize: 26)),
+              label: 'Saved',
+            ),
+            BottomNavigationBarItem(
+              icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
               label: 'Insurance',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings_rounded),
+              icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
               label: 'Settings',
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _getCategoryLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'United States';
+      case 1:
+        return 'Mortgage';
+      case 2:
+        return 'DTI Ratio';
+      case 3:
+        return 'Auto Loan';
+      case 4:
+        return 'Rates';
+      case 5:
+        return 'Property';
+      case 6:
+        return 'Affordability';
+      default:
+        return 'Tools';
+    }
   }
 
   // ── Quick access row ───────────────────────────────────────────────────────
@@ -604,9 +736,9 @@ class _HomeDashboardState extends State<HomeDashboard> {
           alignment: Alignment.center,
           children: [
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.notifications_none_rounded,
-                color: context.cs.surface,
+                color: Colors.white,
                 size: 28,
               ),
               onPressed: () => Navigator.push(
@@ -630,8 +762,8 @@ class _HomeDashboardState extends State<HomeDashboard> {
                   ),
                   child: Text(
                     count > 9 ? '9+' : '$count',
-                    style: TextStyle(
-                      color: context.cs.surface,
+                    style: const TextStyle(
+                      color: Colors.white,
                       fontSize: 8,
                       fontWeight: FontWeight.bold,
                     ),
@@ -757,11 +889,10 @@ class _NativeAdPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: 352,
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F2937) : const Color(0xFFF1F5F9),
+        color: context.isDark ? AppColors.surfaceDark : const Color(0xFFF1F5F9),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: context.borderColor),
       ),
@@ -772,14 +903,14 @@ class _NativeAdPlaceholder extends StatelessWidget {
             Icon(
               Icons.image_outlined,
               size: 32,
-              color: isDark ? const Color(0xFF4B5563) : const Color(0xFFCBD5E1),
+              color: context.isDark ? const Color(0xFF4B5563) : const Color(0xFFCBD5E1),
             ),
             const SizedBox(height: 8),
             Text(
               'Sponsored',
               style: TextStyle(
                 fontSize: 12,
-                color: isDark
+                color: context.isDark
                     ? const Color(0xFF9CA3AF)
                     : const Color(0xFF94A3B8),
                 fontWeight: FontWeight.w500,

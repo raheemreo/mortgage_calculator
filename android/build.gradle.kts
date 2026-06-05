@@ -4,6 +4,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://android-sdk.is.com/") }
     }
 }
 

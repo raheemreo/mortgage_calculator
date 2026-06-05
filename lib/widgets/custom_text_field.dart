@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../core/constants/app_colors.dart';
+import '../core/constants/theme_extensions.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -34,7 +34,7 @@ class CustomTextField extends StatelessWidget {
             label,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+              color: context.textPrimary,
               fontSize: 14,
             ),
           ),
@@ -42,17 +42,17 @@ class CustomTextField extends StatelessWidget {
           TextField(
             controller: controller,
             keyboardType: keyboardType,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: AppColors.textPrimary,
+              color: context.textPrimary,
             ),
             decoration: InputDecoration(
               hintText: hint,
               prefixText: prefixText,
               suffixText: suffixText,
               prefixIcon: prefixIcon != null
-                  ? Icon(prefixIcon, color: AppColors.textSecondary, size: 20)
+                  ? Icon(prefixIcon, color: context.textSecondary, size: 20)
                   : null,
             ),
           ),
@@ -61,7 +61,7 @@ class CustomTextField extends StatelessWidget {
             Text(
               helperText!,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
+                color: context.textSecondary,
                 fontSize: 12,
               ),
             ),

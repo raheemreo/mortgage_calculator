@@ -3,7 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +18,7 @@ import 'screens/onboarding_screen.dart';
 import 'screens/splash_screen.dart';
 import 'services/ad_service.dart';
 import 'services/firebase_service.dart';
+import 'services/rate_us_service.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -57,6 +58,11 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+  // FIX Crash #2: Disable Google Fonts runtime network fetching.
+  // google_fonts ^8.x bundles all fonts — runtime fetching causes crashes
+  // when the device is offline or the Google Fonts CDN is unreachable.
+  GoogleFonts.config.allowRuntimeFetching = false;
+
   // Load environment variables
   try {
     await dotenv.load(fileName: ".env");
@@ -65,20 +71,20 @@ void main() async {
     debugPrint("⚠️ .env file not found or failed to load: $e");
   }
 
-  // Register background handler
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
   // Initialize Firebase
+  // FIX Crash #1/#3: Register FCM background handler AFTER Firebase.initializeApp()
+  // to guarantee Firebase Core is ready before FCM platform channels are used.
   try {
     await FirebaseService.init();
+    // Register background handler only after Firebase is confirmed initialized.
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     debugPrint("✅ Firebase initialized successfully");
   } catch (e, stackTrace) {
     debugPrint("❌ Firebase initialization failed: $e");
     debugPrint(stackTrace.toString());
   }
 
-  // Initialize Ads
-  unawaited(MobileAds.instance.initialize());
+
 
   // 5. Initialize shared preferences and logic
   debugPrint("📦 Fetching SharedPreferences...");
@@ -87,6 +93,9 @@ void main() async {
 
   // Initialize Ads with prefs
   unawaited(AdService().init(prefs));
+
+  // Record app launch for Rate Us logic
+  unawaited(RateUsService.instance.recordAppLaunch());
 
   // 6. Launch App
   debugPrint("🚀 Calling runApp...");
@@ -120,20 +129,27 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<SettingsProvider>(
         builder: (context, settings, _) {
-          ThemeData theme = AppTheme.lightTheme;
-
-          if (settings.themeName == 'Emerald') {
-            theme = AppTheme.emeraldTheme;
-          } else if (settings.themeName == 'Navy') {
-            theme = AppTheme.lightTheme;
+          ThemeMode themeMode;
+          switch (settings.themeName) {
+            case 'Light':
+              themeMode = ThemeMode.light;
+              break;
+            case 'Dark':
+              themeMode = ThemeMode.dark;
+              break;
+            case 'System':
+            default:
+              themeMode = ThemeMode.system;
+              break;
           }
 
           return MaterialApp(
             navigatorKey: navigatorKey,
-            title: 'Mortgage Pro USA',
+            title: 'Mortgage Calculator - PITI, DTI',
             debugShowCheckedModeBanner: false,
-            theme: theme,
-            themeMode: ThemeMode.light,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeMode,
             home: SplashScreen(
               nextScreen: showOnboarding
                   ? const OnboardingScreen()

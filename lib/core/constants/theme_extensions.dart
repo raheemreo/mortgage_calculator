@@ -1,40 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import '../../providers/settings_provider.dart';
 import 'app_colors.dart';
 
 extension ThemeExtensions on BuildContext {
-  /// Get the current ColorScheme
+  // ── Currency ───────────────────────────────────────────────────────────────
+  String get currencySymbol =>
+      Provider.of<SettingsProvider>(this).currencySymbol;
+
+  NumberFormat currencyFormat({int decimalDigits = 0}) {
+    return NumberFormat.currency(
+      symbol: currencySymbol,
+      decimalDigits: decimalDigits,
+    );
+  }
+
+  // ── Core theme access ──────────────────────────────────────────────────────
   ColorScheme get cs => Theme.of(this).colorScheme;
+  ThemeData get theme => Theme.of(this);
+  bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
+  bool get isDark => isDarkMode;
 
-  /// Check if dark mode is active
-  bool get isDarkMode => false;
+  // ── Semantic text colors ───────────────────────────────────────────────────
+  Color get textPrimary =>
+      isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight;
 
-  /// Alias for isDarkMode
-  bool get isDark => false;
+  Color get textSecondary =>
+      isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight;
 
-  /// Semantic color for primary text based on theme
-  Color get textPrimary => AppColors.textPrimary;
+  Color get textMuted =>
+      isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight;
 
-  /// Semantic color for secondary/muted text based on theme
-  Color get textSecondary => AppColors.textSecondary;
+  // ── Semantic surface colors ────────────────────────────────────────────────
+  Color get borderColor =>
+      isDark ? AppColors.borderDark : AppColors.borderLight;
 
-  /// Semantic color for borders based on theme
-  Color get borderColor => AppColors.border;
+  Color get cardColor =>
+      isDark ? AppColors.cardDark : AppColors.cardLight;
 
-  /// Semantic color for card/surface backgrounds based on theme
-  Color get cardColor => AppColors.surface;
+  Color get pageBackground =>
+      isDark ? AppColors.backgroundDark : AppColors.backgroundLight;
 
-  /// Page background color
-  Color get pageBackground => AppColors.background;
+  Color get surfaceColor =>
+      isDark ? AppColors.surfaceDark : AppColors.cardLight;
 
-  /// Input fill color
-  Color get inputFill => AppColors.inputBackground;
+  Color get inputFill =>
+      isDark ? AppColors.surfaceDark : AppColors.inputBackground;
 
-  /// Label color
-  Color get labelColor => textSecondary;
+  // ── Primary colors ─────────────────────────────────────────────────────────
+  Color get primaryColor =>
+      isDark ? AppColors.primaryDark : AppColors.primaryLight;
 
-  /// Opacity variations
+  // ── Gradient ───────────────────────────────────────────────────────────────
+  LinearGradient get headerGradient => const LinearGradient(
+        colors: AppColors.headerGradient,
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+
+  // ── Card color helpers ─────────────────────────────────────────────────────
+  Color get cardNavy =>
+      isDark ? AppColors.cardNavyDark : AppColors.cardNavyLight;
+  Color get cardGreen =>
+      isDark ? AppColors.cardGreenDark : AppColors.cardGreenLight;
+  Color get cardOrange =>
+      isDark ? AppColors.cardOrangeDark : AppColors.cardOrangeLight;
+  Color get cardRed =>
+      isDark ? AppColors.cardRedDark : AppColors.cardRedLight;
+  Color get cardIndigo =>
+      isDark ? AppColors.cardIndigoDark : AppColors.cardIndigoLight;
+  Color get cardSlate =>
+      isDark ? AppColors.cardSlateDark : AppColors.cardSlateLight;
+  Color get cardWhite =>
+      isDark ? AppColors.cardDark : AppColors.cardLight;
+
+  // ── Convenience opacity helpers ────────────────────────────────────────────
   Color get textPrimary12 => textPrimary.withValues(alpha: 0.12);
   Color get textPrimary87 => textPrimary.withValues(alpha: 0.87);
   Color get surface70 => cardColor.withValues(alpha: 0.70);
   Color get surface10 => cardColor.withValues(alpha: 0.10);
+  Color get border50 => borderColor.withValues(alpha: 0.50);
+
+  /// Alias for backwards compatibility
+  Color get labelColor => textSecondary;
 }

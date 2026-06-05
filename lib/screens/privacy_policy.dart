@@ -1,6 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../core/constants/theme_extensions.dart';
@@ -57,21 +58,24 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
       backgroundColor: theme.scaffoldBackgroundColor,
 
       // ── AppBar ─────────────────────────────────────────────────────────────
-      appBar: AppBar(
+      appBar: GradientAppBar(
         title: Text(
           'Privacy Policy',
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
-            color: colorScheme.onSurface,
+            color: Colors.white,
           ),
         ),
         centerTitle: true,
-        backgroundColor: colorScheme.surface,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: colorScheme.onSurface),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(color: theme.dividerColor, height: 1.0),
+        iconTheme: const IconThemeData(color: Colors.white),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1.0),
+          child: SizedBox(
+            height: 1.0,
+            child: Divider(height: 1.0, color: Colors.white24),
+          ),
         ),
       ),
 

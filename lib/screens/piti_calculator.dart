@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,9 @@ import '../services/ad_service.dart';
 import '../utils/calculator_logic.dart';
 import 'amortization_schedule_screen.dart';
 import '../core/constants/theme_extensions.dart';
+import '../models/affordability_model.dart';
+import '../providers/affordability_provider.dart';
+import 'saved_calculations_screen.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Ad unit IDs
@@ -238,6 +242,194 @@ class _PitiCalculatorScreenState extends State<PitiCalculatorScreen> {
     }
   }
 
+  void _saveCalculation() {
+    if (_price <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a valid home price before saving.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    _calculate(shouldUnfocus: false);
+
+    final settings = Provider.of<SettingsProvider>(context, listen: false);
+    final formatCurrency = NumberFormat.currency(
+      symbol: settings.currencySymbol,
+      decimalDigits: 0,
+    );
+
+    final defaultName = 'PITI - ${formatCurrency.format(_price)}';
+    final nameCtrl = TextEditingController(text: defaultName);
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: context.cardColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          'Save Calculation',
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontWeight: FontWeight.bold,
+            color: context.textPrimary,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Enter a name to identify this calculation:',
+              style: TextStyle(
+                fontSize: 13,
+                color: context.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: nameCtrl,
+              autofocus: true,
+              style: TextStyle(
+                color: context.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+              decoration: InputDecoration(
+                hintText: 'e.g. My Next Home',
+                hintStyle: TextStyle(
+                  color: context.textSecondary.withValues(alpha: 0.5),
+                ),
+                filled: true,
+                fillColor: context.inputFill,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 14,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.borderColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.borderColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.primaryColor, width: 2),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: context.textSecondary,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              final name = nameCtrl.text.trim().isNotEmpty
+                  ? nameCtrl.text.trim()
+                  : defaultName;
+
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+              final primaryColor = context.primaryColor;
+              final navigator = Navigator.of(context);
+              final dialogNavigator = Navigator.of(ctx);
+
+              final rate = double.tryParse(_rateController.text) ?? 0;
+              final years = int.tryParse(_selectedTerm) ?? 30;
+              
+              final pTax = double.tryParse(_taxController.text.replaceAll(',', '')) ?? 0;
+              final hIns = double.tryParse(_insuranceController.text.replaceAll(',', '')) ?? 0;
+              final hoaVal = double.tryParse(_hoaController.text.replaceAll(',', '')) ?? 0;
+              final pmiVal = double.tryParse(_pmiController.text.replaceAll(',', '')) ?? 0;
+
+              final eMo = double.tryParse(_extraMonthlyController.text.replaceAll(',', '')) ?? 0;
+              final eBw = double.tryParse(_extraBiweeklyController.text.replaceAll(',', '')) ?? 0;
+              final lSum = double.tryParse(_extraLumpSumController.text.replaceAll(',', '')) ?? 0;
+
+              final input = AffordabilityInput(
+                annualIncome: _price,
+                monthlyDebts: 0,
+                downPayment: _down,
+                loanTerm: years,
+                interestRate: rate,
+              );
+
+              final result = AffordabilityResult(
+                maxHomePrice: _price,
+                monthlyMortgage: _piAmount,
+                totalMonthlyPayment: _monthlyPITI,
+                debtToIncomeRatio: 0,
+                breakdown: PaymentBreakdown(
+                  principalAndInterest: _piAmount,
+                  propertyTaxes: pTax / 12,
+                  homeInsurance: hIns / 12,
+                  pmi: pmiVal / 12,
+                ),
+              );
+
+              final metadata = {
+                'homePrice': _price,
+                'downPaymentPct': _percent,
+                'propertyTax': pTax,
+                'homeInsurance': hIns,
+                'hoaFees': hoaVal,
+                'pmi': pmiVal,
+                'extraMonthly': eMo,
+                'extraBiweekly': eBw,
+                'lumpSum': lSum,
+              };
+
+              await context.read<AffordabilityProvider>().saveCustomCalculation(
+                name,
+                input,
+                result,
+                calculatorType: CalculatorType.piti,
+                metadata: metadata,
+              );
+
+              dialogNavigator.pop();
+              scaffoldMessenger.showSnackBar(
+                SnackBar(
+                  content: const Text('Calculation saved successfully!'),
+                  behavior: SnackBarBehavior.floating,
+                  action: SnackBarAction(
+                    label: 'View',
+                    textColor: primaryColor,
+                    onPressed: () {
+                      navigator.push(
+                        MaterialPageRoute(
+                          builder: (_) => const SavedCalculationsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              'Save',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: context.primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   // ── Native Ad ───────────────────────────────────────────────────────────────
   // FIX: Full NativeAd lifecycle implemented. The previous version had no
   // NativeAd code at all. Placement: between the Extra Payments section and
@@ -286,33 +478,26 @@ class _PitiCalculatorScreenState extends State<PitiCalculatorScreen> {
     final primaryColor = isDark ? const Color(0xFF60A5FA) : const Color(0xFF0B3D91);
     final secondaryColor = isDark ? const Color(0xFF34D399) : const Color(0xFF1E8449);
     final surfaceBg = context.pageBackground;
-    final cardBgColor = context.cardColor;
-    final borderCol = context.borderColor;
 
     return Scaffold(
       backgroundColor: surfaceBg,
 
       // ── AppBar ──────────────────────────────────────────────────────────────
-      appBar: AppBar(
-        backgroundColor: cardBgColor,
+      appBar: GradientAppBar(
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: primaryColor, size: 20),
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
+        title: const Text(
           'PITI Calculator',
           style: TextStyle(
-            color: primaryColor,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
         centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(color: borderCol, height: 1),
-        ),
       ),
 
       // ── Body ────────────────────────────────────────────────────────────────
@@ -478,25 +663,53 @@ class _PitiCalculatorScreenState extends State<PitiCalculatorScreen> {
 
             const SizedBox(height: 24),
 
-            // Calculate button
-            ElevatedButton.icon(
-              onPressed: () => _calculate(),
-              icon: const Icon(Icons.calculate_rounded),
-              label: const Text('Calculate Payment'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
-                foregroundColor: isDark ? const Color(0xFF1E293B) : context.cs.surface,
-                minimumSize: const Size(double.infinity, 56),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: ElevatedButton.icon(
+                    onPressed: () => _calculate(),
+                    icon: const Icon(Icons.calculate_rounded),
+                    label: const Text('Calculate Payment'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      foregroundColor: isDark ? const Color(0xFF1E293B) : context.cs.surface,
+                      minimumSize: const Size(0, 56),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 4,
+                      shadowColor: primaryColor.withValues(alpha: 0.3),
+                      textStyle: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-                elevation: 4,
-                shadowColor: primaryColor.withValues(alpha: 0.3),
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                const SizedBox(width: 12),
+                Expanded(
+                  flex: 2,
+                  child: OutlinedButton.icon(
+                    onPressed: _saveCalculation,
+                    icon: Icon(Icons.bookmark_add_outlined, size: 20, color: primaryColor),
+                    label: Text(
+                      'Save',
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: primaryColor, width: 1.5),
+                      minimumSize: const Size(0, 56),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
 
             // Clears the sticky banner height at the bottom.

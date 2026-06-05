@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -155,8 +156,16 @@ class AdService {
 
   AdService._internal();
 
+  final Completer<void> _initCompleter = Completer<void>();
+  Future<void> get initializationComplete => _initCompleter.future;
+
+  bool _isInitialized = false;
+  bool get isInitialized => _isInitialized;
+
   InterstitialAd? _interstitialAd;
   bool _isInterstitialAdReady = false;
+  bool _isInterstitialLoading = false;
+  int _interstitialRetryAttempts = 0;
   int _actionCount = 0;
   DateTime? _lastAdShownTime;
   bool _isFirstLaunch = true;
@@ -169,14 +178,117 @@ class AdService {
   static const int _actionThreshold = 3;
   static const int _cooldownSeconds = 90;
 
+  // Cached native ads
+  NativeAd? _cachedNativeAd;
+  bool _isNativeAdLoading = false;
+
   Future<void> init(SharedPreferences prefs) async {
     _isFirstLaunch = prefs.getBool('is_first_launch') ?? true;
     if (_isFirstLaunch) {
       await prefs.setBool('is_first_launch', false);
     }
-    // Load the first interstitial with a general finance context.
-    loadInterstitialAd();
   }
+
+  // ── UMP Consent Flow & Initialization ────────────────────────────────────────
+
+  Future<void> runConsentFlowAndInitialize() async {
+    final completer = Completer<void>();
+    final params = ConsentRequestParameters();
+
+    debugPrint('AdService: Requesting UMP consent information update...');
+    ConsentInformation.instance.requestConsentInfoUpdate(
+      params,
+      () async {
+        debugPrint('AdService: UMP consent information updated.');
+        if (await ConsentInformation.instance.isConsentFormAvailable()) {
+          debugPrint('AdService: Consent form is available. Loading/showing...');
+          ConsentForm.loadAndShowConsentFormIfRequired((FormError? error) async {
+            if (error != null) {
+              debugPrint('AdService: Consent form error: ${error.message} (${error.errorCode})');
+            } else {
+              debugPrint('AdService: Consent flow completed successfully.');
+            }
+            await _initializeAdMob();
+            completer.complete();
+          });
+        } else {
+          debugPrint('AdService: Consent form is not available.');
+          await _initializeAdMob();
+          completer.complete();
+        }
+      },
+      (FormError error) async {
+        debugPrint('AdService: UMP Consent update failed: ${error.message} (${error.errorCode})');
+        // Handle consent error gracefully: fall back to AdMob initialization
+        await _initializeAdMob();
+        completer.complete();
+      },
+    );
+
+    return completer.future;
+  }
+
+  Future<void> _initializeAdMob() async {
+    if (_isInitialized) return;
+    try {
+      debugPrint('AdService: Initializing Google Mobile Ads SDK...');
+      final status = await MobileAds.instance.initialize();
+      _isInitialized = true;
+      debugPrint('AdService: Google Mobile Ads SDK initialized.');
+
+      // Log mediation network statuses
+      status.adapterStatuses.forEach((key, value) {
+        debugPrint('AdService Adapter Status: $key -> state: ${value.state}, description: ${value.description}');
+      });
+
+      // Load interstitial and preload first native ad
+      loadInterstitialAd();
+      preloadNativeAd();
+
+      if (!_initCompleter.isCompleted) {
+        _initCompleter.complete();
+      }
+    } catch (e, stackTrace) {
+      debugPrint('AdService: Failed to initialize MobileAds: $e');
+      debugPrint(stackTrace.toString());
+      if (!_initCompleter.isCompleted) {
+        _initCompleter.completeError(e);
+      }
+    }
+  }
+
+  Future<void> showPrivacyOptionsForm(BuildContext context) async {
+    final completer = Completer<void>();
+    ConsentForm.showPrivacyOptionsForm((FormError? error) {
+      if (error != null) {
+        debugPrint('AdService: Failed to show privacy options form: ${error.message}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Consent preferences are only available when required by local privacy laws.',
+              style: TextStyle(fontFamily: 'Inter'),
+            ),
+          ),
+        );
+        completer.completeError(error);
+      } else {
+        debugPrint('AdService: Privacy options form dismissed.');
+        completer.complete();
+      }
+    });
+    return completer.future;
+  }
+
+  Future<bool> isPrivacyOptionsRequired() async {
+    try {
+      final status = await ConsentInformation.instance.getPrivacyOptionsRequirementStatus();
+      return status == PrivacyOptionsRequirementStatus.required;
+    } catch (e) {
+      debugPrint('AdService: Error checking privacy options requirement status: $e');
+      return false;
+    }
+  }
+
 
   // ── Ad Unit IDs ─────────────────────────────────────────────────────────────
 
@@ -207,36 +319,45 @@ class AdService {
   // ── Interstitial ────────────────────────────────────────────────────────────
 
   /// Loads (or pre-loads) an interstitial ad.
-  ///
-  /// Pass a screen-specific [request] so the next interstitial is filled with
-  /// contextually relevant advertisers. Defaults to a general finance request
-  /// when called from [init] before any screen context is available.
-  ///
-  /// AdMob policy: keywords must reflect the content the user has just seen,
-  /// not the interstitial itself (which is full-screen and context-free).
   void loadInterstitialAd({
     AdRequest request = const AdRequest(
       contentUrl: AdContentUrl.general,
       keywords: AdKeywords.general,
     ),
   }) {
+    if (!_isInitialized) {
+      debugPrint('AdService: Cannot load interstitial, AdMob not initialized.');
+      return;
+    }
+    if (_isInterstitialAdReady || _isInterstitialLoading) {
+      debugPrint('AdService: Interstitial ad already loaded or loading.');
+      return;
+    }
+
+    _isInterstitialLoading = true;
+    debugPrint('AdService: Loading Interstitial Ad...');
+
     InterstitialAd.load(
       adUnitId: interstitialAdUnitId,
       request: request,
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
+          debugPrint('AdService: Interstitial Ad loaded successfully.');
           _interstitialAd = ad;
           _isInterstitialAdReady = true;
+          _isInterstitialLoading = false;
+          _interstitialRetryAttempts = 0; // Reset retry counter
 
           _interstitialAd?.fullScreenContentCallback =
               FullScreenContentCallback(
                 onAdDismissedFullScreenContent: (ad) {
+                  debugPrint('AdService: Interstitial Ad dismissed.');
                   ad.dispose();
                   _isInterstitialAdReady = false;
-                  // Reload with the same context as the dismissed ad.
                   loadInterstitialAd(request: request);
                 },
                 onAdFailedToShowFullScreenContent: (ad, error) {
+                  debugPrint('AdService: Interstitial Ad failed to show: $error');
                   ad.dispose();
                   _isInterstitialAdReady = false;
                   loadInterstitialAd(request: request);
@@ -244,7 +365,18 @@ class AdService {
               );
         },
         onAdFailedToLoad: (err) {
+          debugPrint('AdService: Interstitial Ad failed to load: ${err.message}');
           _isInterstitialAdReady = false;
+          _isInterstitialLoading = false;
+          _interstitialAd = null;
+
+          // Exponential backoff up to 6 attempts (max delay ~64s)
+          if (_interstitialRetryAttempts < 6) {
+            _interstitialRetryAttempts++;
+            final delay = Duration(seconds: 1 << _interstitialRetryAttempts);
+            debugPrint('AdService: Retrying interstitial load in ${delay.inSeconds} seconds...');
+            Future.delayed(delay, () => loadInterstitialAd(request: request));
+          }
         },
       ),
     );
@@ -322,5 +454,72 @@ class AdService {
     }
     loadInterstitialAd(); // Always reload after use/attempt
     onAdClosed();
+  }
+
+  // ── Native Ad Preload & Caching ──────────────────────────────────────────
+
+  void preloadNativeAd() {
+    if (!_isInitialized || _cachedNativeAd != null || _isNativeAdLoading) return;
+
+    _isNativeAdLoading = true;
+    debugPrint('AdService: Preloading a NativeAd...');
+
+    _cachedNativeAd = NativeAd(
+      adUnitId: nativeAdUnitId,
+      nativeTemplateStyle: NativeTemplateStyle(
+        templateType: TemplateType.medium,
+        mainBackgroundColor: Colors.white,
+        cornerRadius: 12.0,
+        callToActionTextStyle: NativeTemplateTextStyle(
+          textColor: Colors.white,
+          backgroundColor: const Color(0xFF1E4ED8),
+          style: NativeTemplateFontStyle.bold,
+          size: 14.0,
+        ),
+        primaryTextStyle: NativeTemplateTextStyle(
+          textColor: const Color(0xFF0F172A),
+          style: NativeTemplateFontStyle.bold,
+          size: 15.0,
+        ),
+        secondaryTextStyle: NativeTemplateTextStyle(
+          textColor: const Color(0xFF64748B),
+          style: NativeTemplateFontStyle.normal,
+          size: 13.0,
+        ),
+        tertiaryTextStyle: NativeTemplateTextStyle(
+          textColor: const Color(0xFF94A3B8),
+          style: NativeTemplateFontStyle.normal,
+          size: 12.0,
+        ),
+      ),
+      request: const AdRequest(
+        contentUrl: AdContentUrl.general,
+        keywords: AdKeywords.general,
+      ),
+      listener: NativeAdListener(
+        onAdLoaded: (ad) {
+          _isNativeAdLoading = false;
+          debugPrint('AdService: Preloaded NativeAd loaded successfully.');
+        },
+        onAdFailedToLoad: (ad, error) {
+          _isNativeAdLoading = false;
+          ad.dispose();
+          _cachedNativeAd = null;
+          debugPrint('AdService: Preloaded NativeAd failed to load: ${error.message}');
+          // Retry preloading after 30 seconds
+          Future.delayed(const Duration(seconds: 30), () => preloadNativeAd());
+        },
+      ),
+    );
+
+    _cachedNativeAd!.load();
+  }
+
+  /// Retrieves the cached NativeAd (if any), and starts preloading the next one.
+  NativeAd? getAndRefreshCachedNativeAd() {
+    final ad = _cachedNativeAd;
+    _cachedNativeAd = null;
+    preloadNativeAd();
+    return ad;
   }
 }

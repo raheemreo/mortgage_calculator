@@ -1,3 +1,44 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Calculator-type identifier
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum CalculatorType {
+  piti,
+  mortgage,
+  autoLoan,
+  affordability;
+
+  static CalculatorType fromString(String? value) {
+    switch (value) {
+      case 'piti':
+        return CalculatorType.piti;
+      case 'mortgage':
+        return CalculatorType.mortgage;
+      case 'autoLoan':
+        return CalculatorType.autoLoan;
+      default:
+        return CalculatorType.affordability;
+    }
+  }
+
+  String get displayName {
+    switch (this) {
+      case CalculatorType.piti:
+        return 'PITI';
+      case CalculatorType.mortgage:
+        return 'Mortgage';
+      case CalculatorType.autoLoan:
+        return 'Auto Loan';
+      case CalculatorType.affordability:
+        return 'Affordability';
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AffordabilityInput
+// ─────────────────────────────────────────────────────────────────────────────
+
 class AffordabilityInput {
   final double annualIncome;
   final double monthlyDebts;
@@ -31,6 +72,10 @@ class AffordabilityInput {
       );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// AffordabilityResult
+// ─────────────────────────────────────────────────────────────────────────────
+
 class AffordabilityResult {
   final double maxHomePrice;
   final double monthlyMortgage;
@@ -58,13 +103,24 @@ class AffordabilityResult {
       AffordabilityResult(
         maxHomePrice: (json['maxHomePrice'] as num?)?.toDouble() ?? 0.0,
         monthlyMortgage: (json['monthlyMortgage'] as num?)?.toDouble() ?? 0.0,
-        totalMonthlyPayment: (json['totalMonthlyPayment'] as num?)?.toDouble() ?? 0.0,
-        debtToIncomeRatio: (json['debtToIncomeRatio'] as num?)?.toDouble() ?? 0.0,
-        breakdown: json['breakdown'] != null 
-            ? PaymentBreakdown.fromJson(json['breakdown']) 
-            : PaymentBreakdown(principalAndInterest: 0, propertyTaxes: 0, homeInsurance: 0, pmi: 0),
+        totalMonthlyPayment:
+            (json['totalMonthlyPayment'] as num?)?.toDouble() ?? 0.0,
+        debtToIncomeRatio:
+            (json['debtToIncomeRatio'] as num?)?.toDouble() ?? 0.0,
+        breakdown: json['breakdown'] != null
+            ? PaymentBreakdown.fromJson(json['breakdown'])
+            : PaymentBreakdown(
+                principalAndInterest: 0,
+                propertyTaxes: 0,
+                homeInsurance: 0,
+                pmi: 0,
+              ),
       );
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PaymentBreakdown
+// ─────────────────────────────────────────────────────────────────────────────
 
 class PaymentBreakdown {
   final double principalAndInterest;
@@ -91,12 +147,17 @@ class PaymentBreakdown {
 
   factory PaymentBreakdown.fromJson(Map<String, dynamic> json) =>
       PaymentBreakdown(
-        principalAndInterest: (json['principalAndInterest'] as num?)?.toDouble() ?? 0.0,
+        principalAndInterest:
+            (json['principalAndInterest'] as num?)?.toDouble() ?? 0.0,
         propertyTaxes: (json['propertyTaxes'] as num?)?.toDouble() ?? 0.0,
         homeInsurance: (json['homeInsurance'] as num?)?.toDouble() ?? 0.0,
         pmi: (json['pmi'] as num?)?.toDouble() ?? 0.0,
       );
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SavedAffordabilityCalculation
+// ─────────────────────────────────────────────────────────────────────────────
 
 class SavedAffordabilityCalculation {
   final String id;
@@ -105,12 +166,27 @@ class SavedAffordabilityCalculation {
   final AffordabilityInput input;
   final AffordabilityResult result;
 
+  /// Which calculator produced this record.
+  final CalculatorType calculatorType;
+
+  /// Calculator-specific extra fields (e.g. homePrice, metadata, etc.)
+  /// Keys are documented per CalculatorType:
+  ///
+  /// piti        → homePrice, downPaymentPct, propertyTax, homeInsurance,
+  ///               hoaFees, pmi, extraMonthly, extraBiweekly, lumpSum
+  /// mortgage    → homePrice, includePmi, includeEscrow, pmiMonthly, taxInsMonthly
+  /// autoLoan    → vehiclePrice, termMonths, totalInterest, totalCost
+  /// affordability → liveRate
+  final Map<String, dynamic> metadata;
+
   SavedAffordabilityCalculation({
     required this.id,
     required this.name,
     required this.date,
     required this.input,
     required this.result,
+    this.calculatorType = CalculatorType.affordability,
+    this.metadata = const {},
   });
 
   Map<String, dynamic> toJson() => {
@@ -119,27 +195,53 @@ class SavedAffordabilityCalculation {
         'date': date.toIso8601String(),
         'input': input.toJson(),
         'result': result.toJson(),
+        'calculatorType': calculatorType.name,
+        'metadata': metadata,
       };
 
-  factory SavedAffordabilityCalculation.fromJson(Map<String, dynamic> json) =>
+  factory SavedAffordabilityCalculation.fromJson(
+    Map<String, dynamic> json,
+  ) =>
       SavedAffordabilityCalculation(
-        id: json['id'] as String? ?? DateTime.now().millisecondsSinceEpoch.toString(),
-        name: json['name'] as String? ?? "Saved Calculation",
-        date: json['date'] != null ? DateTime.parse(json['date']) : DateTime.now(),
-        input: json['input'] != null 
+        id: json['id'] as String? ??
+            DateTime.now().millisecondsSinceEpoch.toString(),
+        name: json['name'] as String? ?? 'Saved Calculation',
+        date: json['date'] != null
+            ? DateTime.parse(json['date'])
+            : DateTime.now(),
+        input: json['input'] != null
             ? AffordabilityInput.fromJson(json['input'])
-            : AffordabilityInput(annualIncome: 0, monthlyDebts: 0, downPayment: 0, loanTerm: 30, interestRate: 0),
+            : AffordabilityInput(
+                annualIncome: 0,
+                monthlyDebts: 0,
+                downPayment: 0,
+                loanTerm: 30,
+                interestRate: 0,
+              ),
         result: json['result'] != null
             ? AffordabilityResult.fromJson(json['result'])
             : AffordabilityResult(
-                maxHomePrice: 0, 
-                monthlyMortgage: 0, 
-                totalMonthlyPayment: 0, 
-                debtToIncomeRatio: 0, 
-                breakdown: PaymentBreakdown(principalAndInterest: 0, propertyTaxes: 0, homeInsurance: 0, pmi: 0)
+                maxHomePrice: 0,
+                monthlyMortgage: 0,
+                totalMonthlyPayment: 0,
+                debtToIncomeRatio: 0,
+                breakdown: PaymentBreakdown(
+                  principalAndInterest: 0,
+                  propertyTaxes: 0,
+                  homeInsurance: 0,
+                  pmi: 0,
+                ),
               ),
+        calculatorType:
+            CalculatorType.fromString(json['calculatorType'] as String?),
+        metadata:
+            (json['metadata'] as Map<String, dynamic>?) ?? {},
       );
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MortgageRateData
+// ─────────────────────────────────────────────────────────────────────────────
 
 class MortgageRateData {
   final DateTime date;
@@ -150,8 +252,8 @@ class MortgageRateData {
   factory MortgageRateData.fromJson(Map<String, dynamic> json) {
     return MortgageRateData(
       date: DateTime.parse(json['date']),
-      value: (json['value'] is String) 
-          ? double.parse(json['value']) 
+      value: (json['value'] is String)
+          ? double.parse(json['value'])
           : (json['value'] as num).toDouble(),
     );
   }

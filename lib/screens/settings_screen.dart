@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +33,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final List<String> _themes = ['Emerald', 'Navy'];
+  final List<String> _themes = ['Light', 'Dark', 'System'];
 
   bool _notificationsEnabled = true;
 
@@ -142,17 +143,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
+      appBar: GradientAppBar(
         title: Text(
           'Settings',
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
+            color: Colors.white,
             fontSize: 24,
           ),
         ),
         elevation: 0,
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Colors.transparent,
         centerTitle: false,
         toolbarHeight: 80,
       ),

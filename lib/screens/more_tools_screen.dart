@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../widgets/gradient_app_bar.dart';
 
 import '../services/ad_service.dart';
 
@@ -8,6 +9,7 @@ import 'ai_assistant_screen.dart';
 import 'dti_ratio_calculator.dart';
 import 'insurance_marketplace.dart';
 import 'settings_screen.dart';
+import 'saved_calculations_screen.dart';
 import 'property_tax_screen.dart';
 import 'credit_score_guide_screen.dart';
 import 'loan_types_screen.dart';
@@ -74,11 +76,6 @@ class MoreToolsScreen extends StatefulWidget {
 }
 
 class _MoreToolsScreenState extends State<MoreToolsScreen> {
-  // ── Palette ─────────────────────────────────────────────────────────────
-  static const Color _primary = Color(0xFF0B3D93);
-  static final Color _bg = const Color(0xFFF6F7F8);
-  static const Color _slate400 = Color(0xFF94A3B8);
-
   int _currentIndex = 1;
 
   // ── Native ad state ─────────────────────────────────────────────────────
@@ -210,7 +207,7 @@ class _MoreToolsScreenState extends State<MoreToolsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bg,
+      backgroundColor: context.pageBackground,
       appBar: _buildAppBar(),
       body: SafeArea(
         child: ListView.builder(
@@ -239,20 +236,11 @@ class _MoreToolsScreenState extends State<MoreToolsScreen> {
 
   // ── AppBar ────────────────────────────────────────────────────────────────
 
-  PreferredSizeWidget _buildAppBar() => AppBar(
-    backgroundColor: _primary,
-    elevation: 0,
-    centerTitle: true,
-    leading: IconButton(
-      icon: Icon(Icons.arrow_back_ios_new, color: context.cs.surface, size: 20),
-      onPressed: () => Navigator.pop(context),
-    ),
+  PreferredSizeWidget _buildAppBar() => GradientAppBar(
     title: Text(
       'More Tools',
       style: GoogleFonts.manrope(
-        color: context.cs.surface,
         fontWeight: FontWeight.bold,
-        fontSize: 18,
       ),
     ),
   );
@@ -265,7 +253,7 @@ class _MoreToolsScreenState extends State<MoreToolsScreen> {
       decoration: BoxDecoration(
         color: context.cs.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _primary.withValues(alpha: 0.05)),
+        border: Border.all(color: context.borderColor),
         boxShadow: const [
           BoxShadow(
             color: Color(0x05000000),
@@ -287,10 +275,10 @@ class _MoreToolsScreenState extends State<MoreToolsScreen> {
                   width: 52,
                   height: 52,
                   decoration: BoxDecoration(
-                    color: Colors.blue.withValues(alpha: 0.05),
+                    color: context.cs.primary.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(tool.icon, color: _primary, size: 26),
+                  child: Icon(tool.icon, color: context.cs.primary, size: 26),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -302,7 +290,7 @@ class _MoreToolsScreenState extends State<MoreToolsScreen> {
                         style: GoogleFonts.manrope(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: const Color(0xFF0F172A),
+                          color: context.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -316,10 +304,10 @@ class _MoreToolsScreenState extends State<MoreToolsScreen> {
                     ],
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: 16,
-                  color: Color(0xFFCBD5E1),
+                  color: context.textSecondary.withValues(alpha: 0.5),
                 ),
               ],
             ),
@@ -335,14 +323,14 @@ class _MoreToolsScreenState extends State<MoreToolsScreen> {
     return Container(
       decoration: BoxDecoration(
         color: context.cs.surface,
-        border: Border(top: BorderSide(color: Color(0xFFF1F5F9))),
+        border: Border(top: BorderSide(color: context.borderColor)),
       ),
       child: SafeArea(
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: _primary,
-          unselectedItemColor: _slate400,
+          selectedItemColor: context.cs.primary,
+          unselectedItemColor: context.textSecondary,
           selectedFontSize: 11,
           unselectedFontSize: 11,
           elevation: 0,
@@ -354,10 +342,17 @@ class _MoreToolsScreenState extends State<MoreToolsScreen> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const InsuranceMarketplaceScreen(),
+                  builder: (_) => const SavedCalculationsScreen(),
                 ),
               );
             } else if (index == 3) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const InsuranceMarketplaceScreen(),
+                ),
+              );
+            } else if (index == 4) {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => const SettingsScreen()),
@@ -366,19 +361,28 @@ class _MoreToolsScreenState extends State<MoreToolsScreen> {
           },
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded),
+              icon: Text('🏠', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.grid_view_rounded),
+              icon: Text('🛠️', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🛠️', style: TextStyle(fontSize: 26)),
               label: 'Tools',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shield_rounded),
+              icon: Text('💾', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('💾', style: TextStyle(fontSize: 26)),
+              label: 'Saved',
+            ),
+            BottomNavigationBarItem(
+              icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
               label: 'Insurance',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings_rounded),
+              icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
               label: 'Settings',
             ),
           ],

@@ -147,7 +147,7 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
         : 24;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: context.pageBackground,
       // Anchored adaptive banner — sole widget in bottomNavigationBar.
       // SafeArea handles home indicator insets correctly.
       bottomNavigationBar: _isBottomBannerAdLoaded && _bottomBannerAd != null
@@ -165,7 +165,7 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
           SliverAppBar(
             expandedHeight: MediaQuery.of(context).size.height * 0.35,
             pinned: true,
-            backgroundColor: const Color(0xFF0B3D91),
+            backgroundColor: context.cs.primary,
             iconTheme: IconThemeData(color: context.cs.surface),
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(
@@ -348,8 +348,8 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF0B3D91),
-                        foregroundColor: context.cs.surface,
+                        backgroundColor: context.cs.primary,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -366,8 +366,8 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
                     decoration: BoxDecoration(
                       color: context.cs.surface,
                       borderRadius: BorderRadius.circular(16),
-                      border: const Border(
-                        left: BorderSide(color: Color(0xFF0B3D91), width: 4),
+                      border: Border(
+                        left: BorderSide(color: context.cs.primary, width: 4),
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -385,7 +385,7 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xFF0B3D91),
+                            color: context.cs.primary,
                             letterSpacing: 1,
                           ),
                         ),
@@ -394,7 +394,7 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
                           '"${widget.city.description}"',
                           style: GoogleFonts.inter(
                             fontSize: 14,
-                            color: Colors.grey.shade700,
+                            color: context.textSecondary,
                             fontStyle: FontStyle.italic,
                             height: 1.5,
                           ),
@@ -413,7 +413,7 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
                   _buildListMetric(
                     'Median Rent',
                     '\$${widget.city.medianRent}',
-                    valueColor: const Color(0xFF0B3D91),
+                    valueColor: context.cs.primary,
                   ),
                   _buildListMetric(
                     'Demand Score',
@@ -474,7 +474,7 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
             style: GoogleFonts.inter(
               fontSize: 10,
               fontWeight: FontWeight.w600,
-              color: Colors.grey.shade500,
+              color: context.textSecondary,
               letterSpacing: 0.5,
             ),
             textAlign: TextAlign.center,
@@ -488,7 +488,7 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
               style: GoogleFonts.inter(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF0B3D91),
+                color: context.cs.primary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -507,7 +507,7 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
       padding: const EdgeInsets.all(12),
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
+        color: context.isDark ? context.borderColor.withValues(alpha: 0.2) : Colors.grey.shade50,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -517,7 +517,7 @@ class _CityInsightsScreenState extends State<CityInsightsScreen> {
             label,
             style: GoogleFonts.inter(
               fontWeight: FontWeight.w500,
-              color: Colors.grey.shade600,
+              color: context.textSecondary,
             ),
           ),
           Text(

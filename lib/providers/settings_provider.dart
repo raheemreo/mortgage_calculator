@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsProvider with ChangeNotifier {
   String _currencyCode = 'USD';
   String _currencySymbol = '\$';
-  String _themeName = 'Navy'; // 'Emerald', 'Navy'
+  String _themeName = 'System'; // 'Light', 'Dark', 'System'
   String _userName = '';
   String _userEmail = '';
 
@@ -23,7 +23,13 @@ class SettingsProvider with ChangeNotifier {
   void _loadSettings() {
     _currencyCode = _prefs.getString('currency_code') ?? 'USD';
     _currencySymbol = _getSymbolFromCode(_currencyCode);
-    _themeName = _prefs.getString('theme_name') ?? 'Navy';
+    
+    String savedTheme = _prefs.getString('theme_name') ?? 'System';
+    if (savedTheme == 'Navy' || savedTheme == 'Emerald') {
+      savedTheme = 'Light';
+    }
+    _themeName = savedTheme;
+    
     _userName = _prefs.getString('user_name') ?? '';
     _userEmail = _prefs.getString('user_email') ?? '';
     notifyListeners();
@@ -62,6 +68,7 @@ class SettingsProvider with ChangeNotifier {
     if (code.contains('GBP')) return '£';
     if (code.contains('AUD')) return '\$';
     if (code.contains('EUR')) return '€';
+    if (code.contains('INR')) return '₹';
     return '\$';
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import '../widgets/ad_native_widget.dart';
 import 'insurance_marketplace.dart';
 import 'settings_screen.dart';
 import '../core/constants/theme_extensions.dart';
+import 'saved_calculations_screen.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // AD PLACEMENT STRATEGY — what changed and why
@@ -73,12 +75,7 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
   // ── Design system colors ─────────────────────────────────────────────────────
   static const Color primary = Color(0xFF0037B1);
   static const Color primaryContainer = Color(0xFF1E4ED8);
-  static const Color surfaceContainerLow = Color(0xFFF2F4F6);
-  static final Color surfaceContainerLowest = Colors.white;
-  static const Color onSurface = Color(0xFF191C1E);
-  static const Color onSurfaceVariant = Color(0xFF434655);
   static const Color outline = Color(0xFF747686);
-  static const Color outlineVariant = Color(0xFFC4C5D7);
   static const Color errorColor = Color(0xFFBA1A1A);
   static const Color tertiary = Color(0xFF004E47);
   static const Color secondary = Color(0xFF515F74);
@@ -177,6 +174,144 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
     });
   }
 
+  void _saveCalculation() {
+    if (!_formKey.currentState!.validate()) return;
+
+    // Ensure the current inputs are calculated and saved to the provider
+    _calculate();
+
+    final provider = Provider.of<AffordabilityProvider>(context, listen: false);
+    final currencyFormat = NumberFormat.currency(symbol: '\$', decimalDigits: 0);
+    final income = double.tryParse(_incomeController.text) ?? 0;
+
+    final defaultName = 'Affordability - ${currencyFormat.format(income)}';
+    final nameCtrl = TextEditingController(text: defaultName);
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: context.cardColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          'Save Calculation',
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontWeight: FontWeight.bold,
+            color: context.textPrimary,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Enter a name to identify this calculation:',
+              style: TextStyle(
+                fontSize: 13,
+                color: context.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: nameCtrl,
+              autofocus: true,
+              style: TextStyle(
+                color: context.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+              decoration: InputDecoration(
+                hintText: 'e.g. My Dream Home',
+                hintStyle: TextStyle(
+                  color: context.textSecondary.withValues(alpha: 0.5),
+                ),
+                filled: true,
+                fillColor: context.inputFill,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 14,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.borderColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.borderColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.primaryColor, width: 2),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: context.textSecondary,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              final name = nameCtrl.text.trim().isNotEmpty
+                  ? nameCtrl.text.trim()
+                  : defaultName;
+
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+              final primaryColor = context.primaryColor;
+              final navigator = Navigator.of(context);
+              final dialogNavigator = Navigator.of(ctx);
+
+              final rate = double.tryParse(_interestController.text) ?? 0;
+              final metadata = {
+                'liveRate': rate,
+              };
+
+              await provider.saveCurrentResult(
+                name,
+                calculatorType: CalculatorType.affordability,
+                metadata: metadata,
+              );
+
+              dialogNavigator.pop();
+              scaffoldMessenger.showSnackBar(
+                SnackBar(
+                  content: const Text('Calculation saved successfully!'),
+                  behavior: SnackBarBehavior.floating,
+                  action: SnackBarAction(
+                    label: 'View',
+                    textColor: primaryColor,
+                    onPressed: () {
+                      navigator.push(
+                        MaterialPageRoute(
+                          builder: (_) => const SavedCalculationsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              'Save',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: context.primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
   // ── Build ────────────────────────────────────────────────────────────────────
 
   @override
@@ -184,7 +319,7 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
     const double bottomPadding = kBottomNavigationBarHeight + 24;
 
     return Scaffold(
-      backgroundColor: surfaceContainerLow,
+      backgroundColor: context.pageBackground,
       appBar: _buildAppBar(),
       // BottomNavigationBar — sole occupant, SafeArea wraps it correctly.
       bottomNavigationBar: _buildBottomNav(),
@@ -237,13 +372,13 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
   // ── AppBar ───────────────────────────────────────────────────────────────────
 
   AppBar _buildAppBar() {
-    return AppBar(
-      backgroundColor: surfaceContainerLowest,
+    return GradientAppBar(
+      backgroundColor: Colors.transparent,
       elevation: 0,
       surfaceTintColor: Colors.transparent,
       titleSpacing: 0,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Color(0xFF0F172A)),
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () => Navigator.pop(context),
       ),
       title: const Text(
@@ -252,23 +387,23 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
           fontFamily: 'Manrope',
           fontWeight: FontWeight.bold,
           fontSize: 18,
-          color: onSurface,
+          color: Colors.white,
         ),
       ),
       actions: [
         IconButton(
           icon: const Icon(
             Icons.notifications_outlined,
-            color: onSurfaceVariant,
+            color: Colors.white70,
           ),
           onPressed: () {},
         ),
       ],
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1.0),
-        child: Container(
-          color: outlineVariant.withValues(alpha: 0.1),
+      bottom: const PreferredSize(
+        preferredSize: Size.fromHeight(1.0),
+        child: SizedBox(
           height: 1.0,
+          child: Divider(height: 1.0, color: Colors.white24),
         ),
       ),
     );
@@ -312,19 +447,51 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
           elevation: 0,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded, size: 26),
+              icon: Text('🏠', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🏠', style: TextStyle(fontSize: 26)),
+              
+              
+              
+              
+              
+              
+              
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.calculate_rounded, size: 26),
+              icon: Text('💵', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('💵', style: TextStyle(fontSize: 26)),
+              
+              
+              
+              
+              
+              
+              
               label: 'Loans',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shield_rounded, size: 26),
+              icon: Text('🛡️', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('🛡️', style: TextStyle(fontSize: 26)),
+              
+              
+              
+              
+              
+              
+              
               label: 'Insurance',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings_rounded, size: 26),
+              icon: Text('⚙️', style: TextStyle(fontSize: 22)),
+              activeIcon: Text('⚙️', style: TextStyle(fontSize: 26)),
+              
+              
+              
+              
+              
+              
+              
               label: 'Settings',
             ),
           ],
@@ -336,7 +503,7 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
   // ── Content widgets ───────────────────────────────────────────────────────────
 
   Widget _buildHeroHeader() {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -345,14 +512,14 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
             fontFamily: 'Manrope',
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: primary,
+            color: context.primaryColor,
             letterSpacing: -0.5,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           'Estimate the maximum home price you can afford using live mortgage data.',
-          style: TextStyle(fontSize: 14, color: onSurfaceVariant, height: 1.5),
+          style: TextStyle(fontSize: 14, color: context.textSecondary, height: 1.5),
         ),
       ],
     );
@@ -406,18 +573,18 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: surfaceContainerLow,
+              color: context.cardColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'LIVE FRED RATE',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
-                    color: outline,
+                    color: context.textSecondary,
                     letterSpacing: 1.0,
                   ),
                 ),
@@ -457,10 +624,10 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: surfaceContainerLow,
+              color: context.cardColor,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -468,7 +635,7 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
-                    color: outline,
+                    color: context.textSecondary,
                     letterSpacing: 1.0,
                   ),
                 ),
@@ -530,7 +697,7 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
               width: 128,
               height: 128,
               decoration: BoxDecoration(
-                color: context.cs.surface.withValues(alpha: 0.05),
+                color: Colors.white.withValues(alpha: 0.05),
                 shape: BoxShape.circle,
               ),
             ),
@@ -544,21 +711,21 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.1,
-                  color: context.cs.surface.withValues(alpha: 0.8),
+                  color: Colors.white.withValues(alpha: 0.8),
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 currencyFormat.format(result.maxHomePrice),
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Manrope',
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  color: context.cs.surface,
+                  color: Colors.white,
                 ),
               ),
               const SizedBox(height: 24),
-              Container(height: 1, color: context.cs.surface.withValues(alpha: 0.1)),
+              Container(height: 1, color: Colors.white.withValues(alpha: 0.1)),
               const SizedBox(height: 16),
               Row(
                 children: [
@@ -570,17 +737,17 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
                           'Monthly Payment',
                           style: TextStyle(
                             fontSize: 10,
-                            color: context.cs.surface.withValues(alpha: 0.7),
+                            color: Colors.white.withValues(alpha: 0.7),
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           currencyFormat.format(result.totalMonthlyPayment),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Manrope',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: context.cs.surface,
+                            color: Colors.white,
                           ),
                         ),
                       ],
@@ -594,17 +761,17 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
                           'DTI Ratio',
                           style: TextStyle(
                             fontSize: 10,
-                            color: context.cs.surface.withValues(alpha: 0.7),
+                            color: Colors.white.withValues(alpha: 0.7),
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           '${result.debtToIncomeRatio.toStringAsFixed(0)}%',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Manrope',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: context.cs.surface,
+                            color: Colors.white,
                           ),
                         ),
                       ],
@@ -619,26 +786,26 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: context.cs.surface.withValues(alpha: 0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Recommended Range',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
-                        color: context.cs.surface,
+                        color: Colors.white,
                       ),
                     ),
                     Text(
                       '${currencyFormat.format(result.maxHomePrice * 0.9)} — ${currencyFormat.format(result.maxHomePrice * 1.05)}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
-                        color: context.cs.surface,
+                        color: Colors.white,
                       ),
                     ),
                   ],
@@ -655,7 +822,7 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: surfaceContainerLow,
+        color: context.cardColor,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Form(
@@ -710,7 +877,7 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
                       const SizedBox(height: 8),
                       DropdownButtonFormField<int>(
                         initialValue: _loanTerm,
-                        icon: const Icon(Icons.arrow_drop_down, color: outline),
+                        icon: Icon(Icons.arrow_drop_down, color: context.textSecondary),
                         items: const [
                           DropdownMenuItem(value: 30, child: Text('30 Years')),
                           DropdownMenuItem(value: 20, child: Text('20 Years')),
@@ -719,14 +886,14 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
                         onChanged: (val) {
                           if (val != null) setState(() => _loanTerm = val);
                         },
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: onSurface,
+                          color: context.textPrimary,
                         ),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: surfaceContainerLowest,
+                          fillColor: context.inputFill,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
@@ -783,15 +950,15 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
                     if (double.tryParse(val) == null) return 'Invalid rate';
                     return null;
                   },
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: onSurface,
+                    color: context.textPrimary,
                   ),
                   decoration: InputDecoration(
                     suffixText: '%',
                     filled: true,
-                    fillColor: surfaceContainerLowest,
+                    fillColor: context.inputFill,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -805,52 +972,78 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
               ],
             ),
             const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: isLoading ? null : _calculate,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: 5,
-                  shadowColor: primary.withValues(alpha: 0.3),
-                ),
-                child: Ink(
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [primaryContainer, primary],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: ElevatedButton(
+                    onPressed: isLoading ? null : _calculate,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      elevation: 5,
+                      shadowColor: primary.withValues(alpha: 0.3),
                     ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 18),
-                    child: isLoading
-                        ? SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator(
-                              color: context.cs.surface,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : Text(
-                            'Calculate Affordability',
-                            style: TextStyle(
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: context.cs.surface,
-                            ),
-                          ),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [primaryContainer, primary],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        child: isLoading
+                            ? SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: context.cs.surface,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                'Calculate Affordability',
+                                style: TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: context.cs.surface,
+                                ),
+                              ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(width: 12),
+                Expanded(
+                  flex: 2,
+                  child: OutlinedButton.icon(
+                    onPressed: _saveCalculation,
+                    icon: Icon(Icons.bookmark_add_outlined, size: 20, color: context.primaryColor),
+                    label: Text(
+                      'Save',
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: context.primaryColor,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: context.primaryColor, width: 1.5),
+                      minimumSize: const Size(0, 54),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -886,13 +1079,13 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
             if (double.tryParse(val) == null) return 'Invalid number';
             return null;
           },
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: onSurface),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: context.textPrimary),
           decoration: InputDecoration(
             prefixIcon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 prefixText,
-                style: const TextStyle(color: onSurfaceVariant, fontSize: 16),
+                style: TextStyle(color: context.textSecondary, fontSize: 16),
               ),
             ),
             prefixIconConstraints: const BoxConstraints(
@@ -900,7 +1093,7 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
               minHeight: 0,
             ),
             filled: true,
-            fillColor: surfaceContainerLowest,
+            fillColor: context.inputFill,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
@@ -933,7 +1126,7 @@ class _HomeAffordabilityScreenState extends State<HomeAffordabilityScreen> {
         const SizedBox(height: 16),
         Container(
           decoration: BoxDecoration(
-            color: surfaceContainerLow,
+            color: context.cardColor,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(

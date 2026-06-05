@@ -136,11 +136,8 @@ class ApisService {
       'https://raw.githubusercontent.com/raheemreo/Mortgage-Calculator-pro/main/property_tax.json';
 
   // FRED API
-  static const String _fredApiKeyFallback = 'c474fce3dd81f47defc2a031d651021b';
   static String get liveRatesUrl {
-    final apiKey = dotenv.env['FRED_API_KEY']?.isNotEmpty == true
-        ? dotenv.env['FRED_API_KEY']!
-        : _fredApiKeyFallback;
+    final apiKey = dotenv.env['FRED_API_KEY'] ?? '';
     return 'https://api.stlouisfed.org/fred/series/observations'
         '?series_id=MORTGAGE30US&api_key=$apiKey&file_type=json&sort_order=desc&limit=5';
   }
@@ -255,8 +252,10 @@ class ApisService {
         schoolRating: 8.5,
         livabilityScore: 8.4,
         rating: 'A',
-        description: 'Major global financial center with high housing demand and strong property values.',
-        imageUrl: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9',
+        description:
+            'Major global financial center with high housing demand and strong property values.',
+        imageUrl:
+            'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9',
         daysOnMarket: 45,
         inventory: 21000,
       ),
@@ -275,8 +274,10 @@ class ApisService {
         schoolRating: 8.1,
         livabilityScore: 8.1,
         rating: 'A+',
-        description: 'Entertainment capital with a competitive housing market and strong property appreciation.',
-        imageUrl: 'https://images.unsplash.com/photo-1518569656558-1fdc1a6b4a62',
+        description:
+            'Entertainment capital with a competitive housing market and strong property appreciation.',
+        imageUrl:
+            'https://images.unsplash.com/photo-1518569656558-1fdc1a6b4a62',
         daysOnMarket: 30,
         inventory: 15000,
       ),

@@ -25,6 +25,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import '../widgets/gradient_app_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -35,21 +36,18 @@ import '../providers/settings_provider.dart';
 import '../services/ad_service.dart';
 import '../utils/calculator_logic.dart';
 import '../core/constants/theme_extensions.dart';
+import '../models/affordability_model.dart';
+import '../providers/affordability_provider.dart';
+import 'saved_calculations_screen.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  DESIGN TOKENS
 // ─────────────────────────────────────────────────────────────────────────────
 
 abstract final class _C {
-  static const bg = Color(0xFFF3F4F6);
-  static final white = Colors.white;
   static const primary = Color(0xFF1D4ED8);
   static const emerald = Color(0xFF10B981);
   static const red = Color(0xFFDC2626);
-  static const slate900 = Color(0xFF1F2937);
-  static const slate500 = Color(0xFF6B7280);
-  static const slate200 = Color(0xFFE5E7EB);
-  static const slate50 = Color(0xFFF9FAFB);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -183,6 +181,182 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
     );
   }
 
+  void _saveCalculation() {
+    final settings = Provider.of<SettingsProvider>(context, listen: false);
+    final formatCurrency = NumberFormat.currency(
+      symbol: settings.currencySymbol,
+      decimalDigits: 0,
+    );
+    final price = double.tryParse(_vehiclePriceCtrl.text.replaceAll(',', '')) ?? 0;
+    
+    if (price <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a valid vehicle price before saving.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    if (_monthlyPayment <= 0) {
+      _calculate();
+    }
+
+    final defaultName = 'Auto Loan - ${formatCurrency.format(price)}';
+    final nameCtrl = TextEditingController(text: defaultName);
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: context.cardColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          'Save Calculation',
+          style: GoogleFonts.manrope(
+            fontWeight: FontWeight.bold,
+            color: context.textPrimary,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Enter a name to identify this calculation:',
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                color: context.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: nameCtrl,
+              autofocus: true,
+              style: GoogleFonts.inter(
+                color: context.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+              decoration: InputDecoration(
+                hintText: 'e.g. My Next Car',
+                hintStyle: GoogleFonts.inter(
+                  color: context.textSecondary.withValues(alpha: 0.5),
+                ),
+                filled: true,
+                fillColor: context.inputFill,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 14,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.borderColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.borderColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: context.primaryColor, width: 2),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w600,
+                color: context.textSecondary,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              final name = nameCtrl.text.trim().isNotEmpty
+                  ? nameCtrl.text.trim()
+                  : defaultName;
+
+              final dp = double.tryParse(_downPaymentCtrl.text.replaceAll(',', '')) ?? 0;
+              final rate = double.tryParse(_aprCtrl.text) ?? 0;
+
+              final input = AffordabilityInput(
+                annualIncome: price,
+                monthlyDebts: 0,
+                downPayment: dp,
+                loanTerm: (_selectedTermMonths / 12).ceil(),
+                interestRate: rate,
+              );
+
+              final result = AffordabilityResult(
+                maxHomePrice: price,
+                monthlyMortgage: _monthlyPayment,
+                totalMonthlyPayment: _monthlyPayment,
+                debtToIncomeRatio: 0,
+                breakdown: PaymentBreakdown(
+                  principalAndInterest: _monthlyPayment,
+                  propertyTaxes: _totalInterest,
+                  homeInsurance: 0,
+                  pmi: 0,
+                ),
+              );
+
+              final metadata = {
+                'vehiclePrice': price,
+                'termMonths': _selectedTermMonths,
+                'totalInterest': _totalInterest,
+                'totalCost': _totalCost,
+              };
+
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+              final primaryColor = context.primaryColor;
+              final navigator = Navigator.of(context);
+              final dialogNavigator = Navigator.of(ctx);
+
+              await context.read<AffordabilityProvider>().saveCustomCalculation(
+                name,
+                input,
+                result,
+                calculatorType: CalculatorType.autoLoan,
+                metadata: metadata,
+              );
+
+              dialogNavigator.pop();
+              scaffoldMessenger.showSnackBar(
+                SnackBar(
+                  content: const Text('Calculation saved successfully!'),
+                  behavior: SnackBarBehavior.floating,
+                  action: SnackBarAction(
+                    label: 'View',
+                    textColor: primaryColor,
+                    onPressed: () {
+                      navigator.push(
+                        MaterialPageRoute(
+                          builder: (_) => const SavedCalculationsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              'Save',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.bold,
+                color: context.primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   // ── Build ──────────────────────────────────────────────────────────────────
 
   @override
@@ -196,7 +370,7 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: _C.bg,
+        backgroundColor: context.pageBackground,
         appBar: _buildAppBar(),
         body: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
@@ -207,8 +381,8 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
               _buildInputCard(settings),
               const SizedBox(height: 20),
 
-              // ── 2. Calculate button (interstitial trigger) ────────────────
-              _buildCalculateButton(),
+              // ── 2. Calculate & Save buttons ──────────────────────────────
+              _buildActionButtons(),
               const SizedBox(height: 20),
 
               // ── 3. Results card ───────────────────────────────────────────
@@ -244,7 +418,7 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
               Text(
                 'Estimates do not include taxes, title, registration, or fees.',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.inter(color: _C.slate500, fontSize: 12),
+                style: GoogleFonts.inter(color: context.textSecondary, fontSize: 12),
               ),
               const SizedBox(height: 16),
             ],
@@ -256,26 +430,26 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
 
   // ── AppBar ─────────────────────────────────────────────────────────────────
 
-  PreferredSizeWidget _buildAppBar() => AppBar(
-    backgroundColor: _C.white,
+  PreferredSizeWidget _buildAppBar() => GradientAppBar(
+    backgroundColor: Colors.transparent,
     elevation: 0,
-    surfaceTintColor: _C.white,
+    surfaceTintColor: Colors.transparent,
     leading: IconButton(
-      icon: const Icon(Icons.arrow_back_ios_new, color: _C.primary),
+      icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
       tooltip: 'Back',
       onPressed: () => Navigator.pop(context),
     ),
     title: Text(
       'Auto Loan Calculator',
       style: GoogleFonts.manrope(
-        color: _C.slate900,
+        color: Colors.white,
         fontWeight: FontWeight.w800,
         fontSize: 18,
       ),
     ),
     bottom: const PreferredSize(
       preferredSize: Size.fromHeight(1),
-      child: Divider(height: 1, color: _C.slate200),
+      child: Divider(height: 1, color: Colors.white24),
     ),
   );
 
@@ -290,13 +464,13 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
           style: GoogleFonts.manrope(
             fontSize: 17,
             fontWeight: FontWeight.w800,
-            color: _C.slate900,
+            color: context.textPrimary,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           'Enter your vehicle and financing information',
-          style: GoogleFonts.inter(fontSize: 13, color: _C.slate500),
+          style: GoogleFonts.inter(fontSize: 13, color: context.textSecondary),
         ),
         const _CardDivider(),
 
@@ -333,7 +507,7 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
           style: GoogleFonts.inter(
             fontSize: 13,
             fontWeight: FontWeight.w600,
-            color: _C.slate500,
+            color: context.textSecondary,
           ),
         ),
         const SizedBox(height: 8),
@@ -359,23 +533,51 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
     ),
   );
 
-  // ── Calculate button ───────────────────────────────────────────────────────
+  // ── Action buttons ────────────────────────────────────────────────────────
 
-  Widget _buildCalculateButton() => ElevatedButton.icon(
-    onPressed: _triggerAdAndCalculate,
-    icon: const Icon(Icons.calculate_outlined, size: 20),
-    label: Text(
-      'Calculate',
-      style: GoogleFonts.manrope(fontSize: 16, fontWeight: FontWeight.w800),
-    ),
-    style: ElevatedButton.styleFrom(
-      backgroundColor: _C.primary,
-      foregroundColor: _C.white,
-      minimumSize: const Size(double.infinity, 52),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 2,
-      shadowColor: _C.primary.withValues(alpha: 0.3),
-    ),
+  Widget _buildActionButtons() => Row(
+    children: [
+      Expanded(
+        flex: 3,
+        child: ElevatedButton.icon(
+          onPressed: _triggerAdAndCalculate,
+          icon: const Icon(Icons.calculate_outlined, size: 20),
+          label: Text(
+            'Calculate',
+            style: GoogleFonts.manrope(fontSize: 16, fontWeight: FontWeight.w800),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _C.primary,
+            foregroundColor: Colors.white,
+            minimumSize: const Size(0, 52),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            elevation: 2,
+            shadowColor: _C.primary.withValues(alpha: 0.3),
+          ),
+        ),
+      ),
+      const SizedBox(width: 12),
+      Expanded(
+        flex: 2,
+        child: OutlinedButton.icon(
+          onPressed: _saveCalculation,
+          icon: Icon(Icons.bookmark_add_outlined, size: 20, color: context.primaryColor),
+          label: Text(
+            'Save',
+            style: GoogleFonts.manrope(
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: context.primaryColor,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            side: BorderSide(color: context.primaryColor, width: 1.5),
+            minimumSize: const Size(0, 52),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        ),
+      ),
+    ],
   );
 
   // ── Results card ───────────────────────────────────────────────────────────
@@ -386,7 +588,7 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
         Text(
           'ESTIMATED MONTHLY PAYMENT',
           style: GoogleFonts.inter(
-            color: _C.slate500,
+            color: context.textSecondary,
             fontSize: 11,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.2,
@@ -404,10 +606,10 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
         const SizedBox(height: 4),
         Text(
           'per month',
-          style: GoogleFonts.inter(fontSize: 13, color: _C.slate500),
+          style: GoogleFonts.inter(fontSize: 13, color: context.textSecondary),
         ),
         const SizedBox(height: 20),
-        const Divider(color: _C.slate200),
+        Divider(color: context.borderColor),
         const SizedBox(height: 20),
         Row(
           children: [
@@ -418,7 +620,7 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
                 valueColor: _C.red,
               ),
             ),
-            Container(width: 1, height: 44, color: _C.slate200),
+            Container(width: 1, height: 44, color: context.borderColor),
             Expanded(
               child: _ResultStat(
                 label: 'Total Cost',
@@ -441,21 +643,21 @@ class _AutoLoanCalculatorScreenState extends State<AutoLoanCalculatorScreen> {
         children: [
           Row(
             children: [
-              const Icon(Icons.compare_arrows, size: 18, color: _C.primary),
+              Icon(Icons.compare_arrows, size: 18, color: context.primaryColor),
               const SizedBox(width: 8),
               Text(
                 'Term Comparison',
                 style: GoogleFonts.manrope(
                   fontWeight: FontWeight.w800,
                   fontSize: 16,
-                  color: _C.slate900,
+                  color: context.textPrimary,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 16),
           for (int i = 0; i < _kTermOptions.length; i++) ...[
-            if (i > 0) const Divider(height: 24, color: _C.slate200),
+            if (i > 0) Divider(height: 24, color: context.borderColor),
             _ComparisonRow(
               months: _kTermOptions[i],
               principal: principal,
@@ -506,10 +708,10 @@ class _NativeAdCard extends StatelessWidget {
         // obscure it. Satisfies AdMob Policy §5.2.
         Row(
           children: [
-            const Expanded(
+            Expanded(
               child: Divider(
                 thickness: 1,
-                color: Color(0xFFE5E7EB),
+                color: context.borderColor,
                 endIndent: 10,
               ),
             ),
@@ -518,28 +720,28 @@ class _NativeAdCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: const Color(0xFFFFF7E6),
+                color: context.isDark ? Colors.amber.withValues(alpha: 0.15) : const Color(0xFFFFF7E6),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: const Color(0xFFFFB800).withValues(alpha: 0.45),
+                  color: context.isDark ? Colors.amber.withValues(alpha: 0.4) : const Color(0xFFFFB800).withValues(alpha: 0.45),
                   width: 0.8,
                 ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Icon(
                     Icons.campaign_outlined,
                     size: 11,
-                    color: Color(0xFFB45309),
+                    color: context.isDark ? Colors.amber.shade300 : const Color(0xFFB45309),
                   ),
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   Text(
                     'Sponsored',
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFFB45309),
+                      color: context.isDark ? Colors.amber.shade300 : const Color(0xFFB45309),
                       letterSpacing: 0.4,
                     ),
                   ),
@@ -547,10 +749,10 @@ class _NativeAdCard extends StatelessWidget {
               ),
             ),
 
-            const Expanded(
+            Expanded(
               child: Divider(
                 thickness: 1,
-                color: Color(0xFFE5E7EB),
+                color: context.borderColor,
                 indent: 10,
               ),
             ),
@@ -568,7 +770,7 @@ class _NativeAdCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: context.cs.surface,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: const Color(0xFFE5E7EB)),
+            border: Border.all(color: context.borderColor),
             boxShadow: const [
               BoxShadow(
                 color: Color(0x07000000),
@@ -588,7 +790,7 @@ class _NativeAdCard extends StatelessWidget {
 
         // ── Bottom divider ───────────────────────────────────────────────
         // Visual separator between the ad and the Term Comparison card.
-        const Divider(thickness: 1, color: Color(0xFFE5E7EB)),
+        Divider(thickness: 1, color: context.borderColor),
       ],
     );
   }
@@ -614,16 +816,16 @@ class _NativeAdPlaceholder extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Top divider (no label while loading)
-        const Divider(thickness: 1, color: Color(0xFFE5E7EB)),
+        Divider(thickness: 1, color: context.borderColor),
         const SizedBox(height: 10),
 
         // Placeholder card — identical dimensions to _NativeAdCard
         Container(
           height: 320,
           decoration: BoxDecoration(
-            color: const Color(0xFFF1F5F9),
+            color: context.inputFill,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: const Color(0xFFE5E7EB)),
+            border: Border.all(color: context.borderColor),
           ),
           child: Center(
             child: Column(
@@ -635,7 +837,7 @@ class _NativeAdPlaceholder extends StatelessWidget {
                   'Sponsored',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey.shade400,
+                    color: context.textSecondary,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 0.3,
                   ),
@@ -646,7 +848,7 @@ class _NativeAdPlaceholder extends StatelessWidget {
         ),
 
         const SizedBox(height: 10),
-        const Divider(thickness: 1, color: Color(0xFFE5E7EB)),
+        Divider(thickness: 1, color: context.borderColor),
       ],
     );
   }
@@ -704,9 +906,9 @@ class _Card extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
-      color: _C.white,
+      color: context.cardColor,
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: _C.slate200),
+      border: Border.all(color: context.borderColor),
       boxShadow: const [
         BoxShadow(
           color: Color(0x0A000000),
@@ -725,7 +927,7 @@ class _CardDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 16),
-    child: const Divider(height: 1, color: _C.slate200),
+    child: Divider(height: 1, color: context.borderColor),
   );
 }
 
@@ -751,7 +953,7 @@ class _InputField extends StatelessWidget {
         style: GoogleFonts.inter(
           fontSize: 12,
           fontWeight: FontWeight.w600,
-          color: _C.slate500,
+          color: context.textSecondary,
         ),
       ),
       const SizedBox(height: 6),
@@ -762,30 +964,30 @@ class _InputField extends StatelessWidget {
         style: GoogleFonts.inter(
           fontSize: 15,
           fontWeight: FontWeight.w600,
-          color: _C.slate900,
+          color: context.textPrimary,
         ),
         decoration: InputDecoration(
           prefixText: prefix != null ? '$prefix ' : null,
           suffixText: suffix != null ? ' $suffix' : null,
-          prefixStyle: GoogleFonts.inter(fontSize: 15, color: _C.slate500),
-          suffixStyle: GoogleFonts.inter(fontSize: 15, color: _C.slate500),
+          prefixStyle: GoogleFonts.inter(fontSize: 15, color: context.textSecondary),
+          suffixStyle: GoogleFonts.inter(fontSize: 15, color: context.textSecondary),
           filled: true,
-          fillColor: _C.slate50,
+          fillColor: context.inputFill,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 12,
             vertical: 14,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: _C.slate200),
+            borderSide: BorderSide(color: context.borderColor),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: _C.slate200),
+            borderSide: BorderSide(color: context.borderColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: _C.primary, width: 2),
+            borderSide: BorderSide(color: context.primaryColor, width: 2),
           ),
         ),
       ),
@@ -811,9 +1013,11 @@ class _TermToggle extends StatelessWidget {
       duration: const Duration(milliseconds: 180),
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: isSelected ? _C.primary.withValues(alpha: 0.1) : _C.white,
+        color: isSelected
+            ? context.primaryColor.withValues(alpha: 0.1)
+            : (context.isDark ? context.inputFill : Colors.white),
         border: Border.all(
-          color: isSelected ? _C.primary : _C.slate200,
+          color: isSelected ? context.primaryColor : context.borderColor,
           width: isSelected ? 2 : 1,
         ),
         borderRadius: BorderRadius.circular(8),
@@ -825,7 +1029,7 @@ class _TermToggle extends StatelessWidget {
             style: GoogleFonts.manrope(
               fontSize: 16,
               fontWeight: FontWeight.w800,
-              color: isSelected ? _C.primary : _C.slate900,
+              color: isSelected ? context.primaryColor : context.textPrimary,
             ),
           ),
           Text(
@@ -833,8 +1037,8 @@ class _TermToggle extends StatelessWidget {
             style: GoogleFonts.inter(
               fontSize: 11,
               color: isSelected
-                  ? _C.primary.withValues(alpha: 0.8)
-                  : _C.slate500,
+                  ? context.primaryColor.withValues(alpha: 0.8)
+                  : context.textSecondary,
             ),
           ),
         ],
@@ -857,12 +1061,12 @@ class _ResultStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     children: [
-      Text(label, style: GoogleFonts.inter(color: _C.slate500, fontSize: 13)),
+      Text(label, style: GoogleFonts.inter(color: context.textSecondary, fontSize: 13)),
       const SizedBox(height: 4),
       Text(
         value,
         style: GoogleFonts.manrope(
-          color: valueColor ?? _C.slate900,
+          color: valueColor ?? context.textPrimary,
           fontSize: 18,
           fontWeight: FontWeight.w800,
         ),
@@ -914,7 +1118,7 @@ class _ComparisonRow extends StatelessWidget {
                   '$months Months',
                   style: GoogleFonts.manrope(
                     fontWeight: FontWeight.w700,
-                    color: isCurrent ? _C.primary : _C.slate900,
+                    color: isCurrent ? context.primaryColor : context.textPrimary,
                   ),
                 ),
                 if (isCurrent) ...[
@@ -925,7 +1129,7 @@ class _ComparisonRow extends StatelessWidget {
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: _C.primary.withValues(alpha: 0.1),
+                      color: context.primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -933,7 +1137,7 @@ class _ComparisonRow extends StatelessWidget {
                       style: GoogleFonts.inter(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
-                        color: _C.primary,
+                        color: context.primaryColor,
                       ),
                     ),
                   ),
@@ -944,7 +1148,7 @@ class _ComparisonRow extends StatelessWidget {
               interest > 0
                   ? 'Int: ${format.format(interest)}'
                   : 'Enter details above',
-              style: GoogleFonts.inter(fontSize: 12, color: _C.slate500),
+              style: GoogleFonts.inter(fontSize: 12, color: context.textSecondary),
             ),
           ],
         ),
@@ -953,7 +1157,7 @@ class _ComparisonRow extends StatelessWidget {
           style: GoogleFonts.manrope(
             fontWeight: FontWeight.w800,
             fontSize: 16,
-            color: isCurrent ? _C.primary : _C.slate900,
+            color: isCurrent ? context.primaryColor : context.textPrimary,
           ),
         ),
       ],

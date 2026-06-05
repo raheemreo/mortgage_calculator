@@ -72,4 +72,10 @@ flutter {
 }
 
 dependencies {
+    implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("com.google.ads.mediation:facebook:6.21.0.3")
+    implementation("com.google.ads.mediation:unity:4.18.0.0")
+    implementation("com.google.ads.mediation:ironsource:9.4.2.0")
+    implementation("com.google.ads.mediation:inmobi:11.3.0.0")
+    implementation("com.google.ads.mediation:applovin:13.6.2.0")
 }
