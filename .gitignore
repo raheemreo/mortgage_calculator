@@ -15,6 +15,10 @@ coverage/
 
 # Optional (uncomment if you don’t want lock file)
 
+# Firebase
+google-services.json
+GoogleService-Info.plist
+
 # pubspec.lock
 
 # ================================
